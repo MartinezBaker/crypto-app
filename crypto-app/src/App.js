@@ -1,14 +1,14 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link} from 'react-router-dom';
-import Coins from '../src/pages/Coins/index';
-import Portfolio from '../src/pages/Portfolio/index';
-import './App.css';
+import {Coins, CoinPage, Portfolio} from 'pages';
+
 
 class App extends React.Component {
   render() {
-
-    const CoinWithId = ({match}) => {
-      <></>
+    const Coin = ({match}) => {
+      <>
+        <CoinPage />
+      </>
     }
     return (
       <div className="App">
@@ -19,7 +19,7 @@ class App extends React.Component {
           </nav>
           <Switch>
             <Route exact path="/coins" component={Coins} />
-            <Route exact path="/coins/:coinId" component={CoinWithId} />
+            <Route exact path="/coins/:coinId" component={Coin} />
             <Route exact path="/portfolio" component={Portfolio} />
             <Redirect to="/coins" />
           </Switch>
