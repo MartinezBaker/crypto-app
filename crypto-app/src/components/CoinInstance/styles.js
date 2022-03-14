@@ -11,7 +11,7 @@ export const DataRow = styled.tr`
   }
   border-bottom: 1px solid black;
   border-left: none;
-  padding: 15px;
+  padding: 15px 0px 15px 8px;
 `;
 
 export const CoinImage = styled.img`
@@ -20,9 +20,7 @@ export const CoinImage = styled.img`
     margin-right: 5px;
 `
 export const PercentColor = styled.td`
-  color: ${(props) => {
-    const data = props.data;
-
+  color: ${({data}) => {
     if (data && data.includes("-")) {
       return "red";
     }
@@ -32,13 +30,14 @@ export const PercentColor = styled.td`
   }};
   border-bottom: 1px solid black;
   border-left: none;
-  padding: 15px;
+  padding: 15px 0px 15px 8px;
 `;
 
 export const TableCell = styled.td`
   border-bottom: 1px solid black;
   border-left: none;
-  padding: 15px;
+  padding: 15px 0px 15px 8px;
+  max-width: 200px;
 `;
 
 

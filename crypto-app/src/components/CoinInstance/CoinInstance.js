@@ -1,49 +1,35 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
 import { TableCharts, ProgressBar } from "components";
-import {formatTimePercent, formatNum} from '../../utils/index';
+import { formatTimePercent, formatNum, formatCoinName, formatPrice } from '../../utils/utils';
+import { setCaretIcon } from '../../utils/FontAwsomeutil'
 import { CoinImage, PercentColor, DataRow, TableCell } from './styles';
 
 const CoinInstance = (props) => (
   <DataRow>
     <TableCell>
       <CoinImage src={props.image} alt="Coin" />{" "}
-      {props.name.length < 9 ? props.name : props.name.slice(0, 9) + "..."} (
+      {formatCoinName(props.name)} (
       {props.symbol})
     </TableCell>
     <TableCell>
-      $
-      {props.price.includes("e")
-        ? props.price.slice(0, props.price.indexOf("e"))
-        : props.price}
+      ${formatPrice(props.price)}
     </TableCell>
     <PercentColor data={props.oneHour}>
       {props.oneHour && (
-        <FontAwesomeIcon
-          style={{ fontSize: "12px" }}
-          icon={props.oneHour.charAt(0) === "-" ? faCaretDown : faCaretUp}
-        />
+        setCaretIcon(props.oneHour)
       )}{" "}
       {formatTimePercent(props.oneHour)}
     </PercentColor>
     <PercentColor data={props.twentyFourHour}>
       {props.twentyFourHour && (
-        <FontAwesomeIcon
-          style={{ fontSize: "12px" }}
-          icon={
-            props.twentyFourHour.charAt(0) === "-" ? faCaretDown : faCaretUp
-          }
-        />
+        setCaretIcon(props.twentyFourHour)
+        
       )}{" "}
       {formatTimePercent(props.twentyFourHour)}
     </PercentColor>
     <PercentColor data={props.sevenDay}>
       {props.sevenDay && (
-        <FontAwesomeIcon
-          style={{ fontSize: "12px" }}
-          icon={props.sevenDay.charAt(0) === "-" ? faCaretDown : faCaretUp}
-        />
+        setCaretIcon(props.sevenDay)
       )}{" "}
       {formatTimePercent(props.sevenDay)}
     </PercentColor>

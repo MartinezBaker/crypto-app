@@ -5,11 +5,6 @@ import {Coins, CoinPage, Portfolio} from 'pages';
 
 class App extends React.Component {
   render() {
-    const Coin = ({match}) => {
-      <>
-        <CoinPage />
-      </>
-    }
     return (
       <div className="App">
         <Router>
@@ -19,7 +14,7 @@ class App extends React.Component {
           </nav>
           <Switch>
             <Route exact path="/coins" component={Coins} />
-            <Route exact path="/coins/:coinId" component={Coin} />
+            <Route exact path="/coins/:coinId" component={CoinPage} />
             <Route exact path="/portfolio" component={Portfolio} />
             <Redirect to="/coins" />
           </Switch>

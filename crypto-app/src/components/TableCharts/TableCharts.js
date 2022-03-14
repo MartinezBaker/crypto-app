@@ -1,5 +1,5 @@
 import React from 'react'
-import { labelAlgo } from '../../utils';
+import { labelAlgo } from '../../utils/utils';
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { ChartTable } from './styles'

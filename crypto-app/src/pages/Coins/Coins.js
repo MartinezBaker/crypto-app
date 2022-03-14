@@ -1,14 +1,15 @@
 import React from 'react';
+import InfiniteScroll from "react-infinite-scroll-component";
+import axios from "axios";
 import { CoinInstance } from "components";
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { TableContainer, TableHeader, Table, TableRow } from './styles';
-import axios from 'axios';
 
 class Coins extends React.Component {
   state = {
     coins:[],
     page: 1,
     isLoading: false,
+    hasMore: true,
     hasError: false,
     errMess: ""
   }
@@ -34,6 +35,10 @@ class Coins extends React.Component {
   }
   getMoreCoins = async () => {
     try {
+      if (this.state.coins.length >= 1800) {
+        this.setState({ hasMore: false });
+        return;
+      }
       this.setState({
         page: this.state.page + 1,
         isLoading: true,
@@ -62,7 +67,7 @@ class Coins extends React.Component {
           <InfiniteScroll
             dataLength={this.state.coins.length}
             next={this.getMoreCoins}
-            hasMore={true}
+            hasMore={this.state.hasMore}
             loader={(this.state.isLoading && <h4>Loading...</h4>) || <h4>{this.state.errMess}</h4>}
           >
             <Table>
@@ -91,21 +96,9 @@ class Coins extends React.Component {
                     }
                     image={coin.image}
                     symbol={coin.symbol.toUpperCase()}
-                    oneHour={
-                      coin.price_change_percentage_1h_in_currency === null
-                        ? null
-                        : coin.price_change_percentage_1h_in_currency.toString()
-                    }
-                    twentyFourHour={
-                      coin.price_change_percentage_24h_in_currency === null
-                        ? null
-                        : coin.price_change_percentage_24h_in_currency.toString()
-                    }
-                    sevenDay={
-                      coin.price_change_percentage_7d_in_currency === null
-                        ? null
-                        : coin.price_change_percentage_7d_in_currency.toString()
-                    }
+                    oneHour={coin.price_change_percentage_1h_in_currency?.toString()}
+                    twentyFourHour={coin.price_change_percentage_24h_in_currency?.toString()}
+                    sevenDay={coin.price_change_percentage_7d_in_currency?.toString() }
                     totalVolume={coin.total_volume}
                     marketCap={coin.market_cap.toString()}
                     totalVolPercentage={
