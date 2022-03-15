@@ -1,1 +1,1 @@
-export {default} from './CoinPage'
+export { default } from './CoinPage'
