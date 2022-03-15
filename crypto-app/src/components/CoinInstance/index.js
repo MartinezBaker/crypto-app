@@ -1,1 +1,1 @@
-export {default} from './CoinInstance'
+export { default } from './CoinInstance'

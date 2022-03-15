@@ -1,1 +1,1 @@
-export {default} from './TableCharts'
+export { default } from './TableCharts'

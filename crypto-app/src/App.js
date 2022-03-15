@@ -1,6 +1,6 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect, Link} from 'react-router-dom';
-import {Coins, CoinPage, Portfolio} from 'pages';
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
+import { Coins, CoinPage, Portfolio } from 'pages';
 
 
 class App extends React.Component {
