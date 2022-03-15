@@ -1,4 +1,4 @@
-import {Progress} from './styles'
+import { Progress } from './styles'
 
 const ProgressBar = (props) => {
   return <Progress value={props.progress} max="100" />;
