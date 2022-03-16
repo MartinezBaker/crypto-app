@@ -25,3 +25,15 @@ export const TableRow = styled.tr`
   border-left: none;
   padding: 15px 0px 15px 8px;
 `;
+
+export const SortButton = styled.button`
+  border: none;
+  background: none;
+  &:focus {
+    border: none;
+    outline: none;
+  }
+  &:hover{
+    cursor: pointer;
+  }
+`

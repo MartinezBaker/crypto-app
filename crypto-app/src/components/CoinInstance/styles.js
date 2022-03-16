@@ -37,7 +37,7 @@ export const TableCell = styled.td`
   border-bottom: 1px solid black;
   border-left: none;
   padding: 15px 0px 15px 8px;
-  max-width: 200px;
+  max-width: 210px;
 `;
 
 
