@@ -158,8 +158,6 @@ class Coins extends React.Component {
   render() {
     let coinList = [...this.state.coins];
     const {sortName, sortPrice, sortOneHour, sortTwentyFourHour, sortSevenDay} = this.state
-    console.log("sortName:", sortName)
-    console.log("sortPrice:", sortPrice);
     if( sortName === true) {
       coinList = coinList.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1);
     }
