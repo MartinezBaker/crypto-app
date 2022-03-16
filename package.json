@@ -1,0 +1,23 @@
+{
+  "name": "crypto-portfolio-app",
+  "version": "1.0.0",
+  "description": "crypto app",
+  "main": "index.js",
+  "dependencies": {
+    "axios": "^0.26.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MartinezBaker/crypto-app.git"
+  },
+  "author": "Martinez Baker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MartinezBaker/crypto-app/issues"
+  },
+  "homepage": "https://github.com/MartinezBaker/crypto-app#readme"
+}

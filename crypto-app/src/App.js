@@ -1,20 +1,27 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
+import { Coins, CoinPage, Portfolio } from 'pages';
 
-function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Switch>
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/coin/:coinId" component={Coin} />
-          <Route exact path="/portfolio" component={Portfolio} />
-          <Redirect to="/home" />
-        </Switch>
-      </Router>
-    </div>
-  );
+
+class App extends React.Component {
+  render() {
+    return (
+      <div className="App">
+        <Router>
+          <nav>
+            <Link to="/coins">Coins</Link> {""}
+            <Link to="/portfolio">Portfolio</Link>
+          </nav>
+          <Switch>
+            <Route exact path="/coins" component={Coins} />
+            <Route exact path="/coins/:coinId" component={CoinPage} />
+            <Route exact path="/portfolio" component={Portfolio} />
+            <Redirect to="/coins" />
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
 }
 
 export default App;
