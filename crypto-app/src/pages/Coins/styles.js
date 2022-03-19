@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 export const TableContainer = styled.div`
-  margin: 22px;
+  margin: 50px;
+  border: 1px solid black;
+  border-radius: 25px;
+  padding: 10px;
 `
 
 export const TableHeader = styled.th`
@@ -18,6 +21,8 @@ export const Table = styled.table`
   border-bottom: 1px solid black;
   border-left: none;
   padding: 15px 0px 15px 8px;
+  font-size: 12px;
+  font-weight: bold;
 `;
 
 export const TableRow = styled.tr`

@@ -1,9 +1,9 @@
 import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
-import { setSortIcon } from '../../utils/FontAwsomeutil'
+import { setSortIcon } from 'utils/FontAwesomeutil'
 import { CoinInstance } from "components";
-import { TableContainer, TableHeader, Table, TableRow, SortButton,  } from './styles';
+import { TableContainer, TableHeader, Table, TableRow, SortButton } from './styles';
 
 
 class Coins extends React.Component {
@@ -14,11 +14,13 @@ class Coins extends React.Component {
     hasMore: true,
     hasError: false,
     errMess: "",
-    sortName: null,
-    sortPrice: null,
-    sortOneHour: null,
-    sortTwentyFourHour: null,
-    sortSevenDay: null
+    sort: {
+      sortName: null,
+      sortPrice: null,
+      sortOneHour: null,
+      sortTwentyFourHour: null,
+      sortSevenDay: null
+    }
   };
   getCoins = async () => {
     try {
@@ -42,24 +44,23 @@ class Coins extends React.Component {
   };
   getMoreCoins = async () => {
     try {
-      if (this.state.coins.length >= 1800) {
-        this.setState({ hasMore: false });
-        return;
-      }
+      const nextPage = this.state.page + 1
       this.setState({
-        page: this.state.page + 1,
+        page: nextPage,
         isLoading: true,
       });
+      console.log(this.state.page)
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${this.state.page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${nextPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
       );
+      if(data === !![].length) {
+        this.setState({hasMore: false})
+      }
       const addCoins = [...this.state.coins, ...data];
-      setTimeout(() => {
-        this.setState({
-          coins: addCoins,
-          isLoading: false,
-        });
-      }, 500);
+      this.setState({
+        coins: addCoins,
+        isLoading: false,
+      });
     } catch (error) {
       this.setState({
         isLoading: false,
@@ -70,124 +71,77 @@ class Coins extends React.Component {
   componentDidMount() {
     this.getCoins();
   }
-  handleSortName = () => {
-    this.setState({sortPrice: null, sortOneHour: null, sortTwentyFourHour: null, sortSevenDay: null})
-    if(this.state.sortName === null) {
-      this.setState({ sortName: true });
-    } 
-    if(this.state.sortName === true) {
-      this.setState({ sortName: false });
-    } 
-    if(this.state.sortName === false) {
-      this.setState({ sortName: true });
-    }
-    
-  };
-  handleSortPrice = () => {
-    this.setState({
-      sortName: null,
-      sortOneHour: null,
-      sortTwentyFourHour: null,
-      sortSevenDay: null,
-    });
-    if(this.state.sortPrice === null) {
-      this.setState({ sortPrice: true });
-    } 
-    if(this.state.sortPrice === true) {
-      this.setState({ sortPrice: false });
-    } 
-    if(this.state.sortPrice === false) {
-      this.setState({ sortPrice: true });
-    }
-   
-  };
-  handleSortOneHour = () => {
-    this.setState({
-      sortPrice: null,
-      sortName: null,
-      sortTwentyFourHour: null,
-      sortSevenDay: null,
-    });
-    if (this.state.sortOneHour === null) {
-      this.setState({ sortOneHour: true });
-    } 
-    if(this.state.sortOneHour === true) {
-      this.setState({ sortOneHour: false });
-    } 
-    if(this.state.sortOneHour === false) {
-      this.setState({ sortOneHour: true });
-    }
-    
-  };
-  handleSortTwentyFourHour = () => {
-    this.setState({
-      sortPrice: null,
-      sortOneHour: null,
-      sortName: null,
-      sortSevenDay: null,
-    });
-    if(this.state.sortTwentyFourHour === null) {
-      this.setState({ sortTwentyFourHour: true });
-    } 
-    if(this.state.sortTwentyFourHour === true) {
-      this.setState({ sortTwentyFourHour: false });
-    } 
-    if(this.state.sortTwentyFourHour === false) {
-      this.setState({ sortTwentyFourHour: true });
-    }
-    
-  };
-  handleSortSevenDay = () => {
-    this.setState({
-      sortPrice: null,
-      sortOneHour: null,
-      sortTwentyFourHour: null,
-      sortName: null,
-    });
-    if(this.state.sortSevenDay === null) {
-      this.setState({ sortSevenDay: true });
-    } 
-    if(this.state.sortSevenDay === true) {
-      this.setState({ sortSevenDay: false });
-    } 
-    if(this.state.sortSevenDay === false) {
-      this.setState({ sortSevenDay: true });
-    }
-    
-  };
+  handleSort = (sortType) => {
+    const newSort = Object.entries(this.state.sort).map((entry) => {
+      const [key] = entry
+      return {
+        [key]: key === sortType ? true : null
+      }
+    }).reduce((acc, element) => ({...acc, ...element}), {})
+    this.setState({sort:newSort}, () => console.log(this.state))
+  }
   render() {
     let coinList = [...this.state.coins];
-    const {sortName, sortPrice, sortOneHour, sortTwentyFourHour, sortSevenDay} = this.state
-    if( sortName === true) {
-      coinList = coinList.sort((a, b) => a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1);
+    const {sortName, sortPrice, sortOneHour, sortTwentyFourHour, sortSevenDay} = this.state.sort
+    if (sortName === true) {
+       coinList = coinList.sort((a, b) =>
+        a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1
+      );
     }
-    if(sortName === false) {
-      coinList = coinList.sort((a, b) => b.name.toUpperCase() < a.name.toUpperCase() ? -1 : 1);
+    if (sortName === false) {
+       coinList = coinList.sort((a, b) =>
+        b.name.toUpperCase() < a.name.toUpperCase() ? -1 : 1
+      );
     }
-    if(sortPrice === true) {
-      coinList = coinList.sort((a, b) => a.current_price - b.current_price);
+    if (sortPrice === true) {
+       coinList = coinList.sort((a, b) => a.current_price - b.current_price);
     }
-    if(sortPrice === false) {
-      coinList = coinList.sort((a, b) => b.price - a.price);
+    if (sortPrice === false) {
+       coinList = coinList.sort((a, b) => b.price - a.price);
     }
-    if(sortOneHour === true) {
-      coinList = coinList.sort((a, b) => a.price_change_percentage_1h_in_currency - b.price_change_percentage_1h_in_currency);
+    if (sortOneHour === true) {
+       coinList = coinList.sort(
+        (a, b) =>
+          a.price_change_percentage_1h_in_currency -
+          b.price_change_percentage_1h_in_currency
+      );
     }
-    if(sortOneHour === false) {
-      coinList = coinList.sort((a, b) => b.price_change_percentage_1h_in_currency - a.price_change_percentage_1h_in_currency);
+    if (sortOneHour === false) {
+       coinList = coinList.sort(
+        (a, b) =>
+          b.price_change_percentage_1h_in_currency -
+          a.price_change_percentage_1h_in_currency
+      );
     }
-    if(sortTwentyFourHour === true) {
-      coinList = coinList.sort((a, b) => a.price_change_percentage_24h_in_currency - b.price_change_percentage_24h_in_currency);
+    if (sortTwentyFourHour === true) {
+       coinList = coinList.sort(
+        (a, b) =>
+          a.price_change_percentage_24h_in_currency -
+          b.price_change_percentage_24h_in_currency
+      );
     }
-    if(sortTwentyFourHour === false) {
-      coinList = coinList.sort((a, b) => b.price_change_percentage_24h_in_currency - a.price_change_percentage_24h_in_currency);
+    if (sortTwentyFourHour === false) {
+       coinList = coinList.sort(
+        (a, b) =>
+          b.price_change_percentage_24h_in_currency -
+          a.price_change_percentage_24h_in_currency
+      );
     }
-    if(sortSevenDay === true) {
-      coinList = coinList.sort((a, b) => a.price_change_percentage_7d_in_currency - b.price_change_percentage_7d_in_currency);
+    if (sortSevenDay === true) {
+       coinList = coinList.sort(
+        (a, b) =>
+          a.price_change_percentage_7d_in_currency -
+          b.price_change_percentage_7d_in_currency
+      );
     }
-    if(sortSevenDay === false) {
-      coinList = coinList.sort((a, b) => b.price_change_percentage_7d_in_currency - a.price_change_percentage_7d_in_currency);
+    if (sortSevenDay === false) {
+       coinList = coinList.sort(
+        (a, b) =>
+          b.price_change_percentage_7d_in_currency -
+          a.price_change_percentage_7d_in_currency
+      );
     }
+    
     return (
       <>
         <TableContainer>
@@ -206,37 +160,39 @@ class Coins extends React.Component {
                 <TableRow>
                   <TableHeader>#</TableHeader>
                   <TableHeader>
-                    Name{" "}
-                    <SortButton onClick={this.handleSortName}>
+                    Name
+                    <SortButton onClick={() => this.handleSort("sortName")}>
                       {setSortIcon(sortName)}
                     </SortButton>
                   </TableHeader>
                   <TableHeader>
-                    Price{" "}
-                    <SortButton onClick={this.handleSortPrice}>
+                    Price
+                    <SortButton onClick={() => this.handleSort("sortPrice")}>
                       {setSortIcon(sortPrice)}
                     </SortButton>
                   </TableHeader>
                   <TableHeader>
-                    1h%{" "}
-                    <SortButton onClick={this.handleSortOneHour}>
+                    1h%
+                    <SortButton onClick={() => this.handleSort("sortOneHour")}>
                       {setSortIcon(sortOneHour)}
                     </SortButton>
                   </TableHeader>
                   <TableHeader>
-                    24h%{" "}
-                    <SortButton onClick={this.handleSortTwentyFourHour}>
+                    24h%
+                    <SortButton
+                      onClick={() => this.handleSort("sortTwentyFourHour")}
+                    >
                       {setSortIcon(sortTwentyFourHour)}
                     </SortButton>
                   </TableHeader>
                   <TableHeader>
-                    7d%{" "}
-                    <SortButton onClick={this.handleSortSevenDay}>
+                    7d%
+                    <SortButton onClick={() => this.handleSort("sortSevenDay")}>
                       {setSortIcon(sortSevenDay)}
                     </SortButton>
                   </TableHeader>
-                  <TableHeader>24hr Volume/Market Cap</TableHeader>
-                  <TableHeader>Circulating/Total Supply</TableHeader>
+                  <TableHeader>24h Vol/Market Cap</TableHeader>
+                  <TableHeader>Circulating/Total Sup</TableHeader>
                   <TableHeader>Last 7d</TableHeader>
                 </TableRow>
               </thead>

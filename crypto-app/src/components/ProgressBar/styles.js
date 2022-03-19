@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
 export const Progress = styled.progress`
-  width: 190px;
+  width: 120px;
   height: 10;
 `;

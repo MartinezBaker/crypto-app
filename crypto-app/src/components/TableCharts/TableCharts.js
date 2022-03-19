@@ -1,10 +1,10 @@
 import React from 'react'
-import { labelAlgo } from '../../utils/utils';
+import { labelAlgo } from 'utils/utils';
 import { Line } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { ChartTable } from './styles'
 
-let sparkLabelsArr = ["3", "6", "9", "12", "15", "18", "21", "24"];
+let sparkLabelsArr = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24"];
 
 function TableCharts(props) {
   return (
@@ -12,14 +12,14 @@ function TableCharts(props) {
       <Line
         datasetIdKey="id"
         data={{
-          labels: labelAlgo(sparkLabelsArr, 56), 
+          labels: labelAlgo(sparkLabelsArr, 168), 
           datasets: [
             {
               fill: false,
               borderWidth: 3.0,
               data: props.chartData,
               spanGaps: true,
-              maintainAspectRatio: true,
+              maintainAspectRatio: false,
               responsive: true
             },
           ],
@@ -37,6 +37,12 @@ function TableCharts(props) {
             legend: {
               display: false,
             },
+            tooltip: {
+              enabled: false
+            },
+            hover: {
+              enabled: false
+            }
           },
           elements: {
             line: {
@@ -45,9 +51,6 @@ function TableCharts(props) {
             },
             point: {
               radius: 0,
-            },
-            tooltips: {
-              enabled: false,
             },
           },
           scales: {

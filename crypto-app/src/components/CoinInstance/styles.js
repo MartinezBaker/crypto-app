@@ -6,12 +6,11 @@ export const DataRow = styled.tr`
     counter-increment: rowNumber;
     content: counter(rowNumber);
     min-width: 1em;
-    padding: 0px 80px, 0px, 10px;
+    padding: 0px 10px 0px 10px;
     vertical-align: middle;
   }
   border-bottom: 1px solid black;
   border-left: none;
-  padding: 15px 0px 15px 8px;
 `;
 
 export const CoinImage = styled.img`
@@ -20,7 +19,7 @@ export const CoinImage = styled.img`
     margin-right: 5px;
 `
 export const PercentColor = styled.td`
-  color: ${({data}) => {
+  color: ${({ data }) => {
     if (data && data.includes("-")) {
       return "red";
     }
@@ -28,16 +27,17 @@ export const PercentColor = styled.td`
       return "limegreen";
     }
   }};
-  border-bottom: 1px solid black;
-  border-left: none;
-  padding: 15px 0px 15px 8px;
+  padding: 28px 0px 28px 8px;
 `;
 
 export const TableCell = styled.td`
-  border-bottom: 1px solid black;
-  border-left: none;
-  padding: 15px 0px 15px 8px;
-  max-width: 210px;
+  padding: 28px 0px 28px 8px;
 `;
+
+export const ProgressParent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 120px;
+`
 
 
