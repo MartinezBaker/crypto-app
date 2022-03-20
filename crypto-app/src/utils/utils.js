@@ -40,4 +40,11 @@ export function formatPrice(price) {
   }
 } 
 
-
+export const sortNum = (arr, sort, num) => {
+  if (sort === true) {
+    return (arr = arr.sort((a, b) => a[num] - b[num]));
+  }
+  if (sort === false) {
+    return (arr = arr.sort((a, b) => b[num] - a[num]));
+  }
+};
