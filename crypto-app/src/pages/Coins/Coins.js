@@ -2,7 +2,6 @@ import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sortNum } from 'utils/utils'
 import { CoinInstance } from "components";
 import { TableContainer, TableHeader, Table, TableRow, SortButton } from './styles';
 
@@ -85,15 +84,59 @@ class Coins extends React.Component {
         }
       }
     }).reduce((acc, element) => ({...acc, ...element}), {})
-    this.setState({sort:newSort}, () => console.log(this.state))
+    this.setState({sort:newSort})
   }
   render() {
     let coinList = [...this.state.coins];
     const {sortName, sortPrice, sortOneHour, sortTwentyFourHour, sortSevenDay} = this.state.sort
-    sortNum(coinList, sortPrice, coinList.map((coin) => coin.current_price))
-    sortNum(coinList, sortOneHour, coinList.map((coin) => coin.price_change_percentage_1h_in_currency))
-    sortNum(coinList, sortTwentyFourHour, coinList.map((coin) => coin.price_change_percentage_24h_in_currency))
-    sortNum(coinList, sortSevenDay, coinList.map((coin) => coin.price_change_percentage_7d_in_currency))
+    if (sortPrice === true) {
+       coinList = coinList.sort((a, b) => a.current_price - b.current_price);
+     }
+     if (sortPrice === false) {
+       coinList = coinList.sort((a, b) => b.price - a.price);
+     }
+     if (sortOneHour === true) {
+       coinList = coinList.sort(
+         (a, b) =>
+           a.price_change_percentage_1h_in_currency -
+           b.price_change_percentage_1h_in_currency
+       );
+     }
+     if (sortOneHour === false) {
+       coinList = coinList.sort(
+         (a, b) =>
+           b.price_change_percentage_1h_in_currency -
+           a.price_change_percentage_1h_in_currency
+       );
+     }
+     if (sortTwentyFourHour === true) {
+       coinList = coinList.sort(
+         (a, b) =>
+           a.price_change_percentage_24h_in_currency -
+           b.price_change_percentage_24h_in_currency
+       );
+     }
+     if (sortTwentyFourHour === false) {
+       coinList = coinList.sort(
+         (a, b) =>
+           b.price_change_percentage_24h_in_currency -
+           a.price_change_percentage_24h_in_currency
+       );
+     }
+     if (sortSevenDay === true) {
+       coinList = coinList.sort(
+         (a, b) =>
+           a.price_change_percentage_7d_in_currency -
+           b.price_change_percentage_7d_in_currency
+       );
+     }
+     if (sortSevenDay === false) {
+       coinList = coinList.sort(
+         (a, b) =>
+           b.price_change_percentage_7d_in_currency -
+           a.price_change_percentage_7d_in_currency
+       );
+     }
     if (sortName === true) {
        coinList = coinList.sort((a, b) =>
         a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1
@@ -104,6 +147,8 @@ class Coins extends React.Component {
         b.name.toUpperCase() < a.name.toUpperCase() ? -1 : 1
       );
     }
+   
+    
     return (
       <>
         <TableContainer>
