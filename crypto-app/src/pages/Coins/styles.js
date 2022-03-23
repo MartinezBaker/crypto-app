@@ -11,7 +11,7 @@ export const TableHeader = styled.th`
   text-align: start;
   border-bottom: 1px solid black;
   border-left: none;
-  padding: 15px 0px 15px 8px;
+  padding: 15px 0px 15px 2px;
 `;
 
 export const Table = styled.table`
@@ -28,7 +28,7 @@ export const Table = styled.table`
 export const TableRow = styled.tr`
   border-bottom: 1px solid black;
   border-left: none;
-  padding: 15px 0px 15px 8px;
+  padding: 15px 0px 15px 0px;
 `;
 
 export const SortButton = styled.button`

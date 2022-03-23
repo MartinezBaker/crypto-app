@@ -2,6 +2,7 @@ import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 import { setSortIcon } from 'utils/FontAwesomeutil'
+import { Sort } from 'utils/utils'
 import { CoinInstance } from "components";
 import { TableContainer, TableHeader, Table, TableRow, SortButton } from './styles';
 
@@ -15,12 +16,12 @@ class Coins extends React.Component {
     hasError: false,
     errMess: "",
     sort: {
-      sortName: null,
-      sortPrice: null,
-      sortOneHour: null,
-      sortTwentyFourHour: null,
-      sortSevenDay: null
-    }
+      name: null,
+      current_price: null,
+      price_change_percentage_1h_in_currency: null,
+      price_change_percentage_24h_in_currency: null,
+      price_change_percentage_7d_in_currency: null,
+    },
   };
   getCoins = async () => {
     try {
@@ -44,17 +45,17 @@ class Coins extends React.Component {
   };
   getMoreCoins = async () => {
     try {
-      const nextPage = this.state.page + 1
+      const nextPage = this.state.page + 1;
       this.setState({
         page: nextPage,
         isLoading: true,
       });
-      console.log(this.state.page)
+      console.log(this.state.page);
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${nextPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
       );
-      if(data === !![].length) {
-        this.setState({hasMore: false})
+      if (!data.length) {
+        this.setState({ hasMore: false });
       }
       const addCoins = [...this.state.coins, ...data];
       this.setState({
@@ -72,83 +73,31 @@ class Coins extends React.Component {
     this.getCoins();
   }
   handleSort = (sortType) => {
-    const newSort = Object.entries(this.state.sort).map((entry) => {
-      const [key, value] = entry
-      if(key === sortType) {
-        return {
-          [key]: value !== true ? true : false 
+    const newSort = Object.entries(this.state.sort)
+      .map((entry) => {
+        const [key, value] = entry;
+        if (key === sortType) {
+          return {
+            [key]: value !== true
+          };
+        } else {
+          return {
+            [key]: null,
+          };
         }
-      }else{
-        return{
-          [key]: null
-        }
-      }
-    }).reduce((acc, element) => ({...acc, ...element}), {})
-    this.setState({sort:newSort})
-  }
+      })
+      .reduce((acc, element) => ({ ...acc, ...element }), {});
+    this.setState({ sort: newSort });
+  };
   render() {
     let coinList = [...this.state.coins];
-    const {sortName, sortPrice, sortOneHour, sortTwentyFourHour, sortSevenDay} = this.state.sort
-    if (sortPrice === true) {
-       coinList = coinList.sort((a, b) => a.current_price - b.current_price);
-     }
-     if (sortPrice === false) {
-       coinList = coinList.sort((a, b) => b.price - a.price);
-     }
-     if (sortOneHour === true) {
-       coinList = coinList.sort(
-         (a, b) =>
-           a.price_change_percentage_1h_in_currency -
-           b.price_change_percentage_1h_in_currency
-       );
-     }
-     if (sortOneHour === false) {
-       coinList = coinList.sort(
-         (a, b) =>
-           b.price_change_percentage_1h_in_currency -
-           a.price_change_percentage_1h_in_currency
-       );
-     }
-     if (sortTwentyFourHour === true) {
-       coinList = coinList.sort(
-         (a, b) =>
-           a.price_change_percentage_24h_in_currency -
-           b.price_change_percentage_24h_in_currency
-       );
-     }
-     if (sortTwentyFourHour === false) {
-       coinList = coinList.sort(
-         (a, b) =>
-           b.price_change_percentage_24h_in_currency -
-           a.price_change_percentage_24h_in_currency
-       );
-     }
-     if (sortSevenDay === true) {
-       coinList = coinList.sort(
-         (a, b) =>
-           a.price_change_percentage_7d_in_currency -
-           b.price_change_percentage_7d_in_currency
-       );
-     }
-     if (sortSevenDay === false) {
-       coinList = coinList.sort(
-         (a, b) =>
-           b.price_change_percentage_7d_in_currency -
-           a.price_change_percentage_7d_in_currency
-       );
-     }
-    if (sortName === true) {
-       coinList = coinList.sort((a, b) =>
-        a.name.toUpperCase() < b.name.toUpperCase() ? -1 : 1
-      );
-    }
-    if (sortName === false) {
-       coinList = coinList.sort((a, b) =>
-        b.name.toUpperCase() < a.name.toUpperCase() ? -1 : 1
-      );
-    }
-   
-    
+    const {name, current_price, price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency,
+    price_change_percentage_7d_in_currency} = this.state.sort;
+    coinList = coinList.sort(Sort(name, "name"));
+    coinList = coinList.sort(Sort(current_price, "current_price"));
+    coinList = coinList.sort(Sort(price_change_percentage_1h_in_currency, "price_change_percentage_1h_in_currency"));
+    coinList = coinList.sort(Sort(price_change_percentage_24h_in_currency, "price_change_percentage_24h_in_currency"));
+    coinList = coinList.sort(Sort(price_change_percentage_7d_in_currency, "price_change_percentage_7d_in_currency"));
     return (
       <>
         <TableContainer>
@@ -168,34 +117,52 @@ class Coins extends React.Component {
                   <TableHeader>#</TableHeader>
                   <TableHeader>
                     Name
-                    <SortButton onClick={() => this.handleSort("sortName")}>
-                      {setSortIcon(sortName)}
+                    <SortButton onClick={() => this.handleSort("name")}>
+                      {setSortIcon(name)}
                     </SortButton>
                   </TableHeader>
                   <TableHeader>
                     Price
-                    <SortButton onClick={() => this.handleSort("sortPrice")}>
-                      {setSortIcon(sortPrice)}
+                    <SortButton
+                      onClick={() => this.handleSort("current_price")}
+                    >
+                      {setSortIcon(current_price)}
                     </SortButton>
                   </TableHeader>
                   <TableHeader>
                     1h%
-                    <SortButton onClick={() => this.handleSort("sortOneHour")}>
-                      {setSortIcon(sortOneHour)}
+                    <SortButton
+                      onClick={() =>
+                        this.handleSort(
+                          "price_change_percentage_1h_in_currency"
+                        )
+                      }
+                    >
+                      {setSortIcon(price_change_percentage_1h_in_currency)}
                     </SortButton>
                   </TableHeader>
                   <TableHeader>
                     24h%
                     <SortButton
-                      onClick={() => this.handleSort("sortTwentyFourHour")}
+                      onClick={() =>
+                        this.handleSort(
+                          "price_change_percentage_24h_in_currency"
+                        )
+                      }
                     >
-                      {setSortIcon(sortTwentyFourHour)}
+                      {setSortIcon(price_change_percentage_24h_in_currency)}
                     </SortButton>
                   </TableHeader>
                   <TableHeader>
                     7d%
-                    <SortButton onClick={() => this.handleSort("sortSevenDay")}>
-                      {setSortIcon(sortSevenDay)}
+                    <SortButton
+                      onClick={() =>
+                        this.handleSort(
+                          "price_change_percentage_7d_in_currency"
+                        )
+                      }
+                    >
+                      {setSortIcon(price_change_percentage_7d_in_currency)}
                     </SortButton>
                   </TableHeader>
                   <TableHeader>24h Vol/Market Cap</TableHeader>
