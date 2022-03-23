@@ -2,10 +2,9 @@ import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { Sort } from 'utils/utils'
+import { sort } from 'utils/utils'
 import { CoinInstance } from "components";
 import { TableContainer, TableHeader, Table, TableRow, SortButton } from './styles';
-
 
 class Coins extends React.Component {
   state = {
@@ -90,14 +89,14 @@ class Coins extends React.Component {
     this.setState({ sort: newSort });
   };
   render() {
-    let coinList = [...this.state.coins];
+    let coinList = [...this.state.coins]
     const {name, current_price, price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency,
-    price_change_percentage_7d_in_currency} = this.state.sort;
-    coinList = coinList.sort(Sort(name, "name"));
-    coinList = coinList.sort(Sort(current_price, "current_price"));
-    coinList = coinList.sort(Sort(price_change_percentage_1h_in_currency, "price_change_percentage_1h_in_currency"));
-    coinList = coinList.sort(Sort(price_change_percentage_24h_in_currency, "price_change_percentage_24h_in_currency"));
-    coinList = coinList.sort(Sort(price_change_percentage_7d_in_currency, "price_change_percentage_7d_in_currency"));
+    price_change_percentage_7d_in_currency} = this.state.sort
+    coinList = coinList.sort(sort(name, "name"))
+    coinList = coinList.sort(sort(current_price, "current_price"))
+    coinList = coinList.sort(sort(price_change_percentage_1h_in_currency, "price_change_percentage_1h_in_currency"))
+    coinList = coinList.sort(sort(price_change_percentage_24h_in_currency, "price_change_percentage_24h_in_currency"));
+    coinList = coinList.sort(sort(price_change_percentage_7d_in_currency, "price_change_percentage_7d_in_currency"))
     return (
       <>
         <TableContainer>
