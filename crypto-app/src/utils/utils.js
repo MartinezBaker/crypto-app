@@ -39,3 +39,17 @@ export function formatPrice(price) {
     return price
   }
 } 
+
+export const Sort = (sortValue, key) => {
+  return (a, b) => {
+    const A = typeof a[key] === "string" ? a[key].toUpperCase() : a[key];
+    const B = typeof b[key] === "string" ? b[key].toUpperCase() : b[key];
+    if (sortValue === true) {
+     return A < B ? -1 : 1;
+    }else if (sortValue === false) {
+     return B < A ? -1 : 1;
+    }else {
+      return 0;
+    }
+  };
+};

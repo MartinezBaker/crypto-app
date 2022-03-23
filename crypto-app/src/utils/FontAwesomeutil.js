@@ -1,5 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCaretUp } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCaretDown,
+  faCaretUp,
+  faSortAmountAsc,
+  faSortAmountDesc
+} from "@fortawesome/free-solid-svg-icons";
 
 export function setCaretIcon(x){
     if (x.charAt(0) === "-") {
@@ -17,4 +22,14 @@ export function setCaretIcon(x){
           />
         );
     }
+}
+
+export function setSortIcon(x) {
+  if(x === true || x === null) {
+    return <FontAwesomeIcon icon={faSortAmountDesc} />;
+  }
+  if(x === false){
+    return <FontAwesomeIcon icon={faSortAmountAsc} />;
+  }
+
 }

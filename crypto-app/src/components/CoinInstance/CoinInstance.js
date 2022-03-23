@@ -1,8 +1,8 @@
 import React from 'react';
 import { TableCharts, ProgressBar } from "components";
-import { formatTimePercent, formatNum, formatCoinName, formatPrice } from '../../utils/utils';
-import { setCaretIcon } from '../../utils/FontAwsomeutil'
-import { CoinImage, PercentColor, DataRow, TableCell } from './styles';
+import { formatTimePercent, formatNum, formatCoinName, formatPrice } from 'utils/utils';
+import { setCaretIcon } from 'utils/FontAwesomeutil'
+import { CoinImage, PercentColor, DataRow, TableCell, ProgressParent } from './styles';
 
 const CoinInstance = (props) => (
   <DataRow>
@@ -34,42 +34,46 @@ const CoinInstance = (props) => (
       {formatTimePercent(props.sevenDay)}
     </PercentColor>
     <TableCell>
-      <div>
-        &#x2022;{" "}
-        {props.totalVolume ? (
-          "$" + formatNum(props.totalVolume)
-        ) : (
-          <span>&infin;</span>
-        )}{" "}
-        &#x2022;{" "}
-        {props.marketCap ? (
-          "$" + formatNum(props.marketCap)
-        ) : (
-          <span>&infin;</span>
-        )}
-      </div>
-      <div>
-        <ProgressBar progress={props.totalVolPercentage} />
-      </div>
+      <ProgressParent>
+        <div>
+          &#x2022;{" "}
+          {props.totalVolume ? (
+            "$" + formatNum(props.totalVolume)
+          ) : (
+            <span>&infin;</span>
+          )}
+        </div>
+        <div>
+          &#x2022;{" "}
+          {props.marketCap ? (
+            "$" + formatNum(props.marketCap)
+          ) : (
+            <span>&infin;</span>
+          )}
+        </div>
+      </ProgressParent>
+      <ProgressBar progress={props.totalVolPercentage} />
     </TableCell>
     <TableCell>
-      <div>
-        &#x2022;{" "}
-        {props.circulatingSupply ? (
-          "$" + formatNum(props.circulatingSupply)
-        ) : (
-          <span>&infin;</span>
-        )}{" "}
-        &#x2022;{" "}
-        {props.totalSupply ? (
-          "$" + formatNum(props.totalSupply)
-        ) : (
-          <span>&infin;</span>
-        )}
-      </div>
-      <div>
-        <ProgressBar progress={props.circulatingSupplyPercentage} />
-      </div>
+      <ProgressParent>
+        <div>
+          &#x2022;{" "}
+          {props.circulatingSupply ? (
+            "$" + formatNum(props.circulatingSupply)
+          ) : (
+            <span>&infin;</span>
+          )}{" "}
+        </div>
+        <div>
+          &#x2022;{" "}
+          {props.totalSupply ? (
+            "$" + formatNum(props.totalSupply)
+          ) : (
+            <span>&infin;</span>
+          )}
+        </div>
+      </ProgressParent>
+      <ProgressBar progress={props.circulatingSupplyPercentage} />
     </TableCell>
     <TableCell>
       <TableCharts
