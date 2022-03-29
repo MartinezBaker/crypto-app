@@ -54,6 +54,18 @@ export const sort = (sortValue, key) => {
   };
 };
 
+export const formatChartData = (arr, index) => {
+  if(index === 0) {
+    return arr.reduce((acc, element) => ([...acc, element[0]]), []).map((time) => {
+      const date = new Date(time)
+      return date.getDate()
+    })
+  }
+  if(index === 1) {
+    return arr.reduce((acc, element) => ([...acc, element[1]]), []);
+  }
+}
+
 export const getTodaysDate = () => {
   return new Date().toString().split(" ").splice(1, 3).join(" ");
 }

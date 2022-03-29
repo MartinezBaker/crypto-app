@@ -3,7 +3,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sort, getTodaysDate } from 'utils/utils'
+import { sort, getTodaysDate, formatChartData } from 'utils/utils'
 import { CoinInstance } from "components";
 import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer } from './styles';
 
@@ -106,17 +106,10 @@ class Coins extends React.Component {
     this.setState({ sort: newSort });
   };
   render() {
-    const lineChartLabels = this.state.chartData.prices && this.state.chartData.prices.reduce((acc, element) => ([...acc, element[0]]), []).map((time) => {
-      const date = new Date(time)
-      return date.getDate()
-    })
-    const lineChartData = this.state.chartData.prices && this.state.chartData.prices.reduce((acc, element) => ([...acc, element[1]]), [])
-    const barChartLabels = this.state.chartData.total_volumes && this.state.chartData.total_volumes.reduce((acc, element) => [...acc, element[0]], []).map((time) => {
-      const date = new Date(time);
-          return date.getDate();
-        });
-    const barChartData = this.state.chartData.total_volumes && this.state.chartData.total_volumes.reduce((acc, element) => ([...acc, element[1]]), []);
-    console.log(barChartLabels)
+    const lineChartLabels = this.state.chartData.prices && formatChartData(this.state.chartData.prices, 0);
+    const lineChartData = this.state.chartData.prices && formatChartData(this.state.chartData.prices, 1);
+    const barChartLabels = this.state.chartData.total_volumes && formatChartData(this.state.chartData.total_volumes, 0);
+    const barChartData = this.state.chartData.total_volumes && formatChartData(this.state.chartData.total_volumes, 1);
     let coinList = [...this.state.coins]
     const {name, current_price, price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency,
     price_change_percentage_7d_in_currency} = this.state.sort

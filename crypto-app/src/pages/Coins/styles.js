@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const ChartParent = styled.div`
   display: flex
 `
@@ -38,7 +37,6 @@ export const PriceText = styled.div`
   font-size: 24px;
 
 `
-
 
 export const TableContainer = styled.div`
   margin: 30px 60px 30px 60px;
