@@ -24,7 +24,6 @@ const CoinInstance = (props) => (
     <PercentColor data={props.twentyFourHour}>
       {props.twentyFourHour && (
         setCaretIcon(props.twentyFourHour)
-        
       )}{" "}
       {formatTimePercent(props.twentyFourHour)}
     </PercentColor>

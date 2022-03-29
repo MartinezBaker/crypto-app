@@ -78,6 +78,7 @@ export const TableCharts = (props) => {
     </ChartTable>
   );
 }
+
 export const LineChart = ({ labels, data }) => {
   return (
     <div>
@@ -103,17 +104,6 @@ export const LineChart = ({ labels, data }) => {
             },
           },
           plugins: {
-            title: {
-              display: true,
-              text: [
-                
-              
-              ],
-              align: "start",
-              font: {
-                size: 20,
-              },
-            },
             legend: {
               display: false,
             },
@@ -155,6 +145,7 @@ export const LineChart = ({ labels, data }) => {
     </div>
   );
 };
+
 export const BarChart = ({ labels, data }) => {
   return (
     <div>
@@ -164,14 +155,12 @@ export const BarChart = ({ labels, data }) => {
           labels: labels,
           datasets: [
             {
-              
               barThickness: 10,
               data: data,
               maintainAspectRatio: false,
               responsive: true,
             },
           ],
-          
         }}
         options={{
           layout: {
@@ -182,9 +171,6 @@ export const BarChart = ({ labels, data }) => {
           plugins: {
             legend: {
               display: false,
-              
-              
-              
             },
           },
           elements: {
@@ -194,7 +180,6 @@ export const BarChart = ({ labels, data }) => {
               borderRadius: 5,
               borderSkipped: false,
             },
-            
           },
           scales: {
             x: {

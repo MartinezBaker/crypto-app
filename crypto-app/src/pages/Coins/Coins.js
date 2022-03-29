@@ -111,7 +111,6 @@ class Coins extends React.Component {
       return date.getDate()
     })
     const lineChartData = this.state.chartData.prices && this.state.chartData.prices.reduce((acc, element) => ([...acc, element[1]]), [])
-    console.log(this.state.chartData)
     const barChartLabels = this.state.chartData.total_volumes && this.state.chartData.total_volumes.reduce((acc, element) => [...acc, element[0]], []).map((time) => {
       const date = new Date(time);
           return date.getDate();
