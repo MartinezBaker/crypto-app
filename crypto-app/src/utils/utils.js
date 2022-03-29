@@ -53,3 +53,8 @@ export const sort = (sortValue, key) => {
     }
   };
 };
+
+export const getTodaysDate = () => {
+  return new Date().toString().split(" ").splice(1, 3).join(" ");
+
+}
