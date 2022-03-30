@@ -1,11 +1,11 @@
 import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
+import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { Sort } from 'utils/utils'
+import { sort, getTodaysDate, formatChartData } from 'utils/utils'
 import { CoinInstance } from "components";
-import { TableContainer, TableHeader, Table, TableRow, SortButton } from './styles';
-
+import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer } from './styles';
 
 class Coins extends React.Component {
   state = {
@@ -15,6 +15,10 @@ class Coins extends React.Component {
     hasMore: true,
     hasError: false,
     errMess: "",
+    chartData: {},
+    currency: "usd",
+    marketDays: 30,
+    interval: "daily",
     sort: {
       name: null,
       current_price: null,
@@ -50,7 +54,6 @@ class Coins extends React.Component {
         page: nextPage,
         isLoading: true,
       });
-      console.log(this.state.page);
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${nextPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
       );
@@ -69,8 +72,21 @@ class Coins extends React.Component {
       });
     }
   };
+  getChartData = async () => {
+    try{
+      const currency = this.state.currency
+      const marketDays =  this.state.marketDays
+      const interval = this.state.interval
+      this.setState({isLoading: true})
+      const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${marketDays}&interval=${interval}`)
+      this.setState({ isLoading: false, chartData: data})
+    }catch (error) {
+      this.setState({ isLoading: false, hasError: true, errMess: "Could Not Load Chart Data!"})
+    }
+  }
   componentDidMount() {
     this.getCoins();
+    this.getChartData();
   }
   handleSort = (sortType) => {
     const newSort = Object.entries(this.state.sort)
@@ -90,16 +106,30 @@ class Coins extends React.Component {
     this.setState({ sort: newSort });
   };
   render() {
-    let coinList = [...this.state.coins];
+    const lineChartLabels = this.state.chartData.prices && formatChartData(this.state.chartData.prices, 0);
+    const lineChartData = this.state.chartData.prices && formatChartData(this.state.chartData.prices, 1);
+    const barChartLabels = this.state.chartData.total_volumes && formatChartData(this.state.chartData.total_volumes, 0);
+    const barChartData = this.state.chartData.total_volumes && formatChartData(this.state.chartData.total_volumes, 1);
+    let coinList = [...this.state.coins]
     const {name, current_price, price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency,
-    price_change_percentage_7d_in_currency} = this.state.sort;
-    coinList = coinList.sort(Sort(name, "name"));
-    coinList = coinList.sort(Sort(current_price, "current_price"));
-    coinList = coinList.sort(Sort(price_change_percentage_1h_in_currency, "price_change_percentage_1h_in_currency"));
-    coinList = coinList.sort(Sort(price_change_percentage_24h_in_currency, "price_change_percentage_24h_in_currency"));
-    coinList = coinList.sort(Sort(price_change_percentage_7d_in_currency, "price_change_percentage_7d_in_currency"));
+    price_change_percentage_7d_in_currency} = this.state.sort
+    coinList = coinList.sort(sort(name, "name"))
+    coinList = coinList.sort(sort(current_price, "current_price"))
+    coinList = coinList.sort(sort(price_change_percentage_1h_in_currency, "price_change_percentage_1h_in_currency"))
+    coinList = coinList.sort(sort(price_change_percentage_24h_in_currency, "price_change_percentage_24h_in_currency"));
+    coinList = coinList.sort(sort(price_change_percentage_7d_in_currency, "price_change_percentage_7d_in_currency"))
     return (
       <>
+        <ChartParent>
+          <LineChartContainer>
+            <TextContainer><SubText>Price</SubText><PriceText>{lineChartData && "$" + (lineChartData[lineChartData.length - 1] / 1e3).toFixed(2) + "K"}</PriceText><SubText>{getTodaysDate()}</SubText></TextContainer>
+            <LineChart data={lineChartData} labels={lineChartLabels} />
+          </LineChartContainer>
+          <BarChartContainer>
+            <TextContainer><SubText>Price</SubText><PriceText>{barChartData && "$" + (barChartData[barChartData.length - 1] / 1e9).toFixed(2) + "B"}</PriceText><SubText>{getTodaysDate()}</SubText></TextContainer>
+            <BarChart  data={barChartData} labels={barChartLabels} />
+          </BarChartContainer>
+        </ChartParent>
         <TableContainer>
           <InfiniteScroll
             dataLength={coinList.length}

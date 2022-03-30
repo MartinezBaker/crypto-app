@@ -25,10 +25,10 @@ export function setCaretIcon(x){
 }
 
 export function setSortIcon(x) {
-  if(x === true || x === null) {
+  if(x === false || x === null) {
     return <FontAwesomeIcon icon={faSortAmountDesc} />;
   }
-  if(x === false){
+  if(x === true){
     return <FontAwesomeIcon icon={faSortAmountAsc} />;
   }
 

@@ -1,5 +1,6 @@
 import React from 'react';
-import { TableCharts, ProgressBar } from "components";
+import {  ProgressBar } from "components";
+import { TableCharts } from 'components/Charts/index';
 import { formatTimePercent, formatNum, formatCoinName, formatPrice } from 'utils/utils';
 import { setCaretIcon } from 'utils/FontAwesomeutil'
 import { CoinImage, PercentColor, DataRow, TableCell, ProgressParent } from './styles';
@@ -23,7 +24,6 @@ const CoinInstance = (props) => (
     <PercentColor data={props.twentyFourHour}>
       {props.twentyFourHour && (
         setCaretIcon(props.twentyFourHour)
-        
       )}{" "}
       {formatTimePercent(props.twentyFourHour)}
     </PercentColor>
