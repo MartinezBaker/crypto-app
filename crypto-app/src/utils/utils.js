@@ -69,3 +69,20 @@ export const formatChartData = (arr, index) => {
 export const getTodaysDate = () => {
   return new Date().toString().split(" ").splice(1, 3).join(" ");
 }
+
+export const adjustBarThickness = (days) => {
+  if(days === 1) {
+    return 220;
+  }else if(days === 7) {
+    return 50;
+  }else if(days === 30) {
+    return 10;
+  }else if(days === 90) {
+    return 4;
+  }else if(days === 180) {
+    return 1;
+  }else {
+    return .5
+  }
+}
+

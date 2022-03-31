@@ -1,48 +1,66 @@
 import styled from "styled-components";
 
+export const ParnetDiv = styled.div`
+  width: 100%
+`
+
 export const ChartParent = styled.div`
-  display: flex
+  display: flex;
+  width: 100%;
 `
 export const LineChartContainer = styled.div`
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
-  width: 445px;
   margin: 80px 15px 0px 60px;
   position: relative;
-  
+  background-color: white;
+  width: 41%;
 `;
 
 export const BarChartContainer = styled.div`
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
-  width: 445px;
-  margin: 80px 60px 0px 15px;
+  margin: 80px 60px 0px 14px;
   position: relative;
+  background-color: white;
+  width: 41%;
 `;
 
 export const TextContainer = styled.div`
   position: absolute;
   left: 16px;
+  
 `;
 
 export const SubText = styled.div`
-  font-weight: bold;
-  font-size: 18.72px;
+ font-size: 18.72px;
 `;
 
 export const PriceText = styled.div`
-  font-weight: bold;
-  font-size: 24px;
-
+  font-size: 27px;
 `
+
+export const MarketDaysParent = styled.div`
+  background: rgb(255, 255, 255);
+  border-radius: 20px;
+  padding-block: 15px;
+  padding-inline: 6px;
+  margin-top: 25px;
+  margin-inline: auto;
+  width: 500px;
+  display: flex;
+  justify-content: space-around;
+`;
 
 export const TableContainer = styled.div`
   margin: 30px 60px 30px 60px;
-  border: 1px solid black;
+  border: 1px solid white;
   border-radius: 25px;
   padding: 10px;
+  background-color: white;
+  
 `
 
 export const TableHeader = styled.th`
@@ -59,8 +77,7 @@ export const Table = styled.table`
   border-bottom: 1px solid black;
   border-left: none;
   padding: 15px 0px 15px 8px;
-  font-size: 12px;
-  font-weight: bold;
+  font-size: 11px;
 `;
 
 export const TableRow = styled.tr`
