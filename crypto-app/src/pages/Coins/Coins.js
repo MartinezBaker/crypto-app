@@ -111,19 +111,21 @@ class Coins extends React.Component {
     this.setState({ sort: newSort });
   };
   handleClick = (name) => {
-    if(name === "1d") {
-      return this.setState({ marketDays: 1})
-    }else if(name === "1w") {
-      return this.setState({marketDays: 7})
-    }else if(name === "1m") {
-      return this.setState({marketDays: 30})
-    }else if(name === "3m") {
-      return this.setState({marketDays: 90})
-    }else if(name === "6m") {
-      return this.setState({marketDays: 180})
-    }else{
-      this.setState({marketDays: 365})
+    const marketDaysObj = {
+      "1d": 1,
+      "1w": 7,
+      "1m": 30,
+      "3m": 90,
+      "6m": 180,
+      "1y": 365
     }
+    Object.entries(marketDaysObj).map((entry) => {
+      const [key, value] = entry
+      if(key === name){
+        return this.setState({marketDays: value})
+      }
+    })
+    
   }
   render() {
     const {marketDays} = this.state
@@ -173,12 +175,12 @@ class Coins extends React.Component {
             </BarChartContainer>
           </ChartParent>
           <MarketDaysParent>
-            <Button name="1d" handleClick={this.handleClick} isActive={marketDays === 1 ? true : false} />
-            <Button name="1w" handleClick={this.handleClick} isActive={marketDays === 7 ? true : false} />
-            <Button name="1m" handleClick={this.handleClick} isActive={marketDays === 30 ? true : false} />
-            <Button name="3m" handleClick={this.handleClick} isActive={marketDays === 90 ? true : false} />
-            <Button name="6m" handleClick={this.handleClick} isActive={marketDays === 180 ? true : false} />
-            <Button name="1y" handleClick={this.handleClick} isActive={marketDays === 365 ? true : false} />
+            <Button name="1d" handleClick={this.handleClick} isActive={marketDays === 1} />
+            <Button name="1w" handleClick={this.handleClick} isActive={marketDays === 7} />
+            <Button name="1m" handleClick={this.handleClick} isActive={marketDays === 30} />
+            <Button name="3m" handleClick={this.handleClick} isActive={marketDays === 90} />
+            <Button name="6m" handleClick={this.handleClick} isActive={marketDays === 180} />
+            <Button name="1y" handleClick={this.handleClick} isActive={marketDays === 365} />
           </MarketDaysParent>
           <TableContainer>
             <InfiniteScroll

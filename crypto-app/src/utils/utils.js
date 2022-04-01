@@ -71,18 +71,19 @@ export const getTodaysDate = () => {
 }
 
 export const adjustBarThickness = (days) => {
-  if(days === 1) {
-    return 220;
-  }else if(days === 7) {
-    return 50;
-  }else if(days === 30) {
-    return 10;
-  }else if(days === 90) {
-    return 4;
-  }else if(days === 180) {
-    return 1;
-  }else {
-    return .5
+  const daysObj = {
+    1: 220,
+    7: 50,
+    30: 10,
+    90: 4,
+    180: 1,
+    365: 0.5
   }
+  Object.entries(daysObj).map((entry) => {
+    const[key, value] = entry
+    if(key === days) {
+      return value
+    }
+  })
 }
 
