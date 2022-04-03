@@ -3,7 +3,8 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
 import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sort, getTodaysDate, formatChartData } from 'utils/utils'
+import { sort, getTodaysDate, formatChartData } from 'utils/functionUtils'
+import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
 import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParnetDiv, MarketDaysParent } from './styles';
 
@@ -14,7 +15,7 @@ class Coins extends React.Component {
     isLoading: false,
     hasMore: true,
     hasError: false,
-    errMess: "",
+    errMessage: "",
     chartData: {},
     currency: "usd",
     marketDays: 30,
@@ -43,7 +44,7 @@ class Coins extends React.Component {
       this.setState({
         isLoading: false,
         hasError: true,
-        errMess: "There was a problem getting coin list!",
+        errMessage: "There was a problem getting coin list!",
       });
     }
   };
@@ -68,20 +69,21 @@ class Coins extends React.Component {
     } catch (error) {
       this.setState({
         isLoading: false,
-        errMess: "Could not load more coins!",
+        hasError: true,
+        errMessage: "Could not load more coins!",
       });
     }
   };
   getChartData = async () => {
-    try{
+    try {
       const currency = this.state.currency
       const marketDays =  this.state.marketDays
       const interval = this.state.interval
       this.setState({isLoading: true})
       const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${marketDays}&interval=${interval}`)
       this.setState({ isLoading: false, chartData: data})
-    }catch (error) {
-      this.setState({ isLoading: false, hasError: true, errMess: "Could Not Load Chart Data!"})
+    } catch (error) {
+      this.setState({ isLoading: false, hasError: true, errMessage: "Could Not Load Chart Data!"})
     }
   }
   componentDidMount() {
@@ -123,9 +125,11 @@ class Coins extends React.Component {
       const [key, value] = entry
       if(key === name){
         return this.setState({marketDays: value})
+      }else {
+        return null
       }
+      
     })
-    
   }
   render() {
     const {marketDays} = this.state
@@ -146,41 +150,66 @@ class Coins extends React.Component {
         <ParnetDiv>
           <ChartParent>
             <LineChartContainer>
-              {this.state.isLoading ? <div></div> : <TextContainer>
-                <SubText>Price</SubText>
-                <PriceText>
-                  {lineChartData &&
-                    "$" +
-                      (lineChartData[lineChartData.length - 1] / 1e3).toFixed(
-                        2
-                      ) +
-                      "K"}
-                </PriceText>
-                <SubText>{getTodaysDate()}</SubText>
-              </TextContainer>}
-              {this.state.isLoading ? <h2>Loading...</h2> : <LineChart data={lineChartData} labels={lineChartLabels} />}
+              {this.state.isLoading || this.state.hasError ? (
+                <div></div>
+              ) : (
+                <TextContainer>
+                  <SubText>Price</SubText>
+                  <PriceText>
+                    {lineChartData &&
+                      "$" +
+                        (lineChartData[lineChartData.length - 1] / 1e3).toFixed(
+                          2
+                        ) +
+                        "K"}
+                  </PriceText>
+                  <SubText>{getTodaysDate()}</SubText>
+                </TextContainer>
+              )}
+              <LineChart
+                data={lineChartData}
+                labels={lineChartLabels}
+                errMessage={this.state.errMessage}
+                isLoading={this.state.isLoading}
+                hasError={this.state.hasError}
+              />
             </LineChartContainer>
             <BarChartContainer>
-              {this.state.isLoading ? <div></div> : <TextContainer>
-                <SubText>Volume 24h</SubText>
-                <PriceText>
-                  {barChartData &&
-                    "$" +
-                      (barChartData[barChartData.length - 1] / 1e9).toFixed(2) +
-                      "B"}
-                </PriceText>
-                <SubText>{getTodaysDate()}</SubText>
-              </TextContainer>}
-              {this.state.isLoading ? <h2>Loading...</h2> : <BarChart days={this.state.marketDays} data={barChartData} labels={barChartLabels} />}
+              {this.state.isLoading || this.state.hasError ? (
+                <div></div>
+              ) : (
+                <TextContainer>
+                  <SubText>Volume 24h</SubText>
+                  <PriceText>
+                    {barChartData &&
+                      "$" +
+                        (barChartData[barChartData.length - 1] / 1e9).toFixed(
+                          2
+                        ) +
+                        "B"}
+                  </PriceText>
+                  <SubText>{getTodaysDate()}</SubText>
+                </TextContainer>
+              )}
+              <BarChart
+                days={this.state.marketDays}
+                data={barChartData}
+                labels={barChartLabels}
+                errMessage={this.state.errMessage}
+                isLoading={this.state.isLoading}
+                hasError={this.state.hasError}
+              />
             </BarChartContainer>
           </ChartParent>
           <MarketDaysParent>
-            <Button name="1d" handleClick={this.handleClick} isActive={marketDays === 1} />
-            <Button name="1w" handleClick={this.handleClick} isActive={marketDays === 7} />
-            <Button name="1m" handleClick={this.handleClick} isActive={marketDays === 30} />
-            <Button name="3m" handleClick={this.handleClick} isActive={marketDays === 90} />
-            <Button name="6m" handleClick={this.handleClick} isActive={marketDays === 180} />
-            <Button name="1y" handleClick={this.handleClick} isActive={marketDays === 365} />
+            {marketDaysArr.map((days) => (
+              <Button
+                key={days.name}
+                name={days.name}
+                active={marketDays === days.numDays}
+                handleClick={this.handleClick}
+              />
+            ))}
           </MarketDaysParent>
           <TableContainer>
             <InfiniteScroll
@@ -189,7 +218,7 @@ class Coins extends React.Component {
               hasMore={this.state.hasMore}
               loader={
                 (this.state.isLoading && <h4>Loading...</h4>) || (
-                  <h4>{this.state.errMess}</h4>
+                  <h4>{this.state.errMessage}</h4>
                 )
               }
             >
@@ -281,7 +310,7 @@ class Coins extends React.Component {
                         sparkLine={coin.sparkline_in_7d}
                       />
                     ))) ||
-                    this.props.errMess}
+                    this.props.errMessage}
                 </tbody>
               </Table>
             </InfiniteScroll>

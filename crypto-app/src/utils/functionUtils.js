@@ -83,6 +83,8 @@ export const adjustBarThickness = (days) => {
     const[key, value] = entry
     if(key === days) {
       return value
+    }else {
+      return null
     }
   })
 }
