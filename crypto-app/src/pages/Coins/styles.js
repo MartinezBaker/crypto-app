@@ -3,6 +3,15 @@ import styled from "styled-components";
 export const ParnetDiv = styled.div`
   width: 100%
 `
+export const TitleParent = styled.div`
+  width: 100%
+`;
+
+export const TitleChild = styled.div`
+  margin: 80px 15px 0px 60px;
+  font-size: 23px;
+  
+`;
 
 export const ChartParent = styled.div`
   display: flex;
@@ -12,7 +21,7 @@ export const LineChartContainer = styled.div`
   border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
-  margin: 80px 15px 0px 60px;
+  margin: 15px 15px 0px 60px;
   position: relative;
   background-color: white;
   width: 41%;
@@ -22,7 +31,7 @@ export const BarChartContainer = styled.div`
   border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
-  margin: 80px 60px 0px 14px;
+  margin: 15px 60px 0px 14px;
   position: relative;
   background-color: white;
   width: 41%;
@@ -62,6 +71,19 @@ export const TableContainer = styled.div`
   background-color: white;
   
 `
+export const TableTitleContainer = styled.div`
+  margin-top: 10px;
+`
+
+export const TableTitle1 = styled.span`
+  font-size: 29px;
+  font-weight: bold;
+`;
+
+export const TableTitle2 = styled.span`
+ font-size: 15px;
+ margin-left: 10px;
+`;
 
 export const TableHeader = styled.th`
   text-align: start;

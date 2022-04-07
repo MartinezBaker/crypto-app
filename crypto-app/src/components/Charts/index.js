@@ -78,9 +78,9 @@ export const TableCharts = (props) => {
   );
 }
 
-export const LineChart = ({ labels, data, isLoading, errMessage, hasError }) => {
+export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceTimeArry}) => {
   if(isLoading) {
-    return <h2>Loading...</h2>
+      return <h2>Loading...</h2>
   }else if(hasError) {
     return <h2>{errMessage}</h2>
   } else{
@@ -98,6 +98,9 @@ export const LineChart = ({ labels, data, isLoading, errMessage, hasError }) => 
                 spanGaps: true,
                 maintainAspectRatio: false,
                 responsive: true,
+                pointHoverBackgroundColor: "limegreen",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "limegreen",
               },
             ],
           }}
@@ -110,6 +113,30 @@ export const LineChart = ({ labels, data, isLoading, errMessage, hasError }) => 
             plugins: {
               legend: {
                 display: false,
+              },
+              tooltip: {
+                intersect: true,
+                enabled: true,
+                mode: "nearest",
+                displayColors: false,
+                callbacks: {
+                  title: (context) => {
+                    const raw = context[0].raw;
+                    const filteredItem = priceTimeArry
+                      .filter((element) => element[1] === raw)
+                      .map((element) => {
+                        const date = new Date(element[0]);
+                        return `${
+                          date.getMonth() + 1
+                        }-${date.getDate()}-${date.getFullYear()}`;
+                      });
+                     return filteredItem;
+                  },
+                  label: (context) => {
+                    const value = context.raw.toFixed(2)
+                    return `Price: $${value} `
+                  }
+                },
               },
             },
             elements: {
@@ -147,12 +174,12 @@ export const LineChart = ({ labels, data, isLoading, errMessage, hasError }) => 
           }}
         />
       </div>
-    )
+    );
   }
 };
 
-export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError }) => {
-   if(isLoading) {
+export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, volTimeArry }) => {
+  if(isLoading) {
     return <h2>Loading...</h2>
   }else if(hasError) {
     return <h2>{errMessage}</h2>
@@ -182,6 +209,28 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError }
               legend: {
                 display: false,
               },
+              tooltip: {
+                intersect: true,
+                enabled: true,
+                mode: "nearest",
+                displayColors: false,
+                callbacks: {
+                  title: (context) => {
+                    const raw = context[0].raw;
+                    const filteredItem = volTimeArry
+                      .filter((element) => element[1] === raw)
+                      .map((element) => {
+                        const date = new Date(element[0]);
+                        return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+                      });
+                    return filteredItem;
+                  },
+                  label: (context) => {
+                    const value = context.raw.toFixed(2)
+                    return `Price: $${value} `
+                  }
+                }
+              }
             },
             elements: {
               bar: {

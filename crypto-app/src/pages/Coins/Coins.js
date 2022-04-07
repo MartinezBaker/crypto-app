@@ -1,12 +1,14 @@
 import React from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sort, getTodaysDate, formatChartData } from 'utils/functionUtils'
+import { sort, getTodaysDate, formatChartData, formatToolTipDate } from 'utils/functionUtils'
 import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
-import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParnetDiv, MarketDaysParent } from './styles';
+import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParnetDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2 } from './styles';
 
 class Coins extends React.Component {
   state = {
@@ -18,8 +20,9 @@ class Coins extends React.Component {
     errMessage: "",
     chartData: {},
     currency: "usd",
-    marketDays: 30,
+    marketDays: 29,
     interval: "daily",
+    sortBy: "BY MARKET CAP",
     sort: {
       name: null,
       current_price: null,
@@ -95,6 +98,14 @@ class Coins extends React.Component {
        this.getChartData()
     }
   }
+  handleTopSortClick = () => {
+    const {sortBy} = this.state
+    if(sortBy === "BY MARKET CAP") {
+      this.setState({sortBy: "BY VOLUME" })
+    }else {
+      this.setState({ sortBy: "BY MARKET CAP" });
+    }
+  }
   handleSort = (sortType) => {
     const newSort = Object.entries(this.state.sort)
       .map((entry) => {
@@ -115,11 +126,11 @@ class Coins extends React.Component {
   handleClick = (name) => {
     const marketDaysObj = {
       "1d": 1,
-      "1w": 7,
-      "1m": 30,
-      "3m": 90,
-      "6m": 180,
-      "1y": 365
+      "1w": 6,
+      "1m": 29,
+      "3m": 89,
+      "6m": 179,
+      "1y": 364
     }
     Object.entries(marketDaysObj).map((entry) => {
       const [key, value] = entry
@@ -132,12 +143,18 @@ class Coins extends React.Component {
     })
   }
   render() {
-    const {marketDays} = this.state
-    const lineChartLabels = this.state.chartData.prices && formatChartData(this.state.chartData.prices, 0);
-    const lineChartData = this.state.chartData.prices && formatChartData(this.state.chartData.prices, 1);
-    const barChartLabels = this.state.chartData.total_volumes && formatChartData(this.state.chartData.total_volumes, 0);
-    const barChartData = this.state.chartData.total_volumes && formatChartData(this.state.chartData.total_volumes, 1);
+    const {marketDays, chartData, sortBy} = this.state
+    const lineChartLabels = chartData.prices && formatChartData(chartData.prices, 0);
+    const lineChartData = chartData.prices && formatChartData(chartData.prices, 1);
+    const barChartLabels = chartData.total_volumes && formatChartData(chartData.total_volumes, 0);
+    const barChartData = chartData.total_volumes && formatChartData(chartData.total_volumes, 1);
     let coinList = [...this.state.coins]
+    if(sortBy === "BY MARKET CAP") {
+       coinList = coinList.sort((a, b) => b.market_cap - a.market_cap);
+    }
+    if(sortBy === "BY VOLUME") {
+       coinList = coinList.sort((a, b) => b.total_volume - a.total_volume);
+    }
     const {name, current_price, price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency,
     price_change_percentage_7d_in_currency} = this.state.sort
     coinList = coinList.sort(sort(name, "name"))
@@ -148,6 +165,9 @@ class Coins extends React.Component {
     return (
       <>
         <ParnetDiv>
+          <TitleParent>
+            <TitleChild>Overview</TitleChild>
+          </TitleParent>
           <ChartParent>
             <LineChartContainer>
               {this.state.isLoading || this.state.hasError ? (
@@ -169,6 +189,7 @@ class Coins extends React.Component {
               <LineChart
                 data={lineChartData}
                 labels={lineChartLabels}
+                priceTimeArry={chartData.prices}
                 errMessage={this.state.errMessage}
                 isLoading={this.state.isLoading}
                 hasError={this.state.hasError}
@@ -192,9 +213,10 @@ class Coins extends React.Component {
                 </TextContainer>
               )}
               <BarChart
-                days={this.state.marketDays}
+                days={marketDays}
                 data={barChartData}
                 labels={barChartLabels}
+                volTimeArry={chartData.total_volumes}
                 errMessage={this.state.errMessage}
                 isLoading={this.state.isLoading}
                 hasError={this.state.hasError}
@@ -212,6 +234,9 @@ class Coins extends React.Component {
             ))}
           </MarketDaysParent>
           <TableContainer>
+            <TableTitleContainer>
+              <TableTitle1>TOP {this.state.coins.length}</TableTitle1><TableTitle2>{sortBy}</TableTitle2><SortButton onClick={this.handleTopSortClick}><FontAwesomeIcon icon={faCaretDown} style={{marginLeft: "5px"}} /></SortButton>
+            </TableTitleContainer>
             <InfiniteScroll
               dataLength={coinList.length}
               next={this.getMoreCoins}

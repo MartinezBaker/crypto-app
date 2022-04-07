@@ -58,12 +58,19 @@ export const formatChartData = (arr, index) => {
   if(index === 0) {
     return arr.reduce((acc, element) => ([...acc, element[0]]), []).map((time) => {
       const date = new Date(time)
-      return date.getDate()
+      return date.getDate();
     })
   }
   if(index === 1) {
     return arr.reduce((acc, element) => ([...acc, element[1]]), []);
   }
+}
+
+export const formatToolTipDate = (arr) => {
+  return arr.reduce((acc, element) => ([...acc, element[0]]), []).map((time) => {
+      const date = new Date(time)
+      return `${date.getMonth()}-${date.getDay()}-${date.getFullYear()}`
+    })
 }
 
 export const getTodaysDate = () => {
@@ -73,11 +80,11 @@ export const getTodaysDate = () => {
 export const adjustBarThickness = (days) => {
   const daysObj = {
     1: 220,
-    7: 50,
-    30: 10,
-    90: 4,
-    180: 1,
-    365: 0.5
+    6: 50,
+    29: 10,
+    89: 4,
+    179: 1,
+    364: 0.5
   }
   Object.entries(daysObj).map((entry) => {
     const[key, value] = entry
