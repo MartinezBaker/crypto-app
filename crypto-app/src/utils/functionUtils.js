@@ -69,3 +69,23 @@ export const formatChartData = (arr, index) => {
 export const getTodaysDate = () => {
   return new Date().toString().split(" ").splice(1, 3).join(" ");
 }
+
+export const adjustBarThickness = (days) => {
+  const daysObj = {
+    1: 220,
+    7: 50,
+    30: 10,
+    90: 4,
+    180: 1,
+    365: 0.5
+  }
+  Object.entries(daysObj).map((entry) => {
+    const[key, value] = entry
+    if(key === days) {
+      return value
+    }else {
+      return null
+    }
+  })
+}
+
