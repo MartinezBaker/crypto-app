@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sort, getTodaysDate, formatChartData, formatToolTipDate } from 'utils/functionUtils'
+import { sort, getTodaysDate, formatChartData, topSort } from 'utils/functionUtils'
 import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
 import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParnetDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2 } from './styles';
@@ -97,9 +97,20 @@ class Coins extends React.Component {
     if(prevState.marketDays !== this.state.marketDays){
        this.getChartData()
     }
+    
   }
   handleTopSortClick = () => {
     const {sortBy} = this.state
+    const newSort = Object.entries(this.state.sort)
+      .map((entry) => {
+        const [key] = entry;
+        return {
+            [key]: null,
+          };
+        }
+      )
+      .reduce((acc, element) => ({ ...acc, ...element }), {});
+    this.setState({ sort: newSort });
     if(sortBy === "BY MARKET CAP") {
       this.setState({sortBy: "BY VOLUME" })
     }else {
@@ -107,6 +118,7 @@ class Coins extends React.Component {
     }
   }
   handleSort = (sortType) => {
+    this.setState({sortBy: "BY MARKET CAP"})
     const newSort = Object.entries(this.state.sort)
       .map((entry) => {
         const [key, value] = entry;
@@ -149,12 +161,8 @@ class Coins extends React.Component {
     const barChartLabels = chartData.total_volumes && formatChartData(chartData.total_volumes, 0);
     const barChartData = chartData.total_volumes && formatChartData(chartData.total_volumes, 1);
     let coinList = [...this.state.coins]
-    if(sortBy === "BY MARKET CAP") {
-       coinList = coinList.sort((a, b) => b.market_cap - a.market_cap);
-    }
-    if(sortBy === "BY VOLUME") {
-       coinList = coinList.sort((a, b) => b.total_volume - a.total_volume);
-    }
+    coinList = coinList.sort(topSort(sortBy, "BY MARKET CAP", "market_cap"))
+    coinList = coinList.sort(topSort(sortBy, "BY VOLUME", "total_volume"))
     const {name, current_price, price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency,
     price_change_percentage_7d_in_currency} = this.state.sort
     coinList = coinList.sort(sort(name, "name"))

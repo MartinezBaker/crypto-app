@@ -66,13 +66,6 @@ export const formatChartData = (arr, index) => {
   }
 }
 
-export const formatToolTipDate = (arr) => {
-  return arr.reduce((acc, element) => ([...acc, element[0]]), []).map((time) => {
-      const date = new Date(time)
-      return `${date.getMonth()}-${date.getDay()}-${date.getFullYear()}`
-    })
-}
-
 export const getTodaysDate = () => {
   return new Date().toString().split(" ").splice(1, 3).join(" ");
 }
@@ -95,4 +88,12 @@ export const adjustBarThickness = (days) => {
     }
   })
 }
+
+export const topSort = (sortBy, sortValue, sortItem) => {
+  return (a, b) => {
+    if (sortBy === sortValue) {
+     return b[sortItem] - a[sortItem];
+    }
+  };
+};
 
