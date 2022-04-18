@@ -8,6 +8,16 @@ export const formatTimePercent = (t) => {
   }
 };
 
+export const formatPercent = (t) => {
+  if (!t) {
+    return "-";
+  } else if (t.includes("-")) {
+    return t.slice(1, 6) + "%";
+  } else {
+    return t.slice(0, 8) + "%";
+  }
+};
+
 export const formatNum = (n) => {
   if (n < 1e3) return n;
   if (n === null) return <span>&infin;</span>;
@@ -97,3 +107,7 @@ export const topSort = (sortBy, sortValue, sortItem) => {
   };
 };
 
+export const formatDate = (unix) => {
+  const date = new Date(unix);
+  return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+}

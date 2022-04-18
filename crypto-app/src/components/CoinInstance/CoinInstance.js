@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import {  ProgressBar } from "components";
 import { TableCharts } from 'components/Charts/index';
 import { formatTimePercent, formatNum, formatCoinName, formatPrice } from 'utils/functionUtils';
@@ -9,8 +10,8 @@ const CoinInstance = (props) => (
   <DataRow>
     <TableCell>
       <CoinImage src={props.image} alt="Coin" />{" "}
-      {formatCoinName(props.name)} (
-      {props.symbol})
+      <Link to={`/coins/${props.id}`}>{formatCoinName(props.name)} (
+      {props.symbol})</Link>
     </TableCell>
     <TableCell>
       ${formatPrice(props.price)}
@@ -52,7 +53,7 @@ const CoinInstance = (props) => (
           )}
         </div>
       </ProgressParent>
-      <ProgressBar progress={props.totalVolPercentage} />
+      <ProgressBar progress={props.totalVolPercentage} width={"120px"} />
     </TableCell>
     <TableCell>
       <ProgressParent>
@@ -73,7 +74,7 @@ const CoinInstance = (props) => (
           )}
         </div>
       </ProgressParent>
-      <ProgressBar progress={props.circulatingSupplyPercentage} />
+      <ProgressBar progress={props.circulatingSupplyPercentage} width={"120px"}/>
     </TableCell>
     <TableCell>
       <TableCharts

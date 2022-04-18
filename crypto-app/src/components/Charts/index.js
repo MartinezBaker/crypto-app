@@ -11,7 +11,7 @@ export const TableCharts = (props) => {
       <Line
         datasetIdKey="id"
         data={{
-          labels: labelAlgo(sparkLabelsArr, 168), 
+          labels: labelAlgo(sparkLabelsArr, 168),
           datasets: [
             {
               fill: false,
@@ -19,15 +19,15 @@ export const TableCharts = (props) => {
               data: props.chartData,
               spanGaps: true,
               maintainAspectRatio: false,
-              responsive: true
+              responsive: true,
             },
           ],
         }}
         options={{
-          layout:{
-            padding:{
-              top: 5
-            }
+          layout: {
+            padding: {
+              top: 5,
+            },
           },
           title: {
             display: false,
@@ -37,15 +37,18 @@ export const TableCharts = (props) => {
               display: false,
             },
             tooltip: {
-              enabled: false
+              enabled: false,
             },
             hover: {
-              enabled: false
-            }
+              enabled: false,
+            },
           },
           elements: {
             line: {
-              borderColor: props.sevenDay && props.sevenDay.charAt(0) === "-" ? "red" : "limegreen" ,
+              borderColor:
+                props.sevenDay && props.sevenDay.charAt(0) === "-"
+                  ? "red"
+                  : "rgb(0, 252, 42)",
               tension: 0.4,
             },
             point: {
@@ -98,9 +101,9 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
                 spanGaps: true,
                 maintainAspectRatio: false,
                 responsive: true,
-                pointHoverBackgroundColor: "limegreen",
+                pointHoverBackgroundColor: "rgb(0, 252, 42)",
                 hoverBorderWidth: 3,
-                hoverBorderColor: "limegreen",
+                hoverBorderColor: "rgb(0, 252, 42)",
               },
             ],
           }}
@@ -130,18 +133,18 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
                           date.getMonth() + 1
                         }-${date.getDate()}-${date.getFullYear()}`;
                       });
-                     return filteredItem;
+                    return filteredItem;
                   },
                   label: (context) => {
-                    const value = context.raw.toFixed(2)
-                    return `Price: $${value} `
-                  }
+                    const value = context.raw.toFixed(2);
+                    return `Price: $${value} `;
+                  },
                 },
               },
             },
             elements: {
               line: {
-                borderColor: "limegreen",
+                borderColor: "rgb(0, 252, 42)",
                 tension: 0.4,
               },
               point: {
@@ -221,16 +224,18 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, 
                       .filter((element) => element[1] === raw)
                       .map((element) => {
                         const date = new Date(element[0]);
-                        return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+                        return `${
+                          date.getMonth() + 1
+                        }-${date.getDate()}-${date.getFullYear()}`;
                       });
                     return filteredItem;
                   },
                   label: (context) => {
-                    const value = context.raw.toFixed(2)
-                    return `Price: $${value} `
-                  }
-                }
-              }
+                    const value = context.raw.toFixed(2);
+                    return `Price: $${value} `;
+                  },
+                },
+              },
             },
             elements: {
               bar: {

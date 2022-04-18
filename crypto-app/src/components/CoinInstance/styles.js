@@ -24,10 +24,9 @@ export const PercentColor = styled.td`
       return "red";
     }
     if (data && !data.includes("-")) {
-      return "limegreen";
+      return "rgb(0, 252, 42)";
     }
   }};
-  padding: 28px 0px 28px 8px;
 `;
 
 export const TableCell = styled.td`

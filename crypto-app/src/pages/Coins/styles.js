@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
-export const ParnetDiv = styled.div`
-  width: 100%
-`
+export const ParentDiv = styled.div`
+  padding: 0px 50px 0px 50px;
+`;
 export const TitleParent = styled.div`
   width: 100%
 `;
 
 export const TitleChild = styled.div`
-  margin: 80px 15px 0px 60px;
+  margin: 80px 0px 0px 0px;
   font-size: 23px;
   
 `;
@@ -16,25 +16,26 @@ export const TitleChild = styled.div`
 export const ChartParent = styled.div`
   display: flex;
   width: 100%;
+  justify-content: space-between
 `
 export const LineChartContainer = styled.div`
   border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
-  margin: 15px 15px 0px 60px;
+  
   position: relative;
   background-color: white;
-  width: 41%;
+  width: 43%;
 `;
 
 export const BarChartContainer = styled.div`
   border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
-  margin: 15px 60px 0px 14px;
+  
   position: relative;
   background-color: white;
-  width: 41%;
+  width: 43%;
 `;
 
 export const TextContainer = styled.div`
@@ -63,8 +64,12 @@ export const MarketDaysParent = styled.div`
   justify-content: space-around;
 `;
 
+export const TableParent = styled.div`
+  width: 100%
+`
+
 export const TableContainer = styled.div`
-  margin: 30px 60px 30px 60px;
+  margin: 30px 0px 30px 0px;
   border: 1px solid white;
   border-radius: 25px;
   padding: 10px;

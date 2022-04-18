@@ -32,3 +32,13 @@ export const marketDaysArr = [
 ];
 
 export let sparkLabelsArr = Array(23).fill(null).map((_, i) => i)
+
+export let dataInfoArry = [] 
+
+export const createDataInfoArry = (name, price, percent, date) => {
+  const infoObj = {name: name, price: price, percent:percent, date:date}
+  if(dataInfoArry.length < 2) {
+    return dataInfoArry = [...dataInfoArry, infoObj];
+  }
+  return
+}

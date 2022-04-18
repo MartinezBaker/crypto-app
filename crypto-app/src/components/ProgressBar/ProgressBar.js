@@ -1,7 +1,7 @@
 import { Progress } from './styles'
 
-const ProgressBar = (props) => {
-  return <Progress value={props.progress} max="100" />;
+const ProgressBar = ({progress, width}) => {
+  return <Progress value={progress} max="100" width={width}/>;
 };
 
 export default ProgressBar;

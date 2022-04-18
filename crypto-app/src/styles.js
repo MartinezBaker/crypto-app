@@ -6,4 +6,5 @@ export const AppBody = styled.div`
   background-color: rgb(247, 247, 247);
   margin: auto;
   max-width: 1200px;
+  
 `;
