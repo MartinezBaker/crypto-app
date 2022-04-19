@@ -32,41 +32,42 @@ class CoinPage extends React.Component{
   }
   render(){
     const { coinInfo } = this.state
-    const description = Object.values(coinInfo)[10] && Object.values(Object.values(coinInfo)[10])
-    const thumbNail = Object.values(coinInfo)[12] && Object.values(Object.values(coinInfo)[12])[1]
-    const name = Object.values(coinInfo)[2];
-    const symbol = Object.values(coinInfo)[1] && Object.values(coinInfo)[1].toUpperCase();
-    const site = Object.values(coinInfo)[11] && Object.values(Object.values(coinInfo)[11])[0][0].slice(7).replaceAll("/","");
-    const marketData = Object.entries(coinInfo) && Object.entries(coinInfo).filter((element) => element.at(0) === "market_data")[0]
-    const twentyFourHourPercent = marketData && Object.values(marketData[1])[29].usd.toString()
-    const currPrice = marketData && Object.values(marketData[1])[0].usd
-    marketData && (createDataInfoArry(
-      "ATH",
-      marketData[1].ath.usd,
-      marketData[1].ath_change_percentage.usd,
-      marketData[1].ath_date.usd
-    ))
-    marketData && (createDataInfoArry(
-      "ATL",
-      marketData[1].atl.usd,
-      marketData[1].atl_change_percentage.usd,
-      marketData[1].atl_date.usd
-    )); 
-    const marketCap = marketData && Object.values(marketData[1])[11].usd;
-    const fullyDilutedValuation = marketData && Object.values(marketData[1])[13].usd; 
-    const volTwentyFourHours = marketData && Object.values(marketData[1])[14].usd;
+    const description = coinInfo.description && coinInfo.description.en
+    const thumbNail = coinInfo.image && coinInfo.image.small
+    const name = coinInfo.name
+    const symbol = coinInfo.symbol && coinInfo.symbol.toUpperCase()
+    const site = coinInfo.links && coinInfo.links.homepage[0].slice(6).replaceAll("/", "");
+    const twentyFourHourPercent = coinInfo.market_data && coinInfo.market_data.price_change_percentage_24h.toString()
+    const currPrice = coinInfo.market_data && coinInfo.market_data.current_price.usd;
+    const marketCap = coinInfo.market_data && coinInfo.market_data.market_cap.usd;
+    const fullyDilutedValuation = coinInfo.market_data && coinInfo.market_data.fully_diluted_valuation.usd 
+    const volTwentyFourHours = coinInfo.market_data && coinInfo.market_data.total_volume.usd
     const volToMarketCap = volTwentyFourHours / marketCap
-    const circulatingSupply = marketData && Object.values(marketData[1])[40]
-    const maxSupply = marketData && Object.values(marketData[1])[39]
-    const exchangeRate = marketData && Object.values(marketData[1])[26].toString();
+    const circulatingSupply = coinInfo.market_data && coinInfo.market_data.circulating_supply
+    const maxSupply = coinInfo.market_data && coinInfo.market_data.max_supply;
+    const exchangeRate = coinInfo.market_data && coinInfo.market_data.market_cap_change_percentage_24h.toString();
     const totalVol = (volTwentyFourHours / currPrice).toFixed(0)
+    coinInfo.market_data &&
+      createDataInfoArry(
+        "ATH",
+        coinInfo.market_data.ath.usd,
+        coinInfo.market_data.ath_change_percentage.usd,
+        coinInfo.market_data.ath_date.usd
+      );
+    coinInfo.market_data &&
+      createDataInfoArry(
+        "ATL",
+        coinInfo.market_data.atl.usd,
+        coinInfo.market_data.atl_change_percentage.usd,
+        coinInfo.market_data.atl_date.usd
+      ); 
     return (
       <>
         <ParentDiv>
           <TitleParent>
             <TitleChild>Your Summery:</TitleChild>
           </TitleParent>
-          <SummeryParent>
+          {this.state.isLoading ? <h2>Loading...</h2> : this.state.hasError ? <h2>There Was An Error!</h2> : <SummeryParent>
             <SummeryChild>
               <CoinInfoContainer>
                 <ImgOutterContainer>
@@ -84,12 +85,7 @@ class CoinPage extends React.Component{
                       icon={faLink}
                     />
                     <WebSiteSpan>
-                      <a
-                        href={
-                          Object.values(coinInfo)[11] &&
-                          Object.values(Object.values(coinInfo)[11])[0][0]
-                        }
-                      >
+                      <a href={coinInfo.links && coinInfo.links.homepage[0]}>
                         {site}
                       </a>
                     </WebSiteSpan>
@@ -156,8 +152,7 @@ class CoinPage extends React.Component{
                   <MarketFlexDiv>
                     <BulletDiv>+</BulletDiv>
                     <MarketInfoDiv>
-                      <strong>Vol 24h:</strong> $
-                      {formatNum(volTwentyFourHours)}
+                      <strong>Vol 24h:</strong> ${formatNum(volTwentyFourHours)}
                     </MarketInfoDiv>
                   </MarketFlexDiv>
                 </MarketDataInfo>
@@ -206,7 +201,7 @@ class CoinPage extends React.Component{
                 </div>
               </MarketDataInfoContainer>
             </SummeryChild>
-          </SummeryParent>
+          </SummeryParent>}
           <TitleParent>
             <TitleChild>Description:</TitleChild>
           </TitleParent>

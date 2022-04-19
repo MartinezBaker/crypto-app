@@ -24,7 +24,7 @@ export const SummeryChild = styled.div`
   border: 1px solid white;
   border-radius: 25px;
   background: white;
-  padding: 25px 36px 18px 36px ;
+  padding: 25px 36px 15px 36px ;
   text-align: center;
   flex-grow: 1;
   flex-shrink: 1;
@@ -62,7 +62,9 @@ export const WebSiteContainer = styled.div`
   background: rgb(247, 247, 247);
   border: solid 1px rgb(247, 247, 247);
   border-radius: 10px;
-  padding: 5px 40px 5px 40px
+  padding: 4px 20px 4px 20px;
+  width: 180px;
+  
 `;
 
 export const WebSiteSpan = styled.span`
@@ -120,7 +122,7 @@ export const MarketDataInfoContainer = styled.div`
 `;
 
 export const MarketDataInfo = styled.div`
-  margin-bottom: 3px;
+  margin-bottom: 5px;
 `;
 
 export const MarketFlexDiv = styled.div`
@@ -134,6 +136,7 @@ export const BulletDiv = styled.div`
   border-radius: 5px;
   padding: 0px 5px 0px 5px;
   margin-right: 5px;
+  max-height: 18px;
 
 `;
 
