@@ -65,14 +65,10 @@ export const WebSiteContainer = styled.div`
   padding: 4px 20px 4px 20px;
   width: 180px;
   
-`;
+`
 
 export const WebSiteSpan = styled.span`
   margin-left: 6px;
-`
-
-export const PriceInfoContainer = styled.div`
- 
 `
 
 export const PriceParent = styled.div`
@@ -142,6 +138,10 @@ export const BulletDiv = styled.div`
 
 export const MarketInfoDiv = styled.div`
   margin-right: 4px;
+`
+
+export const Spacer = styled.div`
+  height: 18px;
 `
 
 export const DescriptionParent = styled.div`

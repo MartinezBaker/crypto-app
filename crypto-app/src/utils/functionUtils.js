@@ -111,3 +111,13 @@ export const formatDate = (unix) => {
   const date = new Date(unix);
   return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
 }
+
+export const titleCallBack = (raw, arry) => {
+  const filteredItem = arry
+    .filter((element) => element[1] === raw)
+    .map((element) => {
+      const date = new Date(element[0]);
+      return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+    });
+  return filteredItem;
+}

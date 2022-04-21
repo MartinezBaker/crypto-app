@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import {  ProgressBar } from "components";
 import { TableCharts } from 'components/Charts/index';
-import { formatTimePercent, formatNum, formatCoinName, formatPrice } from 'utils/functionUtils';
+import { formatTimePercent, formatNum, formatCoinName, formatPrice } from 'utils/functionutils';
 import { setCaretIcon } from 'utils/FontAwesomeutil'
 import { CoinImage, PercentColor, DataRow, TableCell, ProgressParent } from './styles';
 
