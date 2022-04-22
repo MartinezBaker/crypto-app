@@ -1,7 +1,7 @@
 import React from 'react'
 import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
-import { labelAlgo, adjustBarThickness, titleCallBack } from "utils/functionutils";
+import { labelAlgo, adjustBarThickness, titleCallBack, twentyFourHourFilter } from "utils/functionutils";
 import { sparkLabelsArr  } from 'utils/arrayutils';
 import { ChartTable } from './styles'
 
@@ -11,12 +11,12 @@ export const TableCharts = (props) => {
       <Line
         datasetIdKey="id"
         data={{
-          labels: labelAlgo(sparkLabelsArr, 168),
+          labels: sparkLabelsArr,
           datasets: [
             {
               fill: false,
               borderWidth: 3.0,
-              data: props.chartData,
+              data: twentyFourHourFilter(props.chartData),
               spanGaps: true,
               maintainAspectRatio: false,
               responsive: true,
@@ -24,12 +24,7 @@ export const TableCharts = (props) => {
           ],
         }}
         options={{
-          layout: {
-            padding: {
-              top: 5,
-            },
-          },
-          title: {
+         title: {
             display: false,
           },
           plugins: {
@@ -125,7 +120,7 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
                 callbacks: {
                   title: (context) => {
                     const raw = context[0].raw;
-                    titleCallBack(raw, priceTimeArry )
+                    return titleCallBack(raw, priceTimeArry )
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);
@@ -212,7 +207,7 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, 
                 callbacks: {
                   title: (context) => {
                     const raw = context[0].raw;
-                    titleCallBack(raw, volTimeArry);
+                    return titleCallBack(raw, volTimeArry);
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);

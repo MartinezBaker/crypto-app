@@ -31,5 +31,5 @@ export const marketDaysArr = [
   },
 ];
 
-export let sparkLabelsArr = Array(23).fill(null).map((_, i) => i)
+export const sparkLabelsArr = Array(23).fill(null).map((_, i) => i)
 

@@ -1,3 +1,17 @@
+export const twentyFourHourFilter = (arry) => {
+  return arry.filter((element) => arry.indexOf(element) % 8 === 0 )
+}
+
+export const valueCheck = (amount, symbol) => {
+  if(!amount) {
+    return " -"
+  }else if(amount && symbol) {
+    return `${amount} ${symbol}`
+  }else {
+    return `$${amount}`
+  }
+}
+
 export const formatTimePercent = (t) => {
   if (!t) {
     return "-";
@@ -26,6 +40,7 @@ export const formatNum = (n) => {
   if (n >= 1e9 && n < 1e12) return (n / 1e9).toFixed(1) + "B";
   if (n >= 1e12 && n < 1e15) return (n / 1e12).toFixed(1) + "T";
   if (n >= 1e15) return (n / 1e15).toFixed(1) + "QD";
+  if ("-") return; 
 };
 
 export function labelAlgo(arr, finalLength) {

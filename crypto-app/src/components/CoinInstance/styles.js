@@ -30,8 +30,13 @@ export const PercentColor = styled.td`
 `;
 
 export const TableCell = styled.td`
-  padding: 28px 0px 28px 8px;
+  padding: 30px 0px 30px 8px;
+  ;
 `;
+
+export const VerticalAlign = styled.div`
+  verticalAlign: middle;
+`
 
 export const ProgressParent = styled.div`
   display: flex;

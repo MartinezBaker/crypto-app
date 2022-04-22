@@ -4,7 +4,7 @@ import {  ProgressBar } from "components";
 import { TableCharts } from 'components/Charts/index';
 import { formatTimePercent, formatNum, formatCoinName, formatPrice } from 'utils/functionutils';
 import { setCaretIcon } from 'utils/FontAwesomeutil'
-import { CoinImage, PercentColor, DataRow, TableCell, ProgressParent } from './styles';
+import { CoinImage, PercentColor, DataRow, TableCell, ProgressParent, VerticalAlign } from './styles';
 
 const CoinInstance = (props) => (
   <DataRow>

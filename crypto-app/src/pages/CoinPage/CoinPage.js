@@ -6,6 +6,7 @@ import {
   formatTimePercent,
   formatNum,
   formatCoinName,
+  valueCheck
 } from "utils/functionutils";
 import { setCaretIcon } from "utils/FontAwesomeutil";
 import { ReactComponent as BlackLayerLogo } from "imgs/stack.svg";
@@ -68,6 +69,7 @@ class CoinPage extends React.Component {
   }
   render() {
     const { coinInfo } = this.state;
+    console.log(coinInfo);
     const description = coinInfo.description?.en;
     const thumbNail = coinInfo.image?.small;
     const name = coinInfo.name;
@@ -110,9 +112,7 @@ class CoinPage extends React.Component {
                   </CoinNameParent>
                   <WebSiteParent>
                     <WebSiteContainer>
-                        <FontAwesomeIcon
-                          icon={faLink}
-                        />
+                      <FontAwesomeIcon icon={faLink} />
                       <WebSiteSpan>
                         <a href={coinInfo.links?.homepage[0]}>{site}</a>
                       </WebSiteSpan>
@@ -142,28 +142,15 @@ class CoinPage extends React.Component {
                   <PriceDataContainer>
                     <PriceDataInfo
                       name="ATH"
-                      price={
-                        coinInfo.market_data?.ath.usd
-                      }
-                      percent={
-                        coinInfo.market_data?.ath_change_percentage.usd
-                      }
-                      date={
-                        
-                        coinInfo.market_data?.ath_date.usd
-                      }
+                      price={coinInfo.market_data?.ath.usd}
+                      percent={coinInfo.market_data?.ath_change_percentage.usd}
+                      date={coinInfo.market_data?.ath_date.usd}
                     />
                     <PriceDataInfo
                       name="ATL"
-                      price={
-                        coinInfo.market_data?.atl.usd
-                      }
-                      percent={
-                        coinInfo.market_data?.atl_change_percentage.usd
-                      }
-                      date={
-                        coinInfo.market_data?.atl_date.usd
-                      }
+                      price={coinInfo.market_data?.atl.usd}
+                      percent={coinInfo.market_data?.atl_change_percentage.usd}
+                      date={coinInfo.market_data?.atl_date.usd}
                     />
                   </PriceDataContainer>
                 </div>
@@ -174,7 +161,8 @@ class CoinPage extends React.Component {
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
                       <MarketInfoDiv>
-                        <strong>Market Cap:</strong> ${formatNum(marketCap)}
+                        <strong>Market Cap:</strong>{" "}
+                        {valueCheck(formatNum(marketCap))}
                       </MarketInfoDiv>
                       <PercentContainer data={exchangeRate}>
                         {exchangeRate && setCaretIcon(exchangeRate)}{" "}
@@ -186,8 +174,10 @@ class CoinPage extends React.Component {
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
                       <MarketInfoDiv>
-                        <strong>Fully Diluted Valuation:</strong> $
-                        {formatNum(fullyDilutedValuation?.toString())}
+                        <strong>Fully Diluted Valuation:</strong>{" "}
+                        {valueCheck(
+                          formatNum(fullyDilutedValuation?.toString())
+                        )}
                       </MarketInfoDiv>
                     </MarketFlexDiv>
                   </MarketDataInfo>
@@ -195,8 +185,8 @@ class CoinPage extends React.Component {
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
                       <MarketInfoDiv>
-                        <strong>Vol 24h:</strong> $
-                        {formatNum(volTwentyFourHours)}
+                        <strong>Vol 24h:</strong>{" "}
+                        {valueCheck(formatNum(volTwentyFourHours))}
                       </MarketInfoDiv>
                     </MarketFlexDiv>
                   </MarketDataInfo>
@@ -209,21 +199,13 @@ class CoinPage extends React.Component {
                       </MarketInfoDiv>
                     </MarketFlexDiv>
                   </MarketDataInfo>
-                  <MarketDataInfo>
-                    <MarketFlexDiv>
-                      <BulletDiv>+</BulletDiv>
-                      <MarketInfoDiv>
-                        <strong>Circulating Supply:</strong>{" "}
-                        {circulatingSupply?.toFixed(0)} {symbol}
-                      </MarketInfoDiv>
-                    </MarketFlexDiv>
-                  </MarketDataInfo>
                   <Spacer />
                   <MarketDataInfo>
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
                       <MarketInfoDiv>
-                        <strong>Total Volume:</strong> {totalVol} {symbol}
+                        <strong>Total Volume:</strong>{" "}
+                        {valueCheck(totalVol, symbol)}
                       </MarketInfoDiv>
                     </MarketFlexDiv>
                   </MarketDataInfo>
@@ -231,8 +213,17 @@ class CoinPage extends React.Component {
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
                       <MarketInfoDiv>
-                        <strong>Max Supply:</strong> {maxSupply?.toFixed(0)}{" "}
-                        {symbol}
+                        <strong>Circulating Supply:</strong>{" "}
+                        {valueCheck(circulatingSupply?.toFixed(0), symbol)}
+                      </MarketInfoDiv>
+                    </MarketFlexDiv>
+                  </MarketDataInfo>
+                  <MarketDataInfo>
+                    <MarketFlexDiv>
+                      <BulletDiv>+</BulletDiv>
+                      <MarketInfoDiv>
+                        <strong>Max Supply:</strong>{" "}
+                        {valueCheck(maxSupply?.toFixed(0), symbol)}{" "}
                       </MarketInfoDiv>
                     </MarketFlexDiv>
                   </MarketDataInfo>
