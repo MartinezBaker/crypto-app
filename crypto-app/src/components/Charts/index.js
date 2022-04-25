@@ -1,8 +1,8 @@
 import React from 'react'
 import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
-import { labelAlgo, adjustBarThickness } from "utils/functionUtils";
-import { sparkLabelsArr  } from 'utils/arrayUtils';
+import { labelAlgo, adjustBarThickness, titleCallBack, twentyFourHourFilter } from "utils/functionutils";
+import { sparkLabelsArr  } from 'utils/arrayutils';
 import { ChartTable } from './styles'
 
 export const TableCharts = (props) => {
@@ -11,25 +11,20 @@ export const TableCharts = (props) => {
       <Line
         datasetIdKey="id"
         data={{
-          labels: labelAlgo(sparkLabelsArr, 168), 
+          labels: sparkLabelsArr,
           datasets: [
             {
               fill: false,
               borderWidth: 3.0,
-              data: props.chartData,
+              data: twentyFourHourFilter(props.chartData),
               spanGaps: true,
               maintainAspectRatio: false,
-              responsive: true
+              responsive: true,
             },
           ],
         }}
         options={{
-          layout:{
-            padding:{
-              top: 5
-            }
-          },
-          title: {
+         title: {
             display: false,
           },
           plugins: {
@@ -37,15 +32,18 @@ export const TableCharts = (props) => {
               display: false,
             },
             tooltip: {
-              enabled: false
+              enabled: false,
             },
             hover: {
-              enabled: false
-            }
+              enabled: false,
+            },
           },
           elements: {
             line: {
-              borderColor: props.sevenDay && props.sevenDay.charAt(0) === "-" ? "red" : "limegreen" ,
+              borderColor:
+                props.sevenDay && props.sevenDay.charAt(0) === "-"
+                  ? "red"
+                  : "rgb(0, 252, 42)",
               tension: 0.4,
             },
             point: {
@@ -78,9 +76,9 @@ export const TableCharts = (props) => {
   );
 }
 
-export const LineChart = ({ labels, data, isLoading, errMessage, hasError }) => {
+export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceTimeArry}) => {
   if(isLoading) {
-    return <h2>Loading...</h2>
+      return <h2>Loading...</h2>
   }else if(hasError) {
     return <h2>{errMessage}</h2>
   } else{
@@ -98,6 +96,9 @@ export const LineChart = ({ labels, data, isLoading, errMessage, hasError }) => 
                 spanGaps: true,
                 maintainAspectRatio: false,
                 responsive: true,
+                pointHoverBackgroundColor: "rgb(0, 252, 42)",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "rgb(0, 252, 42)",
               },
             ],
           }}
@@ -111,10 +112,26 @@ export const LineChart = ({ labels, data, isLoading, errMessage, hasError }) => 
               legend: {
                 display: false,
               },
+              tooltip: {
+                intersect: true,
+                enabled: true,
+                mode: "nearest",
+                displayColors: false,
+                callbacks: {
+                  title: (context) => {
+                    const raw = context[0].raw;
+                    return titleCallBack(raw, priceTimeArry)
+                  },
+                  label: (context) => {
+                    const value = context.raw.toFixed(2);
+                    return `Price: $${value}`;
+                  },
+                },
+              },
             },
             elements: {
               line: {
-                borderColor: "limegreen",
+                borderColor: "rgb(0, 252, 42)",
                 tension: 0.4,
               },
               point: {
@@ -147,12 +164,12 @@ export const LineChart = ({ labels, data, isLoading, errMessage, hasError }) => 
           }}
         />
       </div>
-    )
+    );
   }
 };
 
-export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError }) => {
-   if(isLoading) {
+export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, volTimeArry }) => {
+  if(isLoading) {
     return <h2>Loading...</h2>
   }else if(hasError) {
     return <h2>{errMessage}</h2>
@@ -181,6 +198,22 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError }
             plugins: {
               legend: {
                 display: false,
+              },
+              tooltip: {
+                intersect: true,
+                enabled: true,
+                mode: "nearest",
+                displayColors: false,
+                callbacks: {
+                  title: (context) => {
+                    const raw = context[0].raw;
+                    return titleCallBack(raw, volTimeArry);
+                  },
+                  label: (context) => {
+                    const value = context.raw.toFixed(2);
+                    return `Price: $${value}`;
+                  },
+                },
               },
             },
             elements: {

@@ -1,3 +1,17 @@
+export const twentyFourHourFilter = (arry) => {
+  return arry.filter((element) => arry.indexOf(element) % 8 === 0 )
+}
+
+export const valueCheck = (amount, symbol) => {
+  if(!amount) {
+    return " -"
+  }else if(amount && symbol) {
+    return `${amount} ${symbol}`
+  }else {
+    return `$${amount}`
+  }
+}
+
 export const formatTimePercent = (t) => {
   if (!t) {
     return "-";
@@ -5,6 +19,16 @@ export const formatTimePercent = (t) => {
     return t.slice(1, 5) + "%";
   } else {
     return t.slice(0, 4) + "%";
+  }
+};
+
+export const formatPercent = (t) => {
+  if (!t) {
+    return "-";
+  } else if (t.includes("-")) {
+    return t.slice(1, 6) + "%";
+  } else {
+    return t.slice(0, 8) + "%";
   }
 };
 
@@ -16,6 +40,7 @@ export const formatNum = (n) => {
   if (n >= 1e9 && n < 1e12) return (n / 1e9).toFixed(1) + "B";
   if (n >= 1e12 && n < 1e15) return (n / 1e12).toFixed(1) + "T";
   if (n >= 1e15) return (n / 1e15).toFixed(1) + "QD";
+  if ("-") return; 
 };
 
 export function labelAlgo(arr, finalLength) {
@@ -58,7 +83,7 @@ export const formatChartData = (arr, index) => {
   if(index === 0) {
     return arr.reduce((acc, element) => ([...acc, element[0]]), []).map((time) => {
       const date = new Date(time)
-      return date.getDate()
+      return date.getDate();
     })
   }
   if(index === 1) {
@@ -73,11 +98,11 @@ export const getTodaysDate = () => {
 export const adjustBarThickness = (days) => {
   const daysObj = {
     1: 220,
-    7: 50,
-    30: 10,
-    90: 4,
-    180: 1,
-    365: 0.5
+    6: 50,
+    29: 10,
+    89: 4,
+    179: 1,
+    364: 0.5
   }
   Object.entries(daysObj).map((entry) => {
     const[key, value] = entry
@@ -89,3 +114,25 @@ export const adjustBarThickness = (days) => {
   })
 }
 
+export const topSort = (sortBy, sortValue, sortItem) => {
+  return (a, b) => {
+    if (sortBy === sortValue) {
+     return b[sortItem] - a[sortItem];
+    }
+  };
+};
+
+export const formatDate = (unix) => {
+  const date = new Date(unix);
+  return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+}
+
+export const titleCallBack = (raw, arry) => {
+  const filteredItem = arry
+    .filter((element) => element[1] === raw)
+    .map((element) => {
+      const date = new Date(element[0]);
+      return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+    });
+  return filteredItem;
+}
