@@ -120,11 +120,11 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
                 callbacks: {
                   title: (context) => {
                     const raw = context[0].raw;
-                    return titleCallBack(raw, priceTimeArry )
+                    return titleCallBack(raw, priceTimeArry)
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);
-                    return `Price: $${value} `;
+                    return `Price: $${value}`;
                   },
                 },
               },
@@ -211,7 +211,7 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, 
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);
-                    return `Price: $${value} `;
+                    return `Price: $${value}`;
                   },
                 },
               },
