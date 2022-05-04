@@ -2,36 +2,29 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import {  ProgressBar } from "components";
 import { TableCharts } from 'components/Charts/index';
-import { formatTimePercent, formatNum, formatCoinName, formatPrice } from 'utils/functionutils';
+import { formatTimePercent, formatNum, formatCoinName, formatPrice } from 'utils/functionUtils';
 import { setCaretIcon } from 'utils/FontAwesomeutil'
-import { CoinImage, PercentColor, DataRow, TableCell, ProgressParent, VerticalAlign } from './styles';
+import { CoinImage, PercentColor, DataRow, TableCell, ProgressParent } from './styles';
 
 const CoinInstance = (props) => (
   <DataRow>
     <TableCell>
       <CoinImage src={props.image} alt="Coin" />{" "}
-      <Link to={`/coins/${props.id}`}>{formatCoinName(props.name)} (
-      {props.symbol})</Link>
+      <Link to={`/coins/${props.id}`} style={{ textDecoration: "none", color: "black" }}>
+        {formatCoinName(props.name)} ({props.symbol})
+      </Link>
     </TableCell>
-    <TableCell>
-      ${formatPrice(props.price)}
-    </TableCell>
+    <TableCell>${formatPrice(props.price)}</TableCell>
     <PercentColor data={props.oneHour}>
-      {props.oneHour && (
-        setCaretIcon(props.oneHour)
-      )}{" "}
+      {props.oneHour && setCaretIcon(props.oneHour)}{" "}
       {formatTimePercent(props.oneHour)}
     </PercentColor>
     <PercentColor data={props.twentyFourHour}>
-      {props.twentyFourHour && (
-        setCaretIcon(props.twentyFourHour)
-      )}{" "}
+      {props.twentyFourHour && setCaretIcon(props.twentyFourHour)}{" "}
       {formatTimePercent(props.twentyFourHour)}
     </PercentColor>
     <PercentColor data={props.sevenDay}>
-      {props.sevenDay && (
-        setCaretIcon(props.sevenDay)
-      )}{" "}
+      {props.sevenDay && setCaretIcon(props.sevenDay)}{" "}
       {formatTimePercent(props.sevenDay)}
     </PercentColor>
     <TableCell>
@@ -74,7 +67,10 @@ const CoinInstance = (props) => (
           )}
         </div>
       </ProgressParent>
-      <ProgressBar progress={props.circulatingSupplyPercentage} width={"120px"}/>
+      <ProgressBar
+        progress={props.circulatingSupplyPercentage}
+        width={"120px"}
+      />
     </TableCell>
     <TableCell>
       <TableCharts

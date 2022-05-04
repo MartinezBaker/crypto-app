@@ -5,8 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sort, getTodaysDate, formatChartData, topSort } from 'utils/functionutils'
-import { marketDaysArr } from 'utils/arrayutils';
+import { sort, getTodaysDate, formatChartData, topSort } from 'utils/functionUtils'
+import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
 import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent } from './styles';
 
@@ -21,7 +21,6 @@ class Coins extends React.Component {
     chartData: {},
     currency: "usd",
     marketDays: 29,
-    interval: "daily",
     sortBy: "BY MARKET CAP",
     sort: {
       name: null,
@@ -81,9 +80,8 @@ class Coins extends React.Component {
     try {
       const currency = this.state.currency
       const marketDays =  this.state.marketDays
-      const interval = this.state.interval
       this.setState({isLoading: true})
-      const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${marketDays}&interval=${interval}`)
+      const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${marketDays}&interval=daily`)
       this.setState({ isLoading: false, chartData: data})
     } catch (error) {
       this.setState({ isLoading: false, hasError: true, errMessage: "Could Not Load Chart Data!"})
@@ -156,7 +154,7 @@ class Coins extends React.Component {
     const {marketDays, chartData, sortBy} = this.state
     const {name, current_price, price_change_percentage_1h_in_currency, price_change_percentage_24h_in_currency,
     price_change_percentage_7d_in_currency} = this.state.sort
-    const lineChartLabels = this.state.chartData.prices && formatChartData(this.state.chartData.prices, 0);
+    const lineChartLabels = chartData.prices && formatChartData(chartData.prices, 0);
     const lineChartData = chartData.prices && formatChartData(chartData.prices, 1);
     const barChartLabels = this.state.chartData.total_volumes && formatChartData(this.state.chartData.total_volumes, 0);
     const barChartData = chartData.total_volumes && formatChartData(chartData.total_volumes, 1);
@@ -180,7 +178,7 @@ class Coins extends React.Component {
                 <div></div>
               ) : (
                 <TextContainer>
-                  <SubText>Price</SubText>
+                  <SubText>BTC Price</SubText>
                   <PriceText>
                     {lineChartData &&
                       "$" +
@@ -206,7 +204,7 @@ class Coins extends React.Component {
                 <div></div>
               ) : (
                 <TextContainer>
-                  <SubText>Volume 24h</SubText>
+                  <SubText>BTC Volume 24h</SubText>
                   <PriceText>
                     {barChartData &&
                       "$" +

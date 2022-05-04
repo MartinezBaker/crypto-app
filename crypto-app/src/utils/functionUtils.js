@@ -136,3 +136,14 @@ export const titleCallBack = (raw, arry) => {
     });
   return filteredItem;
 }
+
+export const formatLink = (link) => {
+  if(link?.charAt(link?.length-1) === "/") {
+    return link?.slice(8, link?.length-1) 
+  }else{
+    return link?.slice(8)
+  }
+}
+
+
+

@@ -10,8 +10,7 @@ export const TitleParent = styled.div`
 export const TitleChild = styled.div`
   margin: 80px 0px 0px 0px;
   font-size: 23px;
-  
-`;
+ `;
 
 export const ChartParent = styled.div`
   display: flex;
@@ -22,7 +21,6 @@ export const LineChartContainer = styled.div`
   border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
-  
   position: relative;
   background-color: white;
   width: 43%;
@@ -32,7 +30,6 @@ export const BarChartContainer = styled.div`
   border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
-  
   position: relative;
   background-color: white;
   width: 43%;
@@ -41,7 +38,6 @@ export const BarChartContainer = styled.div`
 export const TextContainer = styled.div`
   position: absolute;
   left: 16px;
-  
 `;
 
 export const SubText = styled.div`
@@ -74,7 +70,6 @@ export const TableContainer = styled.div`
   border-radius: 25px;
   padding: 10px;
   background-color: white;
-  
 `
 export const TableTitleContainer = styled.div`
   margin-top: 10px;
@@ -103,9 +98,9 @@ export const Table = styled.table`
   border-collapse: collapse;
   border-bottom: 1px solid black;
   border-left: none;
-  padding: 15px 0px 15px 8px;
+  padding: 15px 0px 15px 0px;
   font-size: 11px;
-`;
+ ` 
 
 export const TableRow = styled.tr`
   border-bottom: 1px solid black;

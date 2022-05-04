@@ -7,6 +7,7 @@ export const MarketDaysButton = styled.button`
   font-size: 14px;
   border-radius: 14px;
   border: 1px solid white;
+  cursor: pointer; 
   background-color: ${({active}) => {
     if(active) {
       return "rgb(0, 252, 42)";

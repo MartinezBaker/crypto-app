@@ -1,7 +1,7 @@
 import React from 'react'
 import { setCaretIcon } from "utils/FontAwesomeutil";
 import { Percent, DataInfo } from './styles'
-import { formatPercent, formatDate } from 'utils/functionutils';
+import { formatPercent, formatDate } from 'utils/functionUtils';
 
 const PriceDataInfo = ({name, price, percent, date}) => (
   <DataInfo>

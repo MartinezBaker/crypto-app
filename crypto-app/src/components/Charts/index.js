@@ -1,8 +1,8 @@
 import React from 'react'
 import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
-import { labelAlgo, adjustBarThickness, titleCallBack, twentyFourHourFilter } from "utils/functionutils";
-import { sparkLabelsArr  } from 'utils/arrayutils';
+import { adjustBarThickness, titleCallBack, twentyFourHourFilter } from "utils/functionUtils";
+import { sparkLabelsArr  } from 'utils/arrayUtils';
 import { ChartTable } from './styles'
 
 export const TableCharts = (props) => {
@@ -18,13 +18,13 @@ export const TableCharts = (props) => {
               borderWidth: 3.0,
               data: twentyFourHourFilter(props.chartData),
               spanGaps: true,
-              maintainAspectRatio: false,
-              responsive: true,
             },
           ],
         }}
         options={{
-         title: {
+          maintainAspectRatio: true,
+          responsive: true,
+          title: {
             display: false,
           },
           plugins: {
@@ -41,9 +41,7 @@ export const TableCharts = (props) => {
           elements: {
             line: {
               borderColor:
-                props.sevenDay && props.sevenDay.charAt(0) === "-"
-                  ? "red"
-                  : "rgb(0, 252, 42)",
+                props.sevenDay?.charAt(0) === "-" ? "red" : "rgb(0, 252, 42)",
               tension: 0.4,
             },
             point: {
@@ -94,8 +92,6 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
                 borderWidth: 3.0,
                 data: data,
                 spanGaps: true,
-                maintainAspectRatio: false,
-                responsive: true,
                 pointHoverBackgroundColor: "rgb(0, 252, 42)",
                 hoverBorderWidth: 3,
                 hoverBorderColor: "rgb(0, 252, 42)",
@@ -103,6 +99,8 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
             ],
           }}
           options={{
+            maintainAspectRatio: true,
+            responsive: true,
             layout: {
               padding: {
                 top: 5,
@@ -120,7 +118,7 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
                 callbacks: {
                   title: (context) => {
                     const raw = context[0].raw;
-                    return titleCallBack(raw, priceTimeArry)
+                    return titleCallBack(raw, priceTimeArry);
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);
@@ -184,12 +182,12 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, 
               {
                 barThickness: adjustBarThickness(days),
                 data: data,
-                maintainAspectRatio: false,
-                responsive: true,
               },
             ],
           }}
           options={{
+            maintainAspectRatio: true,
+            responsive: true,
             layout: {
               padding: {
                 top: 5,
@@ -235,6 +233,103 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, 
                   autoSkipPadding: 10,
                   maxRotation: 0,
                   minRotation: 0,
+                },
+              },
+              y: {
+                grid: {
+                  display: false,
+                  drawBorder: false,
+                },
+                ticks: {
+                  display: false,
+                },
+              },
+            },
+          }}
+        />
+      </div>
+    );
+  }
+};
+
+export const CoinPageLineChart = ({
+  isLoading,
+  hasError,
+  errMessage,
+  data,
+  labels,
+  priceTimeArry,
+}) => {
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  } else if (hasError) {
+    return <h2>{errMessage}</h2>;
+  } else {
+    return (
+      <div>
+        <Line
+          datasetIdKey="id"
+          data={{
+            labels: labels,
+            datasets: [
+              {
+                fill: true,
+                borderWidth: 1.0,
+                data: data,
+                spanGaps: true,
+                pointHoverBackgroundColor: "rgb(0, 252, 42)",
+                hoverBorderWidth: 3,
+                hoverBorderColor: "rgb(0, 252, 42)",
+              },
+            ],
+          }}
+          width= "1200px"
+          height="250px"
+          options={{
+            maintainAspectRatio: false,
+            responsive: false,
+            layout: {
+              padding: {
+                top: 5,
+              },
+            },
+            plugins: {
+              legend: {
+                display: false,
+              },
+              tooltip: {
+                intersect: true,
+                enabled: true,
+                mode: "nearest",
+                displayColors: false,
+                callbacks: {
+                  title: (context) => {
+                    const raw = context[0].raw;
+                    return titleCallBack(raw, priceTimeArry);
+                  },
+                  label: (context) => {
+                    const value = context.raw.toFixed(2);
+                    return `Price: $${value}`;
+                  },
+                },
+              },
+            },
+            elements: {
+              line: {
+                tension: 0.4,
+              },
+              point: {
+                radius: 0,
+              },
+            },
+            scales: {
+              x: {
+                grid: {
+                  display: false,
+                  drawBorder: false,
+                },
+                ticks: {
+                  display: false,
                 },
               },
               y: {
