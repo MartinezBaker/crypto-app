@@ -43,6 +43,3 @@ export const ProgressParent = styled.div`
   justify-content: space-between;
   width: 120px;
 `
-
-
-

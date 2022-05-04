@@ -92,7 +92,6 @@ class CoinPage extends React.Component {
       const { data } = await axios(
         `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=${currency}&days=${marketDays}&interval=daily`
       );
-      console.log(data)
       this.setState({ chartData: data });
     } catch (error) {
       this.setState({

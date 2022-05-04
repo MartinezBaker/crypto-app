@@ -59,8 +59,6 @@ export const WebSiteContainer = styled.div`
   padding: 4px 20px 4px 20px;
   width: 203px;
   margin: auto;
-  
-  
 `
 export const LinkAnchor = styled.a`
   text-decoration: none;
@@ -114,8 +112,7 @@ export const MarketDataInfoContainer = styled.div`
   font-size: 12px;
   text-align: left;
   margin-right: 50px;
-  
-`;
+ `;
 
 export const MarketDataInfo = styled.div`
   margin-bottom: 5px;
@@ -133,7 +130,6 @@ export const BulletDiv = styled.div`
   padding: 0px 5px 0px 5px;
   margin-right: 5px;
   max-height: 18px;
-
 `;
 
 export const MarketInfoDiv = styled.div`
@@ -165,7 +161,6 @@ export const DescriptionChild = styled.div`
   padding: 18px 36px 18px 36px;
   background-color: white;
   font-size: 12px;
-
   a {
     text-decoration: none;
     color: inherit;
@@ -206,7 +201,6 @@ export const ConverterParent = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
-  
 `
 export const Converter = styled.div`
   display: flex;

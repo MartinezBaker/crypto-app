@@ -31,5 +31,4 @@ export function setSortIcon(x) {
   if(x === true){
     return <FontAwesomeIcon icon={faSortAmountAsc} />;
   }
-
 }
