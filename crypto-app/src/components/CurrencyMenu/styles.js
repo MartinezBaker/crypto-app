@@ -32,4 +32,3 @@ export const StyledIconContainer = styled.span`
   font-size: 15px;
   color: rgb(0, 252, 42);
 `;
-

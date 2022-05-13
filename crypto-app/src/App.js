@@ -4,7 +4,6 @@ import { Coins, CoinPage, Portfolio } from 'pages';
 import { DropDownMenu } from 'components/CurrencyMenu'
 import { AppBody }  from 'styles';
 
-
 class App extends React.Component {
   state = { 
     currentCurrency: "usd",
@@ -19,7 +18,6 @@ class App extends React.Component {
       "btc": "₿",
       "eth": "Ξ",
     };
-
     Object.entries(currObj).map((entry) => {
       const [key, value] = entry
       if(key === currency){

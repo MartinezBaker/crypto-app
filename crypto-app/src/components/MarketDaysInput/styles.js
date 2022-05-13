@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const StyledMarketDay = styled.div`
   margin: 10px;
 `

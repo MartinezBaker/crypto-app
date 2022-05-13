@@ -11,4 +11,3 @@ export const AppBody = styled.div`
 export const StyledDropDown = styled.div`
   background-color: rgb(247, 247, 247);
 `;
-

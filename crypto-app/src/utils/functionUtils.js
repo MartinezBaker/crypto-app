@@ -158,4 +158,3 @@ export const dynamicEndPoint = (obj, curr) => {
     return obj.eth
   }
 }
-

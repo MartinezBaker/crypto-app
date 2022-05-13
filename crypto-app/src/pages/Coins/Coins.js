@@ -95,7 +95,6 @@ class Coins extends React.Component {
     if(prevState.marketDays !== this.state.marketDays) {
        this.getChartData()
     }
-
     if(prevProps.currency !== this.props.currency) {
       this.getCoins()
       this.getChartData()

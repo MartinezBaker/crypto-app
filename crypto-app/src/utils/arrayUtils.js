@@ -67,4 +67,3 @@ export const coinPageMarketDaysArr = [
 export const sparkLabelsArr = Array(23).fill(null).map((_, i) => i)
 
 export const currencyArry = ["usd", "gbp", "eur", "btc", "eth"];
-
