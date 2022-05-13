@@ -11,7 +11,7 @@ const MarketDaysInput = (props) => (
       name={props.name}
       value={props.value}
       checked={props.active && "checked"}
-      autoFocus={props.active && "autoFocus"}
+      readOnly
     />
     <StyledLabel htmlFor={props.id}>{props.value}</StyledLabel>
   </StyledMarketDay>

@@ -6,19 +6,20 @@ export const StyledMarketDay = styled.div`
 `
 
 export const StyledInput = styled.input`
-    appearance: none;
-    height: 23px;
-    width: 23px;
-    vertical-align: bottom;
-    border: 1px solid rgb(0, 252, 42);
-    border-radius: 50%;
-    background-clip: content-box;
-    &:checked {
-      background-color: rgb(0, 252, 42);
-      &:focus {
-        outline: 5px solid rgba(0, 252, 42, 0.3);
-      }
+  appearance: none;
+  height: 23px;
+  width: 23px;
+  vertical-align: bottom;
+  border: 1px solid rgb(0, 252, 42);
+  border-radius: 50%;
+  &:checked {
+    background-color: rgb(0, 252, 42);
+    &:focus {
+      outline: 5px solid rgba(0, 252, 42, 0.3);
     }
+  }
+  &:hover {
+    cursor: pointer;
   }
 `;
 

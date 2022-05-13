@@ -10,11 +10,17 @@ const CoinInstance = (props) => (
   <DataRow>
     <TableCell>
       <CoinImage src={props.image} alt="Coin" />{" "}
-      <Link to={`/coins/${props.id}`} style={{ textDecoration: "none", color: "black" }}>
+      <Link
+        to={`/coins/${props.id}`}
+        style={{ textDecoration: "none", color: "black" }}
+      >
         {formatCoinName(props.name)} ({props.symbol})
       </Link>
     </TableCell>
-    <TableCell>${formatPrice(props.price)}</TableCell>
+    <TableCell>
+      {props.currSymbol}
+      {formatPrice(props.price)}
+    </TableCell>
     <PercentColor data={props.oneHour}>
       {props.oneHour && setCaretIcon(props.oneHour)}{" "}
       {formatTimePercent(props.oneHour)}
@@ -32,7 +38,7 @@ const CoinInstance = (props) => (
         <div>
           &#x2022;{" "}
           {props.totalVolume ? (
-            "$" + formatNum(props.totalVolume)
+            props.currSymbol + formatNum(props.totalVolume)
           ) : (
             <span>&infin;</span>
           )}
@@ -40,7 +46,7 @@ const CoinInstance = (props) => (
         <div>
           &#x2022;{" "}
           {props.marketCap ? (
-            "$" + formatNum(props.marketCap)
+            props.currSymbol + formatNum(props.marketCap)
           ) : (
             <span>&infin;</span>
           )}
@@ -53,7 +59,7 @@ const CoinInstance = (props) => (
         <div>
           &#x2022;{" "}
           {props.circulatingSupply ? (
-            "$" + formatNum(props.circulatingSupply)
+            formatNum(props.circulatingSupply)
           ) : (
             <span>&infin;</span>
           )}{" "}
@@ -61,7 +67,7 @@ const CoinInstance = (props) => (
         <div>
           &#x2022;{" "}
           {props.totalSupply ? (
-            "$" + formatNum(props.totalSupply)
+            formatNum(props.totalSupply)
           ) : (
             <span>&infin;</span>
           )}

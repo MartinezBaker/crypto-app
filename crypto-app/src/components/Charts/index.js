@@ -74,7 +74,7 @@ export const TableCharts = (props) => {
   );
 }
 
-export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceTimeArry}) => {
+export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceTimeArry, currSymbol}) => {
   if(isLoading) {
       return <h2>Loading...</h2>
   }else if(hasError) {
@@ -122,7 +122,7 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);
-                    return `Price: $${value}`;
+                    return `Price: ${currSymbol}${value}`;
                   },
                 },
               },
@@ -166,7 +166,7 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
   }
 };
 
-export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, volTimeArry }) => {
+export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, volTimeArry, currSymbol }) => {
   if(isLoading) {
     return <h2>Loading...</h2>
   }else if(hasError) {
@@ -209,7 +209,7 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, 
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);
-                    return `Price: $${value}`;
+                    return `Price: ${currSymbol}${value}`;
                   },
                 },
               },
@@ -287,7 +287,7 @@ export const CoinPageLineChart = ({
           height="250px"
           options={{
             maintainAspectRatio: false,
-            responsive: false,
+            responsive: true,
             layout: {
               padding: {
                 top: 5,

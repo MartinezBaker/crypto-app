@@ -6,25 +6,31 @@ class CurrencyInput extends React.Component {
         inputValue:"",
     }
     handleChange = (e) => {
-        const {symbol} = this.props
-        const split = symbol.split("")[0]
-        if(e.target.value === symbol || this.state.inputValue.includes(split) || e.target.value === "") {
-            this.setState({inputValue: e.target.value})
-        } else {
-          this.setState({inputValue: " " + symbol + " " + e.target.value});
-        }
+        this.setState({inputValue:e.target.value})
     }
     handleSubmit = (e) => {
         e.preventDefault();
         const value = this.state.inputValue
         this.props.handleSubmit(value);
+        this.setState({inputValue:""})
     }
     render(){
-         return(
-            <form onSubmit={this.handleSubmit}>
-                <StyledInput onKeyDown={(e) => this.props.handleKeyDown(e)} onChange={this.handleChange} value={this.props.exchange || this.state.inputValue} />
-            </form>
-        )
+        const {inputValue} = this.state
+        const {symbol, exchange} = this.props
+        return (
+           <form onSubmit={this.handleSubmit}>
+             <StyledInput
+               onChange={this.handleChange}
+               value={
+                 inputValue.includes(symbol?.split('')[0])
+                   ? `${inputValue || exchange}`
+                   : `${symbol} ${
+                       inputValue || exchange
+                     }`
+               }
+             />
+           </form>
+         );
     }
 }
 

@@ -8,7 +8,7 @@ export const valueCheck = (amount, symbol) => {
   }else if(amount && symbol) {
     return `${amount} ${symbol}`
   }else {
-    return `$${amount}`
+    return `${amount}`
   }
 }
 
@@ -33,13 +33,13 @@ export const formatPercent = (t) => {
 };
 
 export const formatNum = (n) => {
-  if (n < 1e3) return n;
+  if (n < 1e3) return n.toFixed(0);
   if (n === null) return <span>&infin;</span>;
-  if (n >= 1e3 && n < 1e6) return (n / 1e3).toFixed(1) + "K";
-  if (n >= 1e6 && n < 1e9) return (n / 1e6).toFixed(1) + "M";
-  if (n >= 1e9 && n < 1e12) return (n / 1e9).toFixed(1) + "B";
-  if (n >= 1e12 && n < 1e15) return (n / 1e12).toFixed(1) + "T";
-  if (n >= 1e15) return (n / 1e15).toFixed(1) + "QD";
+  if (n >= 1e3 && n < 1e6) return (n / 1e3).toFixed(2) + "K";
+  if (n >= 1e6 && n < 1e9) return (n / 1e6).toFixed(2) + "M";
+  if (n >= 1e9 && n < 1e12) return (n / 1e9).toFixed(2) + "B";
+  if (n >= 1e12 && n < 1e15) return (n / 1e12).toFixed(2) + "T";
+  if (n >= 1e15) return (n / 1e15).toFixed(2) + "QD";
   if ("-") return; 
 };
 
@@ -145,5 +145,17 @@ export const formatLink = (link) => {
   }
 }
 
-
+export const dynamicEndPoint = (obj, curr) => {
+  if(curr === "usd"){
+    return obj.usd
+  }else if(curr === "gbp"){
+    return obj.gbp
+  }else if(curr === "eur"){
+    return obj.eur
+  }else if(curr === "btc"){
+    return obj.btc
+  }else{
+    return obj.eth
+  }
+}
 

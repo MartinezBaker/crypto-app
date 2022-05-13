@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sort, getTodaysDate, formatChartData, topSort } from 'utils/functionUtils'
+import { sort, getTodaysDate, formatChartData, topSort, formatNum } from 'utils/functionUtils'
 import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
 import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent } from './styles';
@@ -19,7 +19,6 @@ class Coins extends React.Component {
     hasError: false,
     errMessage: "",
     chartData: {},
-    currency: "usd",
     marketDays: 29,
     sortBy: "BY MARKET CAP",
     sort: {
@@ -36,7 +35,7 @@ class Coins extends React.Component {
         isLoading: true,
       });
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.props.currency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
       );
       this.setState({
         coins: data,
@@ -58,7 +57,7 @@ class Coins extends React.Component {
         isLoading: true,
       });
       const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=50&page=${nextPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${this.props.currency}&order=market_cap_desc&per_page=50&page=${nextPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
       );
       if (!data.length) {
         this.setState({ hasMore: false });
@@ -78,10 +77,11 @@ class Coins extends React.Component {
   };
   getChartData = async () => {
     try {
-      const currency = this.state.currency
-      const marketDays =  this.state.marketDays
+      const {marketDays} =  this.state
       this.setState({isLoading: true})
-      const { data } = await axios.get(`https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${marketDays}&interval=daily`)
+      const { data } = await axios.get(
+        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${this.props.currency}&days=${marketDays}&interval=daily`
+      );
       this.setState({ isLoading: false, chartData: data})
     } catch (error) {
       this.setState({ isLoading: false, hasError: true, errMessage: "Could Not Load Chart Data!"})
@@ -92,8 +92,13 @@ class Coins extends React.Component {
     this.getChartData();
   }
   componentDidUpdate(prevProps, prevState) {
-    if(prevState.marketDays !== this.state.marketDays){
+    if(prevState.marketDays !== this.state.marketDays) {
        this.getChartData()
+    }
+
+    if(prevProps.currency !== this.props.currency) {
+      this.getCoins()
+      this.getChartData()
     }
   }
   handleTopSortClick = () => {
@@ -144,7 +149,7 @@ class Coins extends React.Component {
     Object.entries(marketDaysObj).map((entry) => {
       const [key, value] = entry
       if(key === name){
-        return this.setState({marketDays: value})
+        return this.setState({marketDays: marketDaysObj[name]})
       }else {
         return null
       }
@@ -181,11 +186,9 @@ class Coins extends React.Component {
                   <SubText>BTC Price</SubText>
                   <PriceText>
                     {lineChartData &&
-                      "$" +
-                        (lineChartData[lineChartData.length - 1] / 1e3).toFixed(
-                          2
-                        ) +
-                        "K"}
+                      this.props.symbol +
+                        formatNum(lineChartData[lineChartData.length - 1])
+                    }
                   </PriceText>
                   <SubText>{getTodaysDate()}</SubText>
                 </TextContainer>
@@ -197,6 +200,7 @@ class Coins extends React.Component {
                 errMessage={this.state.errMessage}
                 isLoading={this.state.isLoading}
                 hasError={this.state.hasError}
+                currSymbol={this.props.symbol}
               />
             </LineChartContainer>
             <BarChartContainer>
@@ -207,11 +211,9 @@ class Coins extends React.Component {
                   <SubText>BTC Volume 24h</SubText>
                   <PriceText>
                     {barChartData &&
-                      "$" +
-                        (barChartData[barChartData.length - 1] / 1e9).toFixed(
-                          2
-                        ) +
-                        "B"}
+                      this.props.symbol +
+                        formatNum(barChartData[barChartData.length - 1])
+                    }
                   </PriceText>
                   <SubText>{getTodaysDate()}</SubText>
                 </TextContainer>
@@ -224,6 +226,7 @@ class Coins extends React.Component {
                 errMessage={this.state.errMessage}
                 isLoading={this.state.isLoading}
                 hasError={this.state.hasError}
+                currSymbol={this.props.symbol}
               />
             </BarChartContainer>
           </ChartParent>
@@ -339,6 +342,8 @@ class Coins extends React.Component {
                             (coin.circulating_supply / coin.total_supply) * 100
                           }
                           sparkLine={coin.sparkline_in_7d}
+                          currSymbol={this.props.symbol}
+                          currency={this.props.currency}
                         />
                       ))) ||
                       this.props.errMessage}

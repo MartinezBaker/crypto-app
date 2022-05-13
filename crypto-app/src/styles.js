@@ -6,5 +6,9 @@ export const AppBody = styled.div`
   background-color: rgb(247, 247, 247);
   margin: auto;
   max-width: 1200px;
-  
 `;
+
+export const StyledDropDown = styled.div`
+  background-color: rgb(247, 247, 247);
+`;
+
