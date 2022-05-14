@@ -9,6 +9,9 @@ export const StyledSelect = styled.select`
   &:focus {
     outline: none;
   }
+  &:hover {
+    cursor:pointer
+  }
 `;
 
 export const StyledSymbolContainer = styled.span`
@@ -27,7 +30,7 @@ export const StyledSymbolSpan = styled.span`
 
 export const StyledIconContainer = styled.span`
   background-color: rgb(247, 247, 247);
-  padding: 12px 12px 12px 0px;
+  padding: 12px 12px 12px 0.5px;
   border-radius: 0px 10px 10px 0px;
   font-size: 15px;
   color: rgb(0, 252, 42);

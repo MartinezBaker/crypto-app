@@ -144,17 +144,3 @@ export const formatLink = (link) => {
     return link?.slice(8)
   }
 }
-
-export const dynamicEndPoint = (obj, curr) => {
-  if(curr === "usd"){
-    return obj.usd
-  }else if(curr === "gbp"){
-    return obj.gbp
-  }else if(curr === "eur"){
-    return obj.eur
-  }else if(curr === "btc"){
-    return obj.btc
-  }else{
-    return obj.eth
-  }
-}
