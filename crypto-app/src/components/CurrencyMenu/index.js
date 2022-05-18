@@ -6,18 +6,20 @@ import { StyledSelect, StyledSymbolContainer, StyledSymbolSpan, StyledIconContai
 
 export const DropDownMenu = (props) => (
   <div>
-    <StyledSymbolContainer>
+    <StyledSymbolContainer darkMode={props.darkMode}>
       <StyledSymbolSpan>{props.symbol}</StyledSymbolSpan>
     </StyledSymbolContainer>
-    <StyledSelect id="currency" name="currency" onChange={(e) => props.handleChange(e)}>
+    <StyledSelect
+      darkMode={props.darkMode}
+      id="currency"
+      name="currency"
+      onChange={(e) => props.handleChange(e)}
+    >
       {currencyArry.map((currency) => (
-        <Options
-          key={currency}
-          value={currency}
-        />
+        <Options key={currency} value={currency} />
       ))}
     </StyledSelect>
-    <StyledIconContainer>
+    <StyledIconContainer darkMode={props.darkMode}>
       <FontAwesomeIcon icon={faCaretDown} />
     </StyledIconContainer>
   </div>

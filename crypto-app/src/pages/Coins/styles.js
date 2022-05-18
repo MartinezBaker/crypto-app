@@ -10,34 +10,73 @@ export const TitleParent = styled.div`
 export const TitleChild = styled.div`
   margin: 80px 0px 0px 0px;
   font-size: 23px;
+  color:${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    } else {
+      return "black"
+    }
+  }}
  `;
 
 export const ChartParent = styled.div`
   display: flex;
   width: 100%;
   justify-content: space-between
+  
 `
 export const LineChartContainer = styled.div`
-  border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
   position: relative;
-  background-color: white;
   width: 43%;
+  border: ${({ darkMode }) => {
+    if (darkMode) {
+      return "1px solid rgb(25, 27, 31)";
+    } else {
+      return "1px solid white";
+    }
+  }};
+  background-color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "rgb(25, 27, 31)";
+    } else {
+      return "white";
+    }
+  }};
 `;
 
 export const BarChartContainer = styled.div`
-  border: 1px solid white;
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
   position: relative;
-  background-color: white;
   width: 43%;
+  border: ${({ darkMode }) => {
+    if (darkMode) {
+      return "1px solid rgb(25, 27, 31)";
+    } else {
+      return "1px solid white";
+    }
+  }};
+  background-color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "rgb(25, 27, 31)";
+    } else {
+      return "white";
+    }
+  }};
 `;
 
 export const TextContainer = styled.div`
   position: absolute;
   left: 16px;
+  color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "white";
+    } else {
+      return "black";
+    }
+  }};
 `;
 
 export const SubText = styled.div`
@@ -49,7 +88,13 @@ export const PriceText = styled.div`
 `
 
 export const MarketDaysParent = styled.div`
-  background: rgb(255, 255, 255);
+  background: ${({ darkMode }) => {
+    if (darkMode) {
+      return "rgb(25, 27, 31)";
+    } else {
+      return "rgb(255, 255, 255)";
+    }
+  }};
   border-radius: 20px;
   padding-block: 15px;
   padding-inline: 6px;
@@ -66,11 +111,24 @@ export const TableParent = styled.div`
 
 export const TableContainer = styled.div`
   margin: 30px 0px 30px 0px;
-  border: 1px solid white;
   border-radius: 25px;
   padding: 10px;
-  background-color: white;
-`
+  background-color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "rgb(25, 27, 31)";
+    } else {
+      return "white";
+    }
+  }};
+  color:${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    }else {
+      return "black"
+    }
+  }};
+`;
+
 export const TableTitleContainer = styled.div`
   margin-top: 10px;
 `
@@ -87,7 +145,13 @@ export const TableTitle2 = styled.span`
 
 export const TableHeader = styled.th`
   text-align: start;
-  border-bottom: 1px solid black;
+  border-bottom:${({darkMode}) => {
+    if(darkMode){
+      return "1px solid white"
+    }else {
+      return "1px solid black"
+    }
+  }};
   border-left: none;
   padding: 15px 0px 15px 2px;
 `;
@@ -96,14 +160,19 @@ export const Table = styled.table`
   width: 100%;
   counter-reset: rowNumber;
   border-collapse: collapse;
-  border-bottom: 1px solid black;
   border-left: none;
   padding: 15px 0px 15px 0px;
   font-size: 11px;
  ` 
 
 export const TableRow = styled.tr`
-  border-bottom: 1px solid black;
+  border-bottom: ${({darkMode}) => {
+    if(darkMode){
+      return "1px solid white"
+    }else{
+      return "1px solid black"
+    }
+  }};
   border-left: none;
   padding: 15px 0px 15px 0px;
 `;
@@ -118,4 +187,11 @@ export const SortButton = styled.button`
   &:hover{
     cursor: pointer;
   }
+  color:${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    }else {
+      return "black"
+    }
+  }};
 `

@@ -11,9 +11,10 @@ const MarketDaysInput = (props) => (
       name={props.name}
       value={props.value}
       checked={props.active && "checked"}
+      darkMode={props.darkMode}
       readOnly
     />
-    <StyledLabel htmlFor={props.id}>{props.value}</StyledLabel>
+    <StyledLabel darkMode={props.darkMode} htmlFor={props.id}>{props.value}</StyledLabel>
   </StyledMarketDay>
 );
 

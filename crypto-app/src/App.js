@@ -1,13 +1,16 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
+import { ReactComponent as DarkMode } from "imgs/contrast-dark.svg";
 import { Coins, CoinPage, Portfolio } from 'pages';
-import { DropDownMenu } from 'components/CurrencyMenu'
-import { AppBody }  from 'styles';
+import { DropDownMenu } from 'components/CurrencyMenu';
+import { AppBody, StyledNav, StyledNavChild, SVGContainer, StyledButton, FullBody }  from 'styles';
+
 
 class App extends React.Component {
   state = { 
     currentCurrency: "usd",
-    symbol: "$"
+    symbol: "$",
+    darkMode: true
   }
   handleChange = (e) => {
     const currency = e.target.value
@@ -27,19 +30,35 @@ class App extends React.Component {
       }
     })
   }
+  handleClick = () => {
+    this.setState({darkMode: !this.state.darkMode})
+  }
   render() {
     return (
-      <div className="App">
+      <FullBody darkMode={this.state.darkMode}>
         <Router>
-          <nav>
-            <Link to="/coins">Coins</Link> {""}
-            <Link to="/portfolio">Portfolio</Link>
-            <DropDownMenu
-              symbol={this.state.symbol}
-              handleChange={this.handleChange}
-            />
-          </nav>
-          <AppBody>
+          <StyledNav>
+            <StyledNavChild>
+              <Link to="/coins">Coins</Link> {""}
+              <Link to="/portfolio">Portfolio</Link>
+            </StyledNavChild>
+            <StyledNavChild>
+              <DropDownMenu
+                symbol={this.state.symbol}
+                handleChange={this.handleChange}
+                darkMode={this.state.darkMode}
+              />
+              <StyledButton
+                darkMode={this.state.darkMode}
+                onClick={this.handleClick}
+              >
+                <SVGContainer darkMode={this.state.darkMode}>
+                  <DarkMode />
+                </SVGContainer>
+              </StyledButton>
+            </StyledNavChild>
+          </StyledNav>
+          <AppBody darkMode={this.state.darkMode}>
             <Switch>
               <Route
                 exact
@@ -48,6 +67,7 @@ class App extends React.Component {
                   <Coins
                     symbol={this.state.symbol}
                     currency={this.state.currentCurrency}
+                    darkMode={this.state.darkMode}
                   />
                 )}
               />
@@ -58,6 +78,7 @@ class App extends React.Component {
                   <CoinPage
                     symbol={this.state.symbol}
                     currency={this.state.currentCurrency}
+                    darkMode={this.state.darkMode}
                   />
                 )}
               />
@@ -66,7 +87,7 @@ class App extends React.Component {
             </Switch>
           </AppBody>
         </Router>
-      </div>
+      </FullBody>
     );
   }
 }

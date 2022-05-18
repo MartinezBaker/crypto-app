@@ -3,7 +3,7 @@ import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { adjustBarThickness, titleCallBack, twentyFourHourFilter } from "utils/functionUtils";
 import { sparkLabelsArr  } from 'utils/arrayUtils';
-import { ChartTable } from './styles'
+import { ChartTable, StyledMessage } from "./styles";
 
 export const TableCharts = (props) => {
   return (
@@ -74,11 +74,11 @@ export const TableCharts = (props) => {
   );
 }
 
-export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceTimeArry, currSymbol}) => {
+export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceTimeArry, currSymbol, darkMode}) => {
   if(isLoading) {
-      return <h2>Loading...</h2>
+      return <StyledMessage darkMode={darkMode}>{errMessage}</StyledMessage>;
   }else if(hasError) {
-    return <h2>{errMessage}</h2>
+    return <StyledMessage darkMode={darkMode}>{errMessage}</StyledMessage>;
   } else{
     return (
       <div>
@@ -92,9 +92,11 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
                 borderWidth: 3.0,
                 data: data,
                 spanGaps: true,
-                pointHoverBackgroundColor: "rgb(0, 252, 42)",
+                pointHoverBackgroundColor: darkMode
+                  ? "rgb(0, 252, 42)"
+                  : "#0275d8",
                 hoverBorderWidth: 3,
-                hoverBorderColor: "rgb(0, 252, 42)",
+                hoverBorderColor: darkMode ? "rgb(0, 252, 42)" : "#0275d8",
               },
             ],
           }}
@@ -129,7 +131,10 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
             },
             elements: {
               line: {
-                borderColor: "rgb(0, 252, 42)",
+                backgroundColor: darkMode
+                  ? "rgba(0, 252, 42, 0.04)"
+                  : "rgb(2, 117, 216, 0.1)",
+                borderColor: darkMode ? "rgb(0, 252, 42)" : "#0275d8",
                 tension: 0.4,
               },
               point: {
@@ -166,11 +171,11 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
   }
 };
 
-export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, volTimeArry, currSymbol }) => {
+export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, volTimeArry, currSymbol, darkMode }) => {
   if(isLoading) {
-    return <h2>Loading...</h2>
+    return <StyledMessage darkMode={darkMode}>Loading...</StyledMessage>;
   }else if(hasError) {
-    return <h2>{errMessage}</h2>
+    return <StyledMessage darkMode={darkMode}>{errMessage}</StyledMessage>;
   } else{
     return (
       <div>
@@ -216,8 +221,8 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, 
             },
             elements: {
               bar: {
-                backgroundColor: "#0275d8",
-                borderColor: "#0275d8",
+                backgroundColor: darkMode ? "#0275d8" : "rgb(0, 252, 42)",
+                borderColor: darkMode ? "#0275d8" : "rgb(0, 252, 42)",
                 borderRadius: 5,
                 borderSkipped: false,
               },
@@ -259,6 +264,7 @@ export const CoinPageLineChart = ({
   data,
   labels,
   priceTimeArry,
+  darkMode
 }) => {
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -283,7 +289,7 @@ export const CoinPageLineChart = ({
               },
             ],
           }}
-          width= "1200px"
+          width="1200px"
           height="250px"
           options={{
             maintainAspectRatio: false,
@@ -316,6 +322,12 @@ export const CoinPageLineChart = ({
             },
             elements: {
               line: {
+                borderColor: darkMode
+                  ? "rgba(44, 47, 54, 0.6)"
+                  : "rgb(237, 239, 242)",
+                backgroundColor: darkMode
+                  ? "rgba(44, 47, 54, 0.6)"
+                  : "rgb(237, 239, 242)",
                 tension: 0.4,
               },
               point: {
@@ -327,6 +339,7 @@ export const CoinPageLineChart = ({
                 grid: {
                   display: false,
                   drawBorder: false,
+                  drawTicks: false
                 },
                 ticks: {
                   display: false,
@@ -336,6 +349,7 @@ export const CoinPageLineChart = ({
                 grid: {
                   display: false,
                   drawBorder: false,
+                  drawTicks: false
                 },
                 ticks: {
                   display: false,

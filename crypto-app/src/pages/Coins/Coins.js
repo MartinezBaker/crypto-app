@@ -146,7 +146,7 @@ class Coins extends React.Component {
       "1y": 364
     }
     Object.entries(marketDaysObj).map((entry) => {
-      const [key, value] = entry
+      const [key] = entry
       if(key === name){
         return this.setState({marketDays: marketDaysObj[name]})
       }else {
@@ -174,20 +174,19 @@ class Coins extends React.Component {
       <>
         <ParentDiv>
           <TitleParent>
-            <TitleChild>Overview</TitleChild>
+            <TitleChild darkMode={this.props.darkMode}>Overview</TitleChild>
           </TitleParent>
           <ChartParent>
-            <LineChartContainer>
+            <LineChartContainer darkMode={this.props.darkMode}>
               {this.state.isLoading || this.state.hasError ? (
                 <div></div>
               ) : (
-                <TextContainer>
+                <TextContainer darkMode={this.props.darkMode}>
                   <SubText>BTC Price</SubText>
                   <PriceText>
                     {lineChartData &&
                       this.props.symbol +
-                        formatNum(lineChartData[lineChartData.length - 1])
-                    }
+                        formatNum(lineChartData[lineChartData.length - 1])}
                   </PriceText>
                   <SubText>{getTodaysDate()}</SubText>
                 </TextContainer>
@@ -200,19 +199,19 @@ class Coins extends React.Component {
                 isLoading={this.state.isLoading}
                 hasError={this.state.hasError}
                 currSymbol={this.props.symbol}
+                darkMode={this.props.darkMode}
               />
             </LineChartContainer>
-            <BarChartContainer>
+            <BarChartContainer darkMode={this.props.darkMode}>
               {this.state.isLoading || this.state.hasError ? (
                 <div></div>
               ) : (
-                <TextContainer>
+                <TextContainer darkMode={this.props.darkMode}>
                   <SubText>BTC Volume 24h</SubText>
                   <PriceText>
                     {barChartData &&
                       this.props.symbol +
-                        formatNum(barChartData[barChartData.length - 1])
-                    }
+                        formatNum(barChartData[barChartData.length - 1])}
                   </PriceText>
                   <SubText>{getTodaysDate()}</SubText>
                 </TextContainer>
@@ -226,23 +225,35 @@ class Coins extends React.Component {
                 isLoading={this.state.isLoading}
                 hasError={this.state.hasError}
                 currSymbol={this.props.symbol}
+                darkMode={this.props.darkMode}
               />
             </BarChartContainer>
           </ChartParent>
-          <MarketDaysParent>
+          <MarketDaysParent darkMode={this.props.darkMode}>
             {marketDaysArr.map((days) => (
               <Button
                 key={days.name}
                 name={days.name}
                 active={marketDays === days.numDays}
                 handleClick={this.handleClick}
+                darkMode={this.props.darkMode}
               />
             ))}
           </MarketDaysParent>
           <TableParent>
-            <TableContainer>
+            <TableContainer darkMode={this.props.darkMode}>
               <TableTitleContainer>
-                <TableTitle1>TOP {this.state.coins.length}</TableTitle1><TableTitle2>{sortBy}</TableTitle2><SortButton onClick={this.handleTopSortClick}><FontAwesomeIcon icon={faCaretDown} style={{marginLeft: "5px"}} /></SortButton>
+                <TableTitle1>TOP {this.state.coins.length}</TableTitle1>
+                <TableTitle2>{sortBy}</TableTitle2>
+                <SortButton
+                  darkMode={this.props.darkMode}
+                  onClick={this.handleTopSortClick}
+                >
+                  <FontAwesomeIcon
+                    icon={faCaretDown}
+                    style={{ marginLeft: "5px" }}
+                  />
+                </SortButton>
               </TableTitleContainer>
               <InfiniteScroll
                 dataLength={coinList.length}
@@ -256,25 +267,32 @@ class Coins extends React.Component {
               >
                 <Table>
                   <thead>
-                    <TableRow>
-                      <TableHeader>#</TableHeader>
-                      <TableHeader>
+                    <TableRow darkMode={this.props.darkMode}>
+                      <TableHeader darkMode={this.props.darkMode}>
+                        #
+                      </TableHeader>
+                      <TableHeader darkMode={this.props.darkMode}>
                         Name
-                        <SortButton onClick={() => this.handleSort("name")}>
+                        <SortButton
+                          darkMode={this.props.darkMode}
+                          onClick={() => this.handleSort("name")}
+                        >
                           {setSortIcon(name)}
                         </SortButton>
                       </TableHeader>
-                      <TableHeader>
+                      <TableHeader darkMode={this.props.darkMode}>
                         Price
                         <SortButton
+                          darkMode={this.props.darkMode}
                           onClick={() => this.handleSort("current_price")}
                         >
                           {setSortIcon(current_price)}
                         </SortButton>
                       </TableHeader>
-                      <TableHeader>
+                      <TableHeader darkMode={this.props.darkMode}>
                         1h%
                         <SortButton
+                          darkMode={this.props.darkMode}
                           onClick={() =>
                             this.handleSort(
                               "price_change_percentage_1h_in_currency"
@@ -284,9 +302,10 @@ class Coins extends React.Component {
                           {setSortIcon(price_change_percentage_1h_in_currency)}
                         </SortButton>
                       </TableHeader>
-                      <TableHeader>
+                      <TableHeader darkMode={this.props.darkMode}>
                         24h%
                         <SortButton
+                          darkMode={this.props.darkMode}
                           onClick={() =>
                             this.handleSort(
                               "price_change_percentage_24h_in_currency"
@@ -296,9 +315,10 @@ class Coins extends React.Component {
                           {setSortIcon(price_change_percentage_24h_in_currency)}
                         </SortButton>
                       </TableHeader>
-                      <TableHeader>
+                      <TableHeader darkMode={this.props.darkMode}>
                         7d%
                         <SortButton
+                          darkMode={this.props.darkMode}
                           onClick={() =>
                             this.handleSort(
                               "price_change_percentage_7d_in_currency"
@@ -308,9 +328,15 @@ class Coins extends React.Component {
                           {setSortIcon(price_change_percentage_7d_in_currency)}
                         </SortButton>
                       </TableHeader>
-                      <TableHeader>24h Vol/Market Cap</TableHeader>
-                      <TableHeader>Circulating/Total Sup</TableHeader>
-                      <TableHeader>Last 7d</TableHeader>
+                      <TableHeader darkMode={this.props.darkMode}>
+                        24h Vol/Market Cap
+                      </TableHeader>
+                      <TableHeader darkMode={this.props.darkMode}>
+                        Circulating/Total Sup
+                      </TableHeader>
+                      <TableHeader darkMode={this.props.darkMode}>
+                        Last 7d
+                      </TableHeader>
                     </TableRow>
                   </thead>
                   <tbody>
@@ -343,6 +369,7 @@ class Coins extends React.Component {
                           sparkLine={coin.sparkline_in_7d}
                           currSymbol={this.props.symbol}
                           currency={this.props.currency}
+                          darkMode={this.props.darkMode}
                         />
                       ))) ||
                       this.props.errMessage}

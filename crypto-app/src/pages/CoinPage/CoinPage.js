@@ -182,7 +182,9 @@ class CoinPage extends React.Component {
       <>
         <ParentDiv>
           <TitleParent>
-            <TitleChild>Your Summery:</TitleChild>
+            <TitleChild darkMode={this.props.darkMode}>
+              Your Summery:
+            </TitleChild>
           </TitleParent>
           {this.state.isLoading ? (
             <h2>Loading...</h2>
@@ -190,23 +192,27 @@ class CoinPage extends React.Component {
             <h2>There Was An Error!</h2>
           ) : (
             <SummeryParent>
-              <SummeryChild>
+              <SummeryChild darkMode={this.props.darkMode}>
                 <div>
                   <ImgOutterContainer>
-                    <ImgInnerContainer>
+                    <ImgInnerContainer darkMode={this.props.darkMode}>
                       {thumbNail && <img src={thumbNail} alt="Coin" />}
                     </ImgInnerContainer>
                   </ImgOutterContainer>
-                  <CoinNameParent>
+                  <CoinNameParent darkMode={this.props.darkMode}>
                     {name && <div>{`${name} (${symbol})`}</div>}
                   </CoinNameParent>
                   <WebSiteParent>
-                    <WebSiteContainer>
-                      <LinkAnchor href={coinInfo.links?.homepage[0]}>
+                    <WebSiteContainer darkMode={this.props.darkMode}>
+                      <LinkAnchor
+                        darkMode={this.props.darkMode}
+                        href={coinInfo.links?.homepage[0]}
+                      >
                         <FontAwesomeIcon icon={faLink} />
                         <WebSiteSpan>{site}</WebSiteSpan>
                       </LinkAnchor>
                       <CopyTextButton
+                        darkMode={this.props.darkMode}
                         link={coinInfo.links?.homepage[0]}
                         handleCopyClick={this.handleCopyClick}
                       />
@@ -214,10 +220,10 @@ class CoinPage extends React.Component {
                   </WebSiteParent>
                 </div>
               </SummeryChild>
-              <SummeryChild>
+              <SummeryChild darkMode={this.props.darkMode}>
                 <div>
                   <PriceParent>
-                    <PriceContainer>
+                    <PriceContainer darkMode={this.props.darkMode}>
                       {this.props.symbol}
                       {currPrice?.toLocaleString()}
                     </PriceContainer>
@@ -230,12 +236,13 @@ class CoinPage extends React.Component {
                     </PercentContainer>
                   </PercentParent>
                   <SVGParent>
-                    <SVGContainer>
+                    <SVGContainer darkMode={this.props.darkMode}>
                       <BlackLayerLogo />
                     </SVGContainer>
                   </SVGParent>
                   <PriceDataContainer>
                     <PriceDataInfo
+                      darkMode={this.props.darkMode}
                       name="ATH"
                       price={
                         coinInfo.market_data?.ath[`${this.props.currency}`]
@@ -251,6 +258,7 @@ class CoinPage extends React.Component {
                       symbol={this.props.symbol}
                     />
                     <PriceDataInfo
+                      darkMode={this.props.darkMode}
                       name="ATL"
                       price={
                         coinInfo.market_data?.atl[`${this.props.currency}`]
@@ -268,16 +276,19 @@ class CoinPage extends React.Component {
                   </PriceDataContainer>
                 </div>
               </SummeryChild>
-              <SummeryChild>
+              <SummeryChild darkMode={this.props.darkMode}>
                 <MarketDataInfoContainer>
                   <MarketDataInfo>
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
-                      <MarketInfoDiv>
+                      <MarketInfoDiv darkMode={this.props.darkMode}>
                         <strong>Market Cap:</strong> {this.props.symbol}
                         {valueCheck(formatNum(marketCap))}
                       </MarketInfoDiv>
-                      <PercentContainer data={exchangeRate}>
+                      <PercentContainer
+                        darkMode={this.props.darkMode}
+                        data={exchangeRate}
+                      >
                         {exchangeRate && setCaretIcon(exchangeRate)}{" "}
                         {exchangeRate && formatTimePercent(exchangeRate)}
                       </PercentContainer>
@@ -286,7 +297,7 @@ class CoinPage extends React.Component {
                   <MarketDataInfo>
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
-                      <MarketInfoDiv>
+                      <MarketInfoDiv darkMode={this.props.darkMode}>
                         <strong>Fully Diluted Valuation:</strong>{" "}
                         {this.props.symbol}
                         {valueCheck(
@@ -298,7 +309,7 @@ class CoinPage extends React.Component {
                   <MarketDataInfo>
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
-                      <MarketInfoDiv>
+                      <MarketInfoDiv darkMode={this.props.darkMode}>
                         <strong>Vol 24h:</strong> {this.props.symbol}
                         {valueCheck(formatNum(volTwentyFourHours))}
                       </MarketInfoDiv>
@@ -307,7 +318,7 @@ class CoinPage extends React.Component {
                   <MarketDataInfo>
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
-                      <MarketInfoDiv>
+                      <MarketInfoDiv darkMode={this.props.darkMode}>
                         <strong>Volume/Market:</strong>{" "}
                         {formatCoinName(volToMarketCap.toString())}
                       </MarketInfoDiv>
@@ -317,7 +328,7 @@ class CoinPage extends React.Component {
                   <MarketDataInfo>
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
-                      <MarketInfoDiv>
+                      <MarketInfoDiv darkMode={this.props.darkMode}>
                         <TotalVol>Total Volume:</TotalVol>{" "}
                         {valueCheck(totalVol, symbol)}
                       </MarketInfoDiv>
@@ -326,7 +337,7 @@ class CoinPage extends React.Component {
                   <MarketDataInfo>
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
-                      <MarketInfoDiv>
+                      <MarketInfoDiv darkMode={this.props.darkMode}>
                         <strong>Circulating Supply:</strong>{" "}
                         {valueCheck(circulatingSupply?.toFixed(0), symbol)}
                       </MarketInfoDiv>
@@ -335,7 +346,7 @@ class CoinPage extends React.Component {
                   <MarketDataInfo>
                     <MarketFlexDiv>
                       <BulletDiv>+</BulletDiv>
-                      <MarketInfoDiv>
+                      <MarketInfoDiv darkMode={this.props.darkMode}>
                         <MaxSupply>Max Supply:</MaxSupply>{" "}
                         {valueCheck(maxSupply?.toFixed(0), symbol)}{" "}
                       </MarketInfoDiv>
@@ -354,10 +365,13 @@ class CoinPage extends React.Component {
           {description ? (
             <div>
               <TitleParent>
-                <TitleChild>Description:</TitleChild>
+                <TitleChild darkMode={this.props.darkMode}>
+                  Description:
+                </TitleChild>
               </TitleParent>
               <DescriptionParent>
                 <DescriptionChild
+                  darkMode={this.props.darkMode}
                   dangerouslySetInnerHTML={{ __html: description }}
                 />
               </DescriptionParent>
@@ -367,24 +381,27 @@ class CoinPage extends React.Component {
           )}
           <LinkParent>
             {blockChainSite?.[0] && (
-              <LinkStyle>
+              <LinkStyle darkMode={this.props.darkMode}>
                 <Link
+                  darkMode={this.props.darkMode}
                   link={blockChainSite?.[0]}
                   handleCopyClick={this.handleCopyClick}
                 />
               </LinkStyle>
             )}
             {blockChainSite?.[1] && (
-              <LinkStyle>
+              <LinkStyle darkMode={this.props.darkMode}>
                 <Link
+                  darkMode={this.props.darkMode}
                   link={blockChainSite?.[1]}
                   handleCopyClick={this.handleCopyClick}
                 />
               </LinkStyle>
             )}
             {blockChainSite?.[2] && (
-              <LinkStyle>
+              <LinkStyle darkMode={this.props.darkMode}>
                 <Link
+                  darkMode={this.props.darkMode}
                   link={blockChainSite?.[2]}
                   handleCopyClick={this.handleCopyClick}
                 />
@@ -400,13 +417,17 @@ class CoinPage extends React.Component {
                 value={days.name}
                 active={this.state.marketDays === days.numDays}
                 handleClick={this.handleClick}
+                darkMode={this.props.darkMode}
               />
             ))}
           </MarketDaysParent>
           <ConverterParent>
             <Converter>
-              <CurrencyLabel>{this.props.currency.toUpperCase()}</CurrencyLabel>
+              <CurrencyLabel darkMode={this.props.darkMode}>
+                {this.props.currency.toUpperCase()}
+              </CurrencyLabel>
               <CurrencyInput
+                darkMode={this.props.darkMode}
                 handleSubmit={this.handleSubmit}
                 symbol={this.props.symbol}
                 currency={this.props.currency}
@@ -414,12 +435,15 @@ class CoinPage extends React.Component {
                 handleKeyDown={this.handleKeyDown}
               />
             </Converter>
-            <Icon>
+            <Icon darkMode={this.props.darkMode}>
               <FontAwesomeIcon icon={faExchange} />
             </Icon>
             <Converter>
-              <CurrencyLabel>{symbol?.toUpperCase()}</CurrencyLabel>
+              <CurrencyLabel darkMode={this.props.darkMode}>
+                {symbol?.toUpperCase()}
+              </CurrencyLabel>
               <CurrencyInput
+                darkMode={this.props.darkMode}
                 handleSubmit={this.handleSubmit}
                 symbol={symbol?.toUpperCase()}
                 exchange={toCoin}
@@ -436,6 +460,7 @@ class CoinPage extends React.Component {
             errMessage={this.state.errMessage}
             isLoading={this.state.isLoading}
             hasError={this.state.hasError}
+            darkMode={this.props.darkMode}
           />
         </ChartParent>
       </>

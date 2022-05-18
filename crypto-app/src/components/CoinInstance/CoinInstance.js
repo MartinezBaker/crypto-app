@@ -7,12 +7,12 @@ import { setCaretIcon } from 'utils/FontAwesomeutil'
 import { CoinImage, PercentColor, DataRow, TableCell, ProgressParent } from './styles';
 
 const CoinInstance = (props) => (
-  <DataRow>
+  <DataRow darkMode={props.darkMode}>
     <TableCell>
       <CoinImage src={props.image} alt="Coin" />{" "}
       <Link
         to={`/coins/${props.id}`}
-        style={{ textDecoration: "none", color: "black" }}
+        style={{ textDecoration: "none", color: props.darkMode ? "white" : "black" }}
       >
         {formatCoinName(props.name)} ({props.symbol})
       </Link>

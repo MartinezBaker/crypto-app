@@ -6,13 +6,20 @@ export const MarketDaysButton = styled.button`
   padding-block: 6px;
   font-size: 14px;
   border-radius: 14px;
-  border: 1px solid white;
-  cursor: pointer; 
-  background-color: ${({active}) => {
-    if(active) {
-      return "rgb(0, 252, 42)";
-    }else{
-      return "#f7f7f7"
+  border: none;
+  cursor: pointer;
+  background-color: ${({ active, darkMode }) => {
+    if (active) {
+      return darkMode ? "rgb(2, 117, 216)" : "rgb(0, 252, 42)";
+    } else {
+      return darkMode ? "rgb(31, 33, 40)" : "#f7f7f7";
     }
-  }}
+  }};
+  color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "white";
+    } else {
+      return "black";
+    }
+  }};
 `;

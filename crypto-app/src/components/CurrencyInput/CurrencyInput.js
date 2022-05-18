@@ -20,6 +20,7 @@ class CurrencyInput extends React.Component {
     return (
       <form onSubmit={this.handleSubmit}>
         <StyledInput
+          darkMode={this.props.darkMode}
           onChange={this.handleChange}
           value={
             inputValue.includes(symbol?.split('')[0])

@@ -11,6 +11,13 @@ export const TitleParent = styled.div`
 export const TitleChild = styled.div`
   margin: 10px 5px 5px 5px;
   font-size: 23px;
+  color:${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    }else{
+      return "black"
+    }
+  }};
 `;
 
 export const SummeryParent = styled.div`
@@ -19,10 +26,15 @@ export const SummeryParent = styled.div`
 `
 
 export const SummeryChild = styled.div`
-  border: 1px solid white;
   border-radius: 25px;
-  background: white;
-  padding: 25px 36px 15px 36px ;
+  background-color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "rgb(25, 27, 31)";
+    } else {
+      return "white";
+    }
+  }};
+  padding: 25px 36px 15px 36px;
   text-align: center;
   flex-grow: 1;
   flex-shrink: 1;
@@ -36,15 +48,28 @@ export const ImgOutterContainer = styled.div`
 `;
 
 export const ImgInnerContainer = styled.div`
-    padding: 24px;
-    background: rgb(247, 247, 247);
-    width: 50px;
-    display: inline-block;
+  padding: 24px;
+  background-color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "rgb(31, 33, 40)";
+    } else {
+      return "white";
+    }
+  }};
+  width: 50px;
+  display: inline-block;
 `;
 
 export const CoinNameParent = styled.div`
   width: 100%;
   margin-bottom: 20px;
+  color:${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    }else{
+      return "black"
+    }
+  }}
 `;
 
 export const WebSiteParent = styled.div`
@@ -53,16 +78,27 @@ export const WebSiteParent = styled.div`
 `
 
 export const WebSiteContainer = styled.div`
-  background: rgb(247, 247, 247);
-  border: solid 1px rgb(247, 247, 247);
+  background-color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "rgb(31, 33, 40)";
+    } else {
+      return "white";
+    }
+  }};
   border-radius: 10px;
   padding: 4px 20px 4px 20px;
   width: 203px;
   margin: auto;
-`
+`;
 export const LinkAnchor = styled.a`
   text-decoration: none;
-  color: black;
+  color:${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    }else{
+      return "black"
+    }
+  }};
 `;
 
 export const WebSiteSpan = styled.span`
@@ -76,6 +112,13 @@ export const PriceParent = styled.div`
 export const PriceContainer = styled.div`
   font-size: 24px;
   font-weight: bold;
+  color:${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    }else{
+      return "black"
+    }
+  }}
 `
 
 export const PercentParent = styled.div`
@@ -101,6 +144,13 @@ export const SVGParent = styled.div`
 export const SVGContainer = styled.div`
   display: inline-block;
   vertical-align: middle;
+  color:${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    }else {
+      return "black"
+    }
+  }}
 `
 
 export const PriceDataContainer = styled.div`
@@ -134,6 +184,13 @@ export const BulletDiv = styled.div`
 
 export const MarketInfoDiv = styled.div`
   margin-right: 4px;
+  color:${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    }else{
+      return "black"
+    }
+  }};
 `
 
 export const Spacer = styled.div`
@@ -155,17 +212,35 @@ export const DescriptionParent = styled.div`
 `;
 
 export const DescriptionChild = styled.div`
-  border: 1px solid white;
   border-radius: 25px;
   margin: 5px 5px 30px 5px;
   padding: 18px 36px 18px 36px;
-  background-color: white;
+  background-color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "rgb(25, 27, 31)";
+    } else {
+      return "white";
+    }
+  }};
+  color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "white";
+    } else {
+      return "black";
+    }
+  }};
   font-size: 12px;
   a {
     text-decoration: none;
     color: inherit;
     color: #0275d8;
-    background-color: rgb(247, 247, 247);
+    background-color: ${({ darkMode }) => {
+      if (darkMode) {
+        return "rgb(31, 33, 40)";
+      } else {
+        return "rgb(247, 247, 247);";
+      }
+    }};
   }
 `;
 
@@ -177,7 +252,6 @@ export const LinkParent = styled.div`
 `
 
 export const LinkStyle = styled.div`
-  border: 1px solid white;
   border-radius: 10px;
   flex-grow: 1;
   flex-shrink: 1;
@@ -185,7 +259,13 @@ export const LinkStyle = styled.div`
   text-align: center;
   margin: 5px;
   padding: 10px;
-  background-color: white;
+  background-color: ${({darkMode}) => {
+    if(darkMode){
+      return "rgb(25, 27, 31)";
+    }else{
+      return "white"
+    }
+  }};
   font-size: 12px;
   text-decoration: none;
 `;
@@ -207,8 +287,20 @@ export const Converter = styled.div`
   margin: 5px;
 `
 export const CurrencyLabel = styled.div`
-  border: 1px solid #0275d8;
-  background-color: #0275d8;
+  border: ${({ darkMode }) => {
+    if (darkMode) {
+      return "1px solid rgb(0, 252, 42)"
+    } else {
+      return "1px solid #0275d8";
+    }
+  }};
+  background-color: ${({ darkMode }) => {
+    if (darkMode) {
+      return "rgb(0, 252, 42)";
+    } else {
+      return "#0275d8";
+    }
+  }};
   color: white;
   border-radius: 8px 0px 0px 8px;
   padding: 7px 20px 7px 20px;
@@ -219,6 +311,13 @@ export const CurrencyLabel = styled.div`
 export const Icon = styled.div`
   margin: auto 10px;
   font-size: 17px;
+  color: ${({darkMode}) => {
+    if(darkMode){
+      return "white"
+    }else{
+      return "black"
+    }
+  }}
  `
 
 export const ChartParent = styled.div`

@@ -6,9 +6,9 @@ import { CopyTextButton } from 'components'
 import { formatLink } from 'utils/functionUtils';
 import { LinkAnchor, WebSiteSpan } from './styles';
 
-const Link = ({link, handleCopyClick}) => (
+const Link = ({link, handleCopyClick, darkMode}) => (
     <>
-        <LinkAnchor href={link}><FontAwesomeIcon icon={faLink} /><WebSiteSpan>{formatLink(link)}</WebSiteSpan></LinkAnchor><CopyTextButton link={link} handleCopyClick={handleCopyClick} />
+        <LinkAnchor darkMode={darkMode} href={link}><FontAwesomeIcon icon={faLink} /><WebSiteSpan>{formatLink(link)}</WebSiteSpan></LinkAnchor><CopyTextButton darkMode={darkMode} link={link} handleCopyClick={handleCopyClick} />
     </>
 )
 

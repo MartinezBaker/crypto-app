@@ -9,7 +9,13 @@ export const DataRow = styled.tr`
     padding: 0px 10px 0px 10px;
     vertical-align: middle;
   }
-  border-bottom: 1px solid black;
+  border-bottom: ${({darkMode}) => {
+    if(darkMode){
+      return "1px solid white"
+    }else {
+      return "1px solid black"
+    }
+  }};
   border-left: none;
 `;
 
