@@ -5,7 +5,7 @@ export const MarketDaysButton = styled.button`
   padding-inline: 14px;
   padding-block: 6px;
   font-size: 14px;
-  border-radius: 14px;
+  border-radius: 20px;
   border: none;
   cursor: pointer;
   background-color: ${({ active, theme }) => {

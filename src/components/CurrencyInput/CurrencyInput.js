@@ -1,38 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyledInput } from './styles'
 
-class CurrencyInput extends React.Component {
-  state = {
-      inputValue:"",
+const CurrencyInput = (props) => {
+  const [value, setValue] = useState("")
+
+  const handleChange = (e) => {
+    setValue(e.target.value)
   }
-  handleChange = (e) => {
-      this.setState({inputValue:e.target.value})
-  }
-  handleSubmit = (e) => {
-      e.preventDefault();
-      const value = this.state.inputValue
-      this.props.handleSubmit(value);
-      this.setState({inputValue:""})
-  }
-  render(){
-    const {inputValue} = this.state
-    const {symbol, exchange} = this.props
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <StyledInput
-          darkMode={this.props.darkMode}
-          onChange={this.handleChange}
-          value={
-            inputValue.includes(symbol?.split('')[0])
-              ? `${inputValue || exchange}`
-              : `${symbol} ${
-                  inputValue || exchange
-                }`
-          }
-        />
-      </form>
-    );
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.handleSubmit(value);
+    setValue("")
+ }
+  const {symbol, exchange} = props
+  return (
+    <form onSubmit={handleSubmit}>
+      <StyledInput
+        onChange={handleChange}
+        value={
+          value.includes(symbol?.split('')[0])
+            ? `${value || exchange}`
+            : `${symbol} ${
+                value || exchange
+              }`
+        }
+      />
+    </form>
+  );
 }
 
 export default CurrencyInput;
