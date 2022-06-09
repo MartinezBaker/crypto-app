@@ -19,6 +19,7 @@ export const ChartParent = styled.div`
   justify-content: space-between
   
 `
+
 export const LineChartContainer = styled.div`
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
@@ -101,6 +102,7 @@ export const Table = styled.table`
   border-left: none;
   padding: 15px 0px 15px 0px;
   font-size: 11px;
+  overflow: hidden;
  ` 
 
 export const TableRow = styled.tr`

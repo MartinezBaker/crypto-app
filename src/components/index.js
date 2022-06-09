@@ -6,3 +6,5 @@ export { default as Link } from './Link';
 export { default as CopyTextButton } from './CopyTextButton';
 export { default as CurrencyInput } from './CurrencyInput';
 export {default as MarketDaysInput } from './MarketDaysInput'
+export { default as Modal } from './Modal'
+export { default as ModalInput } from './ModalInput'

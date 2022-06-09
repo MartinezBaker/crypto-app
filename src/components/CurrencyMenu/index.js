@@ -2,27 +2,26 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { currencyArry } from "utils/arrayUtils";
-import { StyledSelect, StyledSymbolContainer, StyledSymbolSpan, StyledIconContainer } from "./styles";
+import { StyledSelect, StyledSymbolSpan, StyledIconContainer, DropDownContainer } from "./styles";
 
 export const DropDownMenu = (props) => (
-  <div>
-    <StyledSymbolContainer darkMode={props.darkMode}>
+  <DropDownContainer>
+    <div>
       <StyledSymbolSpan>{props.symbol}</StyledSymbolSpan>
-    </StyledSymbolContainer>
-    <StyledSelect
-      darkMode={props.darkMode}
-      id="currency"
-      name="currency"
-      onChange={(e) => props.handleChange(e)}
-    >
-      {currencyArry.map((currency) => (
-        <Options key={currency} value={currency} />
-      ))}
-    </StyledSelect>
-    <StyledIconContainer darkMode={props.darkMode}>
+    </div>
+    <div>
+      <StyledSelect
+        onChange={(e) => props.handleChange(e)}
+      >
+        {currencyArry.map((currency) => (
+          <Options key={currency} value={currency} />
+        ))}
+      </StyledSelect>
+    </div>
+    <StyledIconContainer>
       <FontAwesomeIcon icon={faCaretDown} />
     </StyledIconContainer>
-  </div>
+  </DropDownContainer>
 );
 
 const Options = (props) => (

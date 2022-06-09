@@ -9,6 +9,7 @@ export const AppBody = styled.div`
 
 export const StyledNav = styled.nav`
   display: flex;
+  margin: 10px 0px;
 `
 
 export const StyledNavChild = styled.div`
