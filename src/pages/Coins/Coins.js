@@ -150,7 +150,7 @@ const Coins = (props) => {
           </TableTitleContainer>
           <InfiniteScroll
             dataLength={coinList?.length}
-            next={getMoreCoins()} //not finished with this
+            next={() => props.getMoreCoins(props.coins.page + 1)}
             hasMore={props.coins.hasMore}
             loader={
               (props.coins.loading && (
@@ -273,7 +273,7 @@ const Coins = (props) => {
       sortItems: (sortType) => dispatch(sortItems(sortType)),
       getChartData: () => dispatch(getChartData()),
       getCoins: () => dispatch(getCoins()),
-      getMoreCoins: () => dispatch(getMoreCoins())
+      getMoreCoins: (page) => dispatch(getMoreCoins(page))
     }
   }
 

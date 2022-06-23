@@ -3,7 +3,7 @@ const initialState = {
   page: 1,
   loading: false,
   error: false,
-  hasMore: false,
+  hasMore: true,
   errorMessage: "",
   chartData: null,
   marketDays: 29,
@@ -59,14 +59,14 @@ export default function coinsReducer(state = initialState, action) {
         return {
           ...state,
           loading: false,
-          hasMore: false,
+          hasMore: false
         };
       } else {
         return {
           ...state,
           loading: false,
           coins: [...state.coins, ...action.payload],
-          page: state.page + 1
+          page: state.page + 1,
         };
       }
     case GET_MORE_COINS_FAILED:

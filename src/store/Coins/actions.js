@@ -38,16 +38,14 @@ export const getCoins = () => async (dispatch, getState) => {
   }
 };
 
-export const getMoreCoins = () => async (dispatch, getState) => {
+export const getMoreCoins = (page) => async (dispatch, getState) => {
   try {
     dispatch({
       type: GET_MORE_COINS_PENDING,
     });
     const currency = getCurrency(getState());
-    const page = getPage(getState())
-    const nextPage = page + 1
     const { data } = await axios(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=50&page=${nextPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=50&page=${page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
     );
     dispatch({
       type: GET_MORE_COINS_SUCCESS,
