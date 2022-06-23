@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { connect } from 'react-redux'
+import { converterSubmit } from 'store/CoinPage/actions'
 import { StyledInput } from './styles'
 
 const CurrencyInput = (props) => {
@@ -7,14 +9,9 @@ const CurrencyInput = (props) => {
   const handleChange = (e) => {
     setValue(e.target.value)
   }
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    props.handleSubmit(value);
-    setValue("")
- }
   const {symbol, exchange} = props
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => { e.preventDefault(); setValue(""); props.converterSubmit(value, symbol);}}>
       <StyledInput
         onChange={handleChange}
         value={
@@ -29,4 +26,10 @@ const CurrencyInput = (props) => {
   );
 }
 
-export default CurrencyInput;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    converterSubmit: (value, symbol) => dispatch(converterSubmit(value, symbol)),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(CurrencyInput);

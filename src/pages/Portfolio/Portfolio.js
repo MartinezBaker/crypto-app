@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { connect } from "react-redux/es/exports";
 import { Modal }  from 'components'
 import {StyledButton, ButtonContainer, ParentDiv,  } from './styles'
 
@@ -23,4 +24,8 @@ const Portfolio = (props) => {
   );
 }
 
-export default Portfolio;
+ const mapStateToProps = (state) => ({
+   portfolio: state.portfolio,
+ });
+
+ export default connect(mapStateToProps)(Portfolio);

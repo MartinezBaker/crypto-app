@@ -230,5 +230,5 @@ export const ChartParent = styled.div`
 `
 
 export const StyledMessage = styled.h2`
-  color: 5px solid ${({ theme }) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;

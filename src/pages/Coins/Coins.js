@@ -1,6 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React, { useEffect } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
-import axios from "axios";
+import { connect } from "react-redux";
+import {
+  getCoins,
+  getChartData,
+  getMoreCoins,
+  sortAtTop,
+  sortItems,
+} from "../../store/Coins/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
@@ -12,135 +19,19 @@ import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartCon
 import { StyledMessage } from 'components/Charts/styles';
 
 const Coins = (props) => {
-  const [coins, setCoins] = useState(null)
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [hasMore, setHasMore] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [chartData, setChartData] = useState(null);
-  const [marketDays, setMarketDays] = useState(29);
-  const [sortBy, setSortBy] = useState("BY MARKET CAP");
-  const [sort, setSort] = useState({
-    sortName: null,
-    current_price: null,
-    price_change_percentage_1h_in_currency: null,
-    price_change_percentage_24h_in_currency: null,
-    price_change_percentage_7d_in_currency: null,
-  });
-  
-  const getCoins = async () => {
-    try {
-      setLoading(true)
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${props.currency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
-      );
-      setCoins(data)
-      setLoading(false)
-    } catch (error) {
-      setLoading(false);
-      setError(true)
-      setErrorMessage("There was a problem getting coin list!");
-    }
-  };
-  const getMoreCoins = async () => {
-    try {
-      const nextPage = page + 1;
-      setPage(nextPage)
-      setLoading(true)
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${props.currency}&order=market_cap_desc&per_page=50&page=${nextPage}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
-      );
-      if (!data.length) {
-        setHasMore(false)
-      }
-      const addCoins = [...coins, ...data];
-      setCoins(addCoins)
-      setLoading(false)
-    } catch (error) {
-      setLoading(false);
-      setError(true)
-      setErrorMessage("Could not load more coins!");
-    }
-  };
-  const getChartData = async () => {
-    try {
-      setLoading(true)
-      const { data } = await axios.get(
-        `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${props.currency}&days=${marketDays}&interval=daily`
-      );
-      setLoading(false)
-      setChartData(data)
-    } catch (error) {
-      setLoading(false);
-      setError(true)
-      setErrorMessage("Could Not Load Chart Data!");
-    }
-  };
-  const handleTopSortClick = () => {
-    const newSort = Object.entries(sort)
-      .map((entry) => {
-        const [key] = entry;
-        return {
-          [key]: null,
-        };
-      })
-      .reduce((acc, element) => ({ ...acc, ...element }), {});
-    setSort(newSort)
-    if (sortBy === "BY MARKET CAP") {
-      setSortBy("BY VOLUME")
-    } else {
-      setSortBy("BY MARKET CAP")
-    }
-  };
-  const handleSort = (sortType) => {
-    setSortBy("BY MARKET CAP");
-    const newSort = Object.entries(sort)
-      .map((entry) => {
-        const [key, value] = entry;
-        if (key === sortType) {
-          return {
-            [key]: value !== true,
-          };
-        } else {
-          return {
-            [key]: null,
-          };
-        }
-      })
-      .reduce((acc, element) => ({ ...acc, ...element }), {});
-    setSort(newSort)
-  };
-  const handleClick = (name) => {
-    const marketDaysObj = {
-      "1d": 1,
-      "1w": 6,
-      "1m": 29,
-      "3m": 89,
-      "6m": 179,
-      "1y": 364,
-    };
-    Object.entries(marketDaysObj).map((entry) => {
-      const [key] = entry;
-      if (key === name) {
-        return setMarketDays(marketDaysObj[name]);
-      } else {
-        return null;
-      }
-    });
-  };
   useEffect(() => {
-    getCoins();
-    getChartData();
+    props.getCoins();
+    props.getChartData();
     // eslint-disable-next-line
   }, [])
   useEffect(() => {
-    getChartData()
-  }, [marketDays])
+    props.getChartData();
+  }, [props.coins.marketDays])
   useEffect(() => {
-    getCoins()
-    getChartData()
-  },[props.currency])
+    props.getCoins();
+    props.getChartData();
+  },[props.main.currentCurrency])
+  const chartData = props.coins.chartData
   const lineChartLabels =
     chartData?.prices && formatChartData(chartData.prices, 0);
   const lineChartData =
@@ -150,26 +41,31 @@ const Coins = (props) => {
     formatChartData(chartData.total_volumes, 0);
   const barChartData =
     chartData?.total_volumes && formatChartData(chartData.total_volumes, 1);
+  const coins = props.coins.coins
   let coinList = [...(coins ? coins : [])];
-  coinList = coinList?.sort(topSort(sortBy, "BY MARKET CAP", "market_cap"));
-  coinList = coinList?.sort(topSort(sortBy, "BY VOLUME", "total_volume"));
-  coinList = coinList?.sort(sortList(sort.sortName, "name"));
-  coinList = coinList?.sort(sortList(sort.current_price, "current_price"));
+  coinList = coinList?.sort(topSort(props.coins.sortBy, "BY MARKET CAP", "market_cap"));
+  coinList = coinList?.sort(
+    topSort(props.coins.sortBy, "BY VOLUME", "total_volume")
+  );
+  coinList = coinList?.sort(sortList(props.coins.sort.sortName, "name"));
+  coinList = coinList?.sort(
+    sortList(props.coins.sort.current_price, "current_price")
+  );
   coinList = coinList?.sort(
     sortList(
-      sort?.price_change_percentage_1h_in_currency,
+      props.coins.sort.price_change_percentage_1h_in_currency,
       "price_change_percentage_1h_in_currency"
     )
   );
   coinList = coinList?.sort(
     sortList(
-      sort?.price_change_percentage_24h_in_currency,
+      props.coins.sort.price_change_percentage_24h_in_currency,
       "price_change_percentage_24h_in_currency"
     )
   );
   coinList = coinList?.sort(
     sortList(
-      sort?.price_change_percentage_7d_in_currency,
+      props.coins.sort.price_change_percentage_7d_in_currency,
       "price_change_percentage_7d_in_currency"
     )
   );
@@ -180,14 +76,14 @@ const Coins = (props) => {
       </TitleParent>
       <ChartParent>
         <LineChartContainer>
-          {loading || error ? (
+          {props.coins.loading || props.coins.error ? (
             <div></div>
           ) : (
             <TextContainer>
               <SubText>BTC Price</SubText>
               <PriceText>
                 {lineChartData &&
-                  props.symbol +
+                  props.main.symbol +
                     formatNum(lineChartData[lineChartData.length - 1])}
               </PriceText>
               <SubText>{getTodaysDate()}</SubText>
@@ -197,37 +93,37 @@ const Coins = (props) => {
             labels={lineChartLabels}
             data={lineChartData}
             priceTimeArry={chartData?.prices}
-            errMessage={errorMessage}
-            isLoading={loading}
-            hasError={error}
-            currSymbol={props.symbol}
-            darkMode={props.darkMode}
+            errMessage={props.coins.errorMessage}
+            isLoading={props.coins.loading}
+            hasError={props.coins.error}
+            currSymbol={props.main.symbol}
+            darkMode={props.main.darkMode}
           />
         </LineChartContainer>
         <BarChartContainer>
-          {loading || error ? (
+          {props.coins.loading || props.coins.error ? (
             <div></div>
           ) : (
             <TextContainer>
               <SubText>BTC Volume 24h</SubText>
               <PriceText>
                 {barChartData &&
-                  props.symbol +
+                  props.main.symbol +
                     formatNum(barChartData[barChartData.length - 1])}
               </PriceText>
               <SubText>{getTodaysDate()}</SubText>
             </TextContainer>
           )}
           <BarChart
-            days={marketDays}
+            days={props.coins.marketDays}
             labels={barChartLabels}
             data={barChartData}
             volTimeArry={chartData?.total_volumes}
-            errMessage={errorMessage}
-            isLoading={loading}
-            hasError={error}
-            currSymbol={props.symbol}
-            darkMode={props.darkMode}
+            errMessage={props.coins.errorMessage}
+            isLoading={props.coins.loading}
+            hasError={props.coins.error}
+            currSymbol={props.main.symbol}
+            darkMode={props.main.darkMode}
           />
         </BarChartContainer>
       </ChartParent>
@@ -236,8 +132,7 @@ const Coins = (props) => {
           <Button
             key={days.name}
             name={days.name}
-            active={marketDays === days.numDays}
-            handleClick={handleClick}
+            active={props.coins.marketDays === days.numDays}
           />
         ))}
       </MarketDaysParent>
@@ -245,8 +140,8 @@ const Coins = (props) => {
         <TableContainer>
           <TableTitleContainer>
             <TableTitle1>TOP {coins?.length}</TableTitle1>
-            <TableTitle2>{sortBy}</TableTitle2>
-            <SortButton onClick={handleTopSortClick}>
+            <TableTitle2>{props.coins.sortBy}</TableTitle2>
+            <SortButton onClick={() => props.sortAtTop()}>
               <FontAwesomeIcon
                 icon={faCaretDown}
                 style={{ marginLeft: "5px" }}
@@ -255,12 +150,12 @@ const Coins = (props) => {
           </TableTitleContainer>
           <InfiniteScroll
             dataLength={coinList?.length}
-            next={getMoreCoins}
-            hasMore={hasMore}
+            next={getMoreCoins()} //not finished with this
+            hasMore={props.coins.hasMore}
             loader={
-              (loading && <StyledMessage>Loading...</StyledMessage>) || (
-                <StyledMessage>{errorMessage}</StyledMessage>
-              )
+              (props.coins.loading && (
+                <StyledMessage>Loading...</StyledMessage>
+              )) || <StyledMessage>{props.coins.errorMessage}</StyledMessage>
             }
           >
             {coinList.length ? (
@@ -270,25 +165,26 @@ const Coins = (props) => {
                     <TableHeader>#</TableHeader>
                     <TableHeader>
                       Name
-                      <SortButton onClick={() => handleSort("sortName")}>
-                        {setSortIcon(sort.sortName)}
+                      <SortButton onClick={() => props.sortItems("sortName")}>
+                        {setSortIcon(props.coins.sort.sortName)}
                       </SortButton>
                     </TableHeader>
                     <TableHeader>
                       Price
-                      <SortButton onClick={() => handleSort("current_price")}>
-                        {setSortIcon(sort.current_price)}
+                      <SortButton onClick={() => props.sortItems("current_price")}>
+                        {setSortIcon(props.coins.sort.current_price)}
                       </SortButton>
                     </TableHeader>
                     <TableHeader>
                       1h%
                       <SortButton
                         onClick={() =>
-                          handleSort("price_change_percentage_1h_in_currency")
+                          props.sortItems("price_change_percentage_1h_in_currency")
                         }
                       >
                         {setSortIcon(
-                          sort.price_change_percentage_1h_in_currency
+                          props.coins.sort
+                            .price_change_percentage_1h_in_currency
                         )}
                       </SortButton>
                     </TableHeader>
@@ -296,11 +192,12 @@ const Coins = (props) => {
                       24h%
                       <SortButton
                         onClick={() =>
-                          handleSort("price_change_percentage_24h_in_currency")
+                          props.sortItems("price_change_percentage_24h_in_currency")
                         }
                       >
                         {setSortIcon(
-                          sort.price_change_percentage_24h_in_currency
+                          props.coins.sort
+                            .price_change_percentage_24h_in_currency
                         )}
                       </SortButton>
                     </TableHeader>
@@ -308,11 +205,12 @@ const Coins = (props) => {
                       7d%
                       <SortButton
                         onClick={() =>
-                          handleSort("price_change_percentage_7d_in_currency")
+                          props.sortItems("price_change_percentage_7d_in_currency")
                         }
                       >
                         {setSortIcon(
-                          sort.price_change_percentage_7d_in_currency
+                          props.coins.sort
+                            .price_change_percentage_7d_in_currency
                         )}
                       </SortButton>
                     </TableHeader>
@@ -356,7 +254,7 @@ const Coins = (props) => {
                 </tbody>
               </Table>
             ) : (
-              <StyledMessage>{errorMessage}</StyledMessage>
+              <StyledMessage>{props.coins.errorMessage}</StyledMessage>
             )}
           </InfiniteScroll>
         </TableContainer>
@@ -364,5 +262,20 @@ const Coins = (props) => {
     </ParentDiv>
   );
 }
+  const mapStateToProps = (state) => ({
+    coins: state.coins,
+    main: state.main
+  })
 
-export default Coins;
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      sortAtTop: () => dispatch(sortAtTop()),
+      sortItems: (sortType) => dispatch(sortItems(sortType)),
+      getChartData: () => dispatch(getChartData()),
+      getCoins: () => dispatch(getCoins()),
+      getMoreCoins: () => dispatch(getMoreCoins())
+    }
+  }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Coins);
