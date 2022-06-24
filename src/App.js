@@ -67,24 +67,12 @@ const App = (props) => {
             <Route
               exact
               path="/coins"
-              render={() => (
-                <Coins
-                  symbol={props.main.symbol}
-                  currency={props.main.currentCurrency}
-                  darkMode={props.main.darkMode}
-                />
-              )}
+              component={Coins}
             />
             <Route
               exact
               path="/coins/:coinId"
-              render={() => (
-                <CoinPage
-                  symbol={props.main.symbol}
-                  currency={props.main.currentCurrency}
-                  darkMode={props.main.darkMode}
-                />
-              )}
+              component={CoinPage}
             />
             <Route exact path="/portfolio" component={Portfolio} />
             <Redirect to="/coins" />

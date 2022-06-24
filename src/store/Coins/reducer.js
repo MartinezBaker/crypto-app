@@ -160,5 +160,4 @@ export default function coinsReducer(state = initialState, action) {
 }
 
 export const getPage = (state) => state.coins.page
-
 export const getMarketDays = (state) => state.coins.marketDays

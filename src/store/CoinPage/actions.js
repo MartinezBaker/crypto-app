@@ -57,7 +57,6 @@ export const converterSubmit = (value, symbol) => {
 }
 
 export const marketDaysClick = (value) => {
-    console.log(value)
     return{
         type: MARKET_DAYS_CLICK,
         payload: value

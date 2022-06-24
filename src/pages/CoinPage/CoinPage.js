@@ -360,11 +360,6 @@ const CoinPage = (props) => {
         <CoinPageLineChart
           labels={lineChartLabels}
           data={lineChartData}
-          priceTimeArry={props.coinsPage?.chartData?.prices}
-          errMessage={props.coinPage.errorMessage}
-          isLoading={props.coinPage.loading}
-          hasError={props.coinPage.error}
-          darkMode={props.main.darkMode}
         />
       </ChartParent>
     </>

@@ -92,12 +92,6 @@ const Coins = (props) => {
           <LineChart
             labels={lineChartLabels}
             data={lineChartData}
-            priceTimeArry={chartData?.prices}
-            errMessage={props.coins.errorMessage}
-            isLoading={props.coins.loading}
-            hasError={props.coins.error}
-            currSymbol={props.main.symbol}
-            darkMode={props.main.darkMode}
           />
         </LineChartContainer>
         <BarChartContainer>
@@ -115,15 +109,8 @@ const Coins = (props) => {
             </TextContainer>
           )}
           <BarChart
-            days={props.coins.marketDays}
             labels={barChartLabels}
             data={barChartData}
-            volTimeArry={chartData?.total_volumes}
-            errMessage={props.coins.errorMessage}
-            isLoading={props.coins.loading}
-            hasError={props.coins.error}
-            currSymbol={props.main.symbol}
-            darkMode={props.main.darkMode}
           />
         </BarChartContainer>
       </ChartParent>
@@ -246,7 +233,6 @@ const Coins = (props) => {
                         (coin.circulating_supply / coin.total_supply) * 100
                       }
                       sparkLine={coin.sparkline_in_7d}
-                      currSymbol={props.symbol}
                       currency={props.currency}
                       darkMode={props.darkMode}
                     />
