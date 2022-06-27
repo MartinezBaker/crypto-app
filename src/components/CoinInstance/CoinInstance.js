@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import {  ProgressBar } from "components";
 import { TableCharts } from 'components/Charts/index';
@@ -12,7 +13,7 @@ const CoinInstance = (props) => (
       <CoinImage src={props.image} alt="Coin" />{" "}
       <Link
         to={`/coins/${props.id}`}
-        style={{ textDecoration: "none", color: props.darkMode ? "white" : "black" }}
+        style={{ textDecoration: "none", color: props.main.darkMode ? "white" : "black" }}
       >
         {formatCoinName(props.name)} ({props.symbol})
       </Link>
@@ -38,7 +39,7 @@ const CoinInstance = (props) => (
         <div>
           &#x2022;{" "}
           {props.totalVolume ? (
-            props.currSymbol + formatNum(props.totalVolume)
+            props.main.symbol + formatNum(props.totalVolume)
           ) : (
             <span>&infin;</span>
           )}
@@ -46,7 +47,7 @@ const CoinInstance = (props) => (
         <div>
           &#x2022;{" "}
           {props.marketCap ? (
-            props.currSymbol + formatNum(props.marketCap)
+            props.main.symbol + formatNum(props.marketCap)
           ) : (
             <span>&infin;</span>
           )}
@@ -87,4 +88,8 @@ const CoinInstance = (props) => (
   </DataRow>
 );
 
-export default CoinInstance;
+const mapStateToProps = (state) => ({
+  main: state.main
+})
+
+export default connect(mapStateToProps, null)(CoinInstance);

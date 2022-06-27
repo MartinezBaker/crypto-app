@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
+import { connect } from "react-redux/es/exports";
+import { getCoinInfo, getChartData } from '../../store/CoinPage/actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { withRouter } from "react-router-dom";
 import { faLink, faExchange } from "@fortawesome/free-solid-svg-icons";
@@ -58,124 +59,62 @@ import {
 import { LinkAnchor } from "./styles";
 
 const CoinPage = (props) => {
-  const [coinInfo, setCoinInfo] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState(null);
-  const [marketDays, setMarketDays] = useState(29);
-  const [chartData, setChartData] = useState(null);
-  const [currencyInput, setCurrencyInput] = useState("");
-  const [coinInput, setCoinInput] = useState("");
-
-  const getCoinInfo = async () => {
-    try {
-      const coin = props.match.params.coinId
-      setLoading(true);
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coin}?localization=false&tickers=true&market_data=true&community_data=true&developer_data=false&sparkline=false`
-      );
-      setLoading(false)
-      setCoinInfo(data)
-    } catch (error) {
-      setLoading(false)
-      setError(true)
-      setErrorMessage("Could Not Load Coin Info!!");
-    }
-  };
-  const getChartData = async () => {
-    try {
-      const coin = props.match.params.coinId;
-      const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=${props.currency}&days=${marketDays}&interval=daily`
-      );
-      setChartData(data)
-    } catch (error) {
-      setLoading(true)
-      setError(true)
-      setErrorMessage("Could Not Load Chart Data!")
-    }
-  };
   useEffect(() => {
-    getCoinInfo();
-    getChartData();
+    props.getCoinInfo(props.match.params.coinId);
+    props.getChartData(props.match.params.coinId);
     // eslint-disable-next-line
   }, [])
   useEffect(() => {
-    getChartData();
-  }, [marketDays])
+    props.getChartData(props.match.params.coinId);
+  }, [props.coinPage.marketDays])
   const handleCopyClick = (link) => {
     navigator.clipboard.writeText(link);
   };
-  const handleSubmit = (value) => {
-   if (value.charAt(0) === props.symbol) {
-      setCurrencyInput(value)
-      setCoinInput("")
-    } else {
-      setCoinInput(value)
-      setCurrencyInput("")
-    }
-  };
-  const handleClick = (name) => {
-    const marketDaysObj = {
-      "1d": 1,
-      "7d": 6,
-      "30d": 29,
-      "90d": 89,
-      "1y": 364,
-      Max: "max",
-    };
-    Object.entries(marketDaysObj).map((entry) => {
-      const [key] = entry;
-      if (key === name) {
-        return setMarketDays(marketDaysObj[name])
-      } else {
-        return null;
-      }
-    });
-  }
-  const key = props.currency;
-  const description = coinInfo?.description?.en;
-  const thumbNail = coinInfo?.image?.small;
-  const name = coinInfo?.name;
-  const symbol = coinInfo?.symbol?.toUpperCase();
-  const site = formatLink(coinInfo?.links?.homepage[0]);
+  const key = props.main.currentCurrency;
+  const description = props.coinPage.coinInfo?.description?.en;
+  const thumbNail = props.coinPage.coinInfo?.image?.small;
+  const name = props.coinPage.coinInfo?.name;
+  const symbol = props.coinPage.coinInfo?.symbol?.toUpperCase();
+  const site = formatLink(props.coinPage.coinInfo?.links?.homepage[0]);
   const twentyFourHourPercent =
-    coinInfo?.market_data?.price_change_percentage_24h.toString();
-  const currPrice = coinInfo?.market_data?.current_price[key];
-  const marketCap = coinInfo?.market_data?.market_cap[key];
+    props.coinPage.coinInfo?.market_data?.price_change_percentage_24h.toString();
+  const currPrice = props.coinPage.coinInfo?.market_data?.current_price[key];
+  const marketCap = props.coinPage.coinInfo?.market_data?.market_cap[key];
   const fullyDilutedValuation =
-    coinInfo?.market_data?.fully_diluted_valuation[key];
-  const volTwentyFourHours = coinInfo?.market_data?.total_volume[key];
+    props.coinPage.coinInfo?.market_data?.fully_diluted_valuation[key];
+  const volTwentyFourHours =
+    props.coinPage.coinInfo?.market_data?.total_volume[key];
   const volToMarketCap = volTwentyFourHours / marketCap;
-  const circulatingSupply = coinInfo?.market_data?.circulating_supply;
-  const maxSupply = coinInfo?.market_data?.max_supply;
+  const circulatingSupply =
+    props.coinPage.coinInfo?.market_data?.circulating_supply;
+  const maxSupply = props.coinPage.coinInfo?.market_data?.max_supply;
   const exchangeRate =
-    coinInfo?.market_data?.market_cap_change_percentage_24h.toString();
+    props.coinPage.coinInfo?.market_data?.market_cap_change_percentage_24h.toString();
   const totalVol = (volTwentyFourHours / currPrice).toFixed(0);
-  const blockChainSite = coinInfo?.links?.blockchain_site;
+  const blockChainSite = props.coinPage.coinInfo?.links?.blockchain_site;
   const toCoin =
-    currencyInput &&
-    (currencyInput?.replace(/[^0-9.]/g, "") / currPrice).toPrecision(
-      2
-    );
+    props.coinPage.currencyInput &&
+    (
+      props.coinPage.currencyInput?.replace(/[^0-9.]/g, "") / currPrice
+    ).toPrecision(2);
   const toCurrency =
-    coinInput &&
-    (coinInput?.replace(/[^0-9.]/g, "") * currPrice).toFixed(2);
+    props.coinPage.coinInput &&
+    (props.coinPage.coinInput?.replace(/[^0-9.]/g, "") * currPrice).toFixed(2);
   const lineChartLabels =
-    chartData?.prices && formatChartData(chartData.prices, 0);
+    props.coinPage.chartData?.prices &&
+    formatChartData(props.coinPage.chartData.prices, 0);
   const lineChartData =
-    chartData?.prices && formatChartData(chartData.prices, 1);
+    props.coinPage.chartData?.prices &&
+    formatChartData(props.coinPage.chartData.prices, 1);
   return (
     <>
       <ParentDiv>
         <TitleParent>
-          <TitleChild>
-            Your Summery:
-          </TitleChild>
+          <TitleChild>Your Summery:</TitleChild>
         </TitleParent>
-        {loading ? (
+        {props.coinPage.loading ? (
           <StyledMessage>Loading...</StyledMessage>
-        ) : error ? (
+        ) : props.coinPage.error ? (
           <StyledMessage>There Was An Error!</StyledMessage>
         ) : (
           <SummeryParent>
@@ -192,13 +131,13 @@ const CoinPage = (props) => {
                 <WebSiteParent>
                   <WebSiteContainer>
                     <LinkAnchor
-                      href={coinInfo?.links?.homepage[0]}
+                      href={props.coinPage.coinInfo?.links?.homepage[0]}
                     >
                       <FontAwesomeIcon icon={faLink} />
                       <WebSiteSpan>{site}</WebSiteSpan>
                     </LinkAnchor>
                     <CopyTextButton
-                      link={coinInfo?.links?.homepage[0]}
+                      link={props.coinPage.coinInfo?.links?.homepage[0]}
                       handleCopyClick={handleCopyClick}
                     />
                   </WebSiteContainer>
@@ -209,7 +148,7 @@ const CoinPage = (props) => {
               <div>
                 <PriceParent>
                   <PriceContainer>
-                    {props.symbol}
+                    {props.main.symbol}
                     {currPrice?.toLocaleString()}
                   </PriceContainer>
                 </PriceParent>
@@ -229,32 +168,38 @@ const CoinPage = (props) => {
                   <PriceDataInfo
                     name="ATH"
                     price={
-                      coinInfo?.market_data?.ath[`${props.currency}`]
-                    }
-                    percent={
-                      coinInfo?.market_data?.ath_change_percentage[
-                        `${props.currency}`
+                      props.coinPage.coinInfo?.market_data?.ath[
+                        `${props.main.currentCurrency}`
                       ]
                     }
-                    date={
-                      coinInfo?.market_data?.ath_date[`${props.currency}`]
+                    percent={
+                      props.coinPage.coinInfo?.market_data
+                        ?.ath_change_percentage[`${props.main.currentCurrency}`]
                     }
-                    symbol={props.symbol}
+                    date={
+                      props.coinPage.coinInfo?.market_data?.ath_date[
+                        `${props.main.currentCurrency}`
+                      ]
+                    }
+                    symbol={props.main.symbol}
                   />
                   <PriceDataInfo
                     name="ATL"
                     price={
-                      coinInfo?.market_data?.atl[`${props.currency}`]
-                    }
-                    percent={
-                      coinInfo?.market_data?.atl_change_percentage[
-                        `${props.currency}`
+                      props.coinPage.coinInfo?.market_data?.atl[
+                        `${props.main.currentCurrency}`
                       ]
                     }
-                    date={
-                      coinInfo?.market_data?.atl_date[`${props.currency}`]
+                    percent={
+                      props.coinPage.coinInfo?.market_data
+                        ?.atl_change_percentage[`${props.main.currentCurrency}`]
                     }
-                    symbol={props.symbol}
+                    date={
+                      props.coinPage.coinInfo?.market_data?.atl_date[
+                        `${props.main.currentCurrency}`
+                      ]
+                    }
+                    symbol={props.main.symbol}
                   />
                 </PriceDataContainer>
               </div>
@@ -265,12 +210,10 @@ const CoinPage = (props) => {
                   <MarketFlexDiv>
                     <BulletDiv>+</BulletDiv>
                     <MarketInfoDiv>
-                      <strong>Market Cap:</strong> {props.symbol}
+                      <strong>Market Cap:</strong> {props.main.symbol}
                       {valueCheck(formatNum(marketCap))}
                     </MarketInfoDiv>
-                    <PercentContainer
-                      data={exchangeRate}
-                    >
+                    <PercentContainer data={exchangeRate}>
                       {exchangeRate && setCaretIcon(exchangeRate)}{" "}
                       {exchangeRate && formatTimePercent(exchangeRate)}
                     </PercentContainer>
@@ -281,10 +224,8 @@ const CoinPage = (props) => {
                     <BulletDiv>+</BulletDiv>
                     <MarketInfoDiv>
                       <strong>Fully Diluted Valuation:</strong>{" "}
-                      {props.symbol}
-                      {valueCheck(
-                        formatNum(fullyDilutedValuation?.toString())
-                      )}
+                      {props.main.symbol}
+                      {valueCheck(formatNum(fullyDilutedValuation?.toString()))}
                     </MarketInfoDiv>
                   </MarketFlexDiv>
                 </MarketDataInfo>
@@ -292,7 +233,7 @@ const CoinPage = (props) => {
                   <MarketFlexDiv>
                     <BulletDiv>+</BulletDiv>
                     <MarketInfoDiv>
-                      <strong>Vol 24h:</strong> {props.symbol}
+                      <strong>Vol 24h:</strong> {props.main.symbol}
                       {valueCheck(formatNum(volTwentyFourHours))}
                     </MarketInfoDiv>
                   </MarketFlexDiv>
@@ -347,13 +288,11 @@ const CoinPage = (props) => {
         {description ? (
           <div>
             <TitleParent>
-              <TitleChild>
-                Description:
-              </TitleChild>
+              <TitleChild>Description:</TitleChild>
             </TitleParent>
             <DescriptionParent>
               <DescriptionChild
-                  dangerouslySetInnerHTML={{ __html: description }}
+                dangerouslySetInnerHTML={{ __html: description }}
               />
             </DescriptionParent>
           </div>
@@ -393,20 +332,18 @@ const CoinPage = (props) => {
               id={days.name}
               name="days"
               value={days.name}
-              active={marketDays === days.numDays}
-              handleClick={handleClick}
+              active={props.coinPage.marketDays === days.numDays}
             />
           ))}
         </MarketDaysParent>
         <ConverterParent>
           <Converter>
             <CurrencyLabel>
-              {props.currency.toUpperCase()}
+              {props.main.currentCurrency.toUpperCase()}
             </CurrencyLabel>
             <CurrencyInput
-              handleSubmit={handleSubmit}
-              symbol={props.symbol}
-              currency={props.currency}
+              symbol={props.main.symbol}
+              currency={props.main.currentCurrency}
               exchange={toCurrency}
             />
           </Converter>
@@ -414,14 +351,8 @@ const CoinPage = (props) => {
             <FontAwesomeIcon icon={faExchange} />
           </Icon>
           <Converter>
-            <CurrencyLabel>
-              {symbol?.toUpperCase()}
-            </CurrencyLabel>
-            <CurrencyInput
-              handleSubmit={handleSubmit}
-              symbol={symbol?.toUpperCase()}
-              exchange={toCoin}
-            />
+            <CurrencyLabel>{symbol?.toUpperCase()}</CurrencyLabel>
+            <CurrencyInput symbol={symbol?.toUpperCase()} exchange={toCoin} />
           </Converter>
         </ConverterParent>
       </ParentDiv>
@@ -429,15 +360,21 @@ const CoinPage = (props) => {
         <CoinPageLineChart
           labels={lineChartLabels}
           data={lineChartData}
-          priceTimeArry={chartData?.prices}
-          errMessage={errorMessage}
-          isLoading={loading}
-          hasError={error}
-          darkMode={props.darkMode}
         />
       </ChartParent>
     </>
   );
 }
 
-export default withRouter(CoinPage);
+const mapStateToProps = (state) => ({
+  coinPage: state.coinPage,
+  main: state.main
+});
+const mapDispatchToProps = (dispatch) => {
+  return{
+    getCoinInfo: (coin) => dispatch(getCoinInfo(coin)),
+    getChartData: (coin) => dispatch(getChartData(coin))
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CoinPage));

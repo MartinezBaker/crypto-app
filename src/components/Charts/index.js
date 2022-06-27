@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import { Line, Bar } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
 import { adjustBarThickness, titleCallBack, twentyFourHourFilter } from "utils/functionUtils";
@@ -74,29 +75,34 @@ export const TableCharts = (props) => {
   );
 }
 
-export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceTimeArry, currSymbol, darkMode}) => {
-  if(isLoading) {
+export const LineChart = connect(
+  (state) => ({
+    main: state.main,
+    coins: state.coins
+  })
+)((props) => {
+  if(props.coins.loading) {
       return <StyledMessage>Loading...</StyledMessage>;
-  }else if(hasError) {
-    return <StyledMessage>{errMessage}</StyledMessage>;
+  }else if(props.coins.error) {
+    return <StyledMessage>{props.coins.errorMessage}</StyledMessage>;
   } else{
     return (
       <div>
         <Line
           datasetIdKey="id"
           data={{
-            labels: labels,
+            labels: props.labels,
             datasets: [
               {
                 fill: true,
                 borderWidth: 3.0,
-                data: data,
+                data: props.data,
                 spanGaps: true,
-                pointHoverBackgroundColor: darkMode
+                pointHoverBackgroundColor: props.main.darkMode
                   ? "rgb(0, 252, 42)"
                   : "#0275d8",
                 hoverBorderWidth: 3,
-                hoverBorderColor: darkMode ? "rgb(0, 252, 42)" : "#0275d8",
+                hoverBorderColor: props.main.darkMode ? "rgb(0, 252, 42)" : "#0275d8",
               },
             ],
           }}
@@ -120,21 +126,21 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
                 callbacks: {
                   title: (context) => {
                     const raw = context[0].raw;
-                    return titleCallBack(raw, priceTimeArry);
+                    return titleCallBack(raw, props.coins.chartData?.prices);
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);
-                    return `Price: ${currSymbol}${value}`;
+                    return `Price: ${props.main.symbol}${value}`;
                   },
                 },
               },
             },
             elements: {
               line: {
-                backgroundColor: darkMode
+                backgroundColor: props.main.darkMode
                   ? "rgba(0, 252, 42, 0.04)"
                   : "rgb(2, 117, 216, 0.1)",
-                borderColor: darkMode ? "rgb(0, 252, 42)" : "#0275d8",
+                borderColor: props.main.darkMode ? "rgb(0, 252, 42)" : "#0275d8",
                 tension: 0.4,
               },
               point: {
@@ -169,24 +175,29 @@ export const LineChart = ({isLoading, hasError, errMessage, data, labels, priceT
       </div>
     );
   }
-};
+})
 
-export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, volTimeArry, currSymbol, darkMode }) => {
-  if(isLoading) {
+export const BarChart = connect(
+  (state) => ({
+    main: state.main,
+    coins: state.coins
+  })
+)((props) => {
+  if(props.coins.loading) {
     return <StyledMessage>Loading...</StyledMessage>;
-  }else if(hasError) {
-    return <StyledMessage>{errMessage}</StyledMessage>;
+  }else if(props.coins.error) {
+    return <StyledMessage>{props.coins.errorMessage}</StyledMessage>;
   } else{
     return (
       <div>
         <Bar
           datasetIdKey="id"
           data={{
-            labels: labels,
+            labels: props.labels,
             datasets: [
               {
-                barThickness: adjustBarThickness(days),
-                data: data,
+                barThickness: adjustBarThickness(props.coins.marketDays),
+                data: props.data,
               },
             ],
           }}
@@ -210,19 +221,19 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, 
                 callbacks: {
                   title: (context) => {
                     const raw = context[0].raw;
-                    return titleCallBack(raw, volTimeArry);
+                    return titleCallBack(raw, props.coins.chartData?.total_volumes);
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);
-                    return `Price: ${currSymbol}${value}`;
+                    return `Price: ${props.main.symbol}${value}`;
                   },
                 },
               },
             },
             elements: {
               bar: {
-                backgroundColor: darkMode ? "#0275d8" : "rgb(0, 252, 42)",
-                borderColor: darkMode ? "#0275d8" : "rgb(0, 252, 42)",
+                backgroundColor: props.main.darkMode ? "#0275d8" : "rgb(0, 252, 42)",
+                borderColor: props.main.darkMode ? "#0275d8" : "rgb(0, 252, 42)",
                 borderRadius: 5,
                 borderSkipped: false,
               },
@@ -255,33 +266,30 @@ export const BarChart = ({ labels, data, days, isLoading, errMessage, hasError, 
       </div>
     );
   }
-};
+})
 
-export const CoinPageLineChart = ({
-  isLoading,
-  hasError,
-  errMessage,
-  data,
-  labels,
-  priceTimeArry,
-  darkMode
-}) => {
-  if (isLoading) {
+export const CoinPageLineChart = connect(
+  (state) => ({
+    main: state.main,
+    coinPage: state.coinPage
+  })
+)((props) => {
+  if (props.coinPage.loading) {
     return <StyledMessage>Loading...</StyledMessage>;
-  } else if (hasError) {
-    return <StyledMessage>{errMessage}</StyledMessage>;
+  } else if (props.coinPage.error) {
+    return <StyledMessage>{props.coinPage.errorMessage}</StyledMessage>;
   } else {
     return (
       <div>
         <Line
           datasetIdKey="id"
           data={{
-            labels: labels,
+            labels: props.labels,
             datasets: [
               {
                 fill: true,
                 borderWidth: 1.0,
-                data: data,
+                data: props.data,
                 spanGaps: true,
                 pointHoverBackgroundColor: "rgb(0, 252, 42)",
                 hoverBorderWidth: 3,
@@ -311,7 +319,10 @@ export const CoinPageLineChart = ({
                 callbacks: {
                   title: (context) => {
                     const raw = context[0].raw;
-                    return titleCallBack(raw, priceTimeArry);
+                    return titleCallBack(
+                      raw,
+                      props.coinsPage?.chartData?.prices
+                    );
                   },
                   label: (context) => {
                     const value = context.raw.toFixed(2);
@@ -322,10 +333,10 @@ export const CoinPageLineChart = ({
             },
             elements: {
               line: {
-                borderColor: darkMode
+                borderColor: props.main.darkMode
                   ? "rgba(44, 47, 54, 0.6)"
                   : "rgb(237, 239, 242)",
-                backgroundColor: darkMode
+                backgroundColor: props.main.darkMode
                   ? "rgba(44, 47, 54, 0.6)"
                   : "rgb(237, 239, 242)",
                 tension: 0.4,
@@ -339,7 +350,7 @@ export const CoinPageLineChart = ({
                 grid: {
                   display: false,
                   drawBorder: false,
-                  drawTicks: false
+                  drawTicks: false,
                 },
                 ticks: {
                   display: false,
@@ -349,7 +360,7 @@ export const CoinPageLineChart = ({
                 grid: {
                   display: false,
                   drawBorder: false,
-                  drawTicks: false
+                  drawTicks: false,
                 },
                 ticks: {
                   display: false,
@@ -361,4 +372,4 @@ export const CoinPageLineChart = ({
       </div>
     );
   }
-};
+})

@@ -1,17 +1,19 @@
 import React from "react";
+import { connect } from "react-redux"
+import { changeCurrency } from "store/Main/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import { currencyArry } from "utils/arrayUtils";
 import { StyledSelect, StyledSymbolSpan, StyledIconContainer, DropDownContainer } from "./styles";
 
-export const DropDownMenu = (props) => (
+const DropDownMenu = (props) => (
   <DropDownContainer>
     <div>
       <StyledSymbolSpan>{props.symbol}</StyledSymbolSpan>
     </div>
     <div>
       <StyledSelect
-        onChange={(e) => props.handleChange(e)}
+        onChange={(e) => props.changeCurrency(e.target.value)}
       >
         {currencyArry.map((currency) => (
           <Options key={currency} value={currency} />
@@ -24,6 +26,14 @@ export const DropDownMenu = (props) => (
   </DropDownContainer>
 );
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeCurrency: (value) => dispatch(changeCurrency(value))
+  }
+}
+
 const Options = (props) => (
   <option value={props.value}>{props.value?.toUpperCase()}{""}</option>
 );
+
+export default connect(null, mapDispatchToProps)(DropDownMenu);

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import { darkModeClick } from './store/Main/actions'
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { ReactComponent as DarkMode } from "imgs/contrast-dark.svg";
 import { Coins, CoinPage, Portfolio } from 'pages';
-import { DropDownMenu } from 'components/CurrencyMenu';
+import DropDownMenu from './components/CurrencyMenu/index'
 import { AppBody, StyledNav, StyledNavChild, SVGContainer, StyledButton }  from 'styles';
 
 const GlobalStyle = createGlobalStyle`
@@ -39,34 +41,9 @@ const lightTheme = {
   showModalHoverBorder: "black",
 };
 
-const App = () => {
-  const [currentCurrency, setCurrentCurrency] = useState("usd")
-  const [symbol, setSymbol] = useState("$")
-  const [darkMode, setDarkMode] = useState(true)
-  
-  const handleChange = (e) => {
-    const currency = e.target.value
-    const currObj = {
-      "usd": "$",
-      "gbp": "£",
-      "eur": "€",
-      "btc": "₿",
-      "eth": "Ξ",
-    };
-    Object.entries(currObj).map((entry) => {
-      const [key, value] = entry
-      if(key === currency){
-        return setCurrentCurrency(key) && setSymbol(value) 
-      }else{
-        return null
-      }
-    })
-  }
-  const handleClick = () => {
-    setDarkMode(!darkMode)
-  }
+const App = (props) => {
   return (
-    <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
+    <ThemeProvider theme={props.main.darkMode ? darkTheme : lightTheme}>
       <GlobalStyle />
       <Router>
         <StyledNav>
@@ -76,13 +53,10 @@ const App = () => {
           </StyledNavChild>
           <StyledNavChild>
             <DropDownMenu
-              symbol={symbol}
-              handleChange={handleChange}
+              symbol={props.main.symbol}
             />
-            <StyledButton
-              onClick={handleClick}
-            >
-              <SVGContainer >
+            <StyledButton onClick={() => props.darkModeClick()}>
+              <SVGContainer>
                 <DarkMode />
               </SVGContainer>
             </StyledButton>
@@ -93,24 +67,12 @@ const App = () => {
             <Route
               exact
               path="/coins"
-              render={() => (
-                <Coins
-                  symbol={symbol}
-                  currency={currentCurrency}
-                  darkMode={darkMode}
-                />
-              )}
+              component={Coins}
             />
             <Route
               exact
               path="/coins/:coinId"
-              render={(props) => (
-                <CoinPage
-                  symbol={symbol}
-                  currency={currentCurrency}
-                  darkMode={darkMode}
-                  />
-              )}
+              component={CoinPage}
             />
             <Route exact path="/portfolio" component={Portfolio} />
             <Redirect to="/coins" />
@@ -120,5 +82,13 @@ const App = () => {
     </ThemeProvider>
   );
 }
+const mapStateToProps = (state) => ({
+  main: state.main,
+});
+const mapDispatchToProps = (dispatch) => {
+  return{
+    darkModeClick: () => dispatch(darkModeClick())
+  }
+}
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
