@@ -12,7 +12,6 @@ import {
   SORT_AT_TOP,
   SORT_ITEMS,
   MARKET_DAYS_CLICK,
-  getPage,
   getMarketDays
 } from "./reducer";
 import { getCurrency } from "store/Main/reducer";

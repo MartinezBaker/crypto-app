@@ -1,25 +1,18 @@
-import React, { useState } from "react";
-import { connect } from "react-redux/es/exports";
+import React from "react";
+import { connect } from "react-redux";
+import { showModal } from "store/Portfolio/actions";
 import { Modal }  from 'components'
 import {StyledButton, ButtonContainer, ParentDiv,  } from './styles'
 
 const Portfolio = (props) => {
-  const [showModal, setShowModal] = useState(false)
-
-  const handleShowModal = () => {
-    setShowModal(!showModal)
-  }
   return (
     <ParentDiv>
       <ButtonContainer>
-        <StyledButton onClick={handleShowModal}>
+        <StyledButton onClick={() => props.showModal()}>
           <h2>Add Asset</h2>
         </StyledButton>
       </ButtonContainer>
-      <Modal
-        handleShowModal={handleShowModal}
-        showModal={showModal}
-      />
+      <Modal/>
     </ParentDiv>
   );
 }
@@ -28,4 +21,10 @@ const Portfolio = (props) => {
    portfolio: state.portfolio,
  });
 
- export default connect(mapStateToProps)(Portfolio);
+ const mapDispatchToProps = (dispatch) => {
+  return{
+    showModal: () => dispatch(showModal())
+  }
+ }
+
+ export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
