@@ -20,20 +20,14 @@ import {
   StyledInputContainer,
   StyledParagraph,
   StyledForm,
-  NameInputParent,
-  StyledDropDown,
-  StyledDropDownContent,
-  
- } from "./styles";
-
-
+} from "./styles";
 
 const CloseButtons = ({name, background, handleShowModal, width}) => (
     <StyledButtons width={width} name={name} background={background} onClick={handleShowModal}>{name}</StyledButtons>
 )
 
 const Modal = (props) => {
-  const [nameValue, setNameValue, nameRef] = useState("")
+  const [nameValue, setNameValue] = useState("")
   const [amountValue, setAmountValue] = useState("")
   const [dateValue, setDateValue] = useState("")
  
@@ -88,14 +82,12 @@ const Modal = (props) => {
           </div>
           <StyledInputContainer>
             <StyledForm>
-              <NameInputParent>
-                <CurrencyNameInput
+              <CurrencyNameInput
                   name="Coin Name..."
                   type="text"
                   handleChange={handleChange}
                   limitedList={limitedNameList}
                 />
-              </NameInputParent>
               <ModalInput
                 name="Amount Owned..."
                 type="text"

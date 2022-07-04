@@ -79,25 +79,6 @@ export const StyledInputContainer = styled.div`
   };
 `;
 
-export const NameInputParent = styled.div`
-  width: 100%;
-`;
-
-export const StyledDropDown = styled.div`
-  width: 100%
-  position: relative;
-  display: inline-block;
-`;
-
-export const StyledDropDownContent = styled.div`
-  position: absolute;
-  right: 40%;
-  background-color: #f6f6f6;
-  min-width: 140px;
-  border: 1px solid #ddd;
-  z-index: 1;
-`;
-
 export const StyledList = styled.ol`
   padding-left: 20px;
 `
