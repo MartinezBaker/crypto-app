@@ -23,7 +23,7 @@ import {
 } from "./styles";
 
 const CloseButtons = ({name, background, handleShowModal, width}) => (
-    <StyledButtons width={width} name={name} background={background} onClick={handleShowModal}>{name}</StyledButtons>
+    <StyledButtons width={width} name={name} background={background} onClick={() => handleShowModal()}>{name}</StyledButtons>
 )
 
 const Modal = (props) => {
@@ -109,13 +109,13 @@ const Modal = (props) => {
         <CloseButtonsContainer>
           <CloseButtons
             name="Close"
-            handleShowModal={() => props.showModal()}
+            handleShowModal={props.showModal}
             background="white"
             width="150px"
           />
           <CloseButtons
             name="Save and Close"
-            handleShowModal={() => props.showModal()}
+            handleShowModal={props.showModal}
             width="200px"
           />
         </CloseButtonsContainer>
