@@ -87,6 +87,10 @@ export const StyledListItem = styled.li`
   margin-bottom: 20px;
 `
 
+export const StyledForm = styled.form`
+  width: 100%;
+`;
+
 export const StyledParagraph = styled.p`
   color:${({theme}) => theme.text};
   font-size: 12px;

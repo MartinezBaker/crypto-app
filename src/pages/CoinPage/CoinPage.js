@@ -66,6 +66,7 @@ const CoinPage = (props) => {
   }, [])
   useEffect(() => {
     props.getChartData(props.match.params.coinId);
+    // eslint-disable-next-line
   }, [props.coinPage.marketDays])
   const handleCopyClick = (link) => {
     navigator.clipboard.writeText(link);

@@ -26,10 +26,12 @@ const Coins = (props) => {
   }, [])
   useEffect(() => {
     props.getChartData();
+    // eslint-disable-next-line
   }, [props.coins.marketDays])
   useEffect(() => {
     props.getCoins();
     props.getChartData();
+    // eslint-disable-next-line
   },[props.main.currentCurrency])
   const chartData = props.coins.chartData
   const lineChartLabels =
