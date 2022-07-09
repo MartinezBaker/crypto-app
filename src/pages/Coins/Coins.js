@@ -19,20 +19,16 @@ import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartCon
 import { StyledMessage } from 'components/Charts/styles';
 
 const Coins = (props) => {
+  
   useEffect(() => {
     props.getCoins();
-    props.getChartData();
-    // eslint-disable-next-line
-  }, [])
-  useEffect(() => {
-    props.getChartData();
-    // eslint-disable-next-line
-  }, [props.coins.marketDays])
-  useEffect(() => {
-    props.getCoins();
-    props.getChartData();
     // eslint-disable-next-line
   },[props.main.currentCurrency])
+  useEffect(() => {
+    props.getChartData();
+    // eslint-disable-next-line
+  }, [props.coins.marketDays]);
+  
   const chartData = props.coins.chartData
   const lineChartLabels =
     chartData?.prices && formatChartData(chartData.prices, 0);

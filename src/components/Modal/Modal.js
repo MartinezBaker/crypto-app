@@ -20,6 +20,11 @@ import {
   StyledInputContainer,
   StyledParagraph,
   StyledForm,
+  ImgOutterContainer,
+  ImgInnerContainer,
+  CoinNameParent,
+  StyledImg,
+  CoinInfoParent
 } from "./styles";
 
 const CloseButtons = ({name, background, handleShowModal, width}) => (
@@ -51,7 +56,11 @@ const Modal = (props) => {
       coin.name.toLowerCase().includes(nameValue.toLowerCase())
   );
   const limitedNameList = nameList?.slice(0,9)
-  
+  const findCoin = props.portfolio.coinList?.find((coin) => coin.name === nameValue)
+  const filteredCoin = props.portfolio.coinList?.filter((coin) => nameValue ? coin.name === nameValue : null )
+  const name = filteredCoin?.[0]?.name
+  const thumbNail = filteredCoin?.[0]?.image
+  const symbol = filteredCoin?.[0]?.symbol?.toUpperCase()
   if(!props.portfolio.showModal){
     return null
   }
@@ -67,8 +76,18 @@ const Modal = (props) => {
           </ModalHeader>
         </ModalHeaderContainer>
         <ModalBody>
-          <div>
-            <StyledInstructions>
+          <StyledInstructions>
+            {findCoin ? 
+              (<CoinInfoParent>
+                <ImgOutterContainer>
+                  <ImgInnerContainer>
+                    {thumbNail && <StyledImg src={thumbNail} alt="Coin" />}
+                  </ImgInnerContainer>
+                  <CoinNameParent>
+                    {name && <div>{`${name} (${symbol})`}</div>}
+                  </CoinNameParent>
+                </ImgOutterContainer>
+              </CoinInfoParent>) : (
               <StyledList>
                 <StyledListItem>
                   Type coin name, then select from dropdown
@@ -77,9 +96,9 @@ const Modal = (props) => {
                 <StyledListItem>
                   Type date purchased (default: today)
                 </StyledListItem>
-              </StyledList>
-            </StyledInstructions>
-          </div>
+              </StyledList>)
+            }
+          </StyledInstructions>
           <StyledInputContainer>
             <StyledForm>
               <CurrencyNameInput
@@ -92,6 +111,7 @@ const Modal = (props) => {
                 name="Amount Owned..."
                 type="text"
                 handleChange={handleChange}
+                symbol={props.main.symbol}
               />
               <ModalInput
                 name="date"
@@ -126,6 +146,7 @@ const Modal = (props) => {
 
 const mapStateToProps = (state) => ({
   portfolio: state.portfolio,
+  main: state.main
 })
 const mapDispatchToProps = (dispatch) => {
   return {

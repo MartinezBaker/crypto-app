@@ -62,14 +62,46 @@ export const ModalBody = styled.div`
   justify-content: space-around;
 `
 
+export const CoinInfoParent = styled.div`
+  
+  
+  
+`
+
+export const ImgOutterContainer = styled.div`
+  width: 100%;
+  text-align: center;
+  margin-top: 15px;
+`;
+
+export const ImgInnerContainer = styled.div`
+  padding: 24px;
+  background-color: ${({ theme }) => theme.app};
+  width: 50px;
+  display: inline-block;
+`;
+
+export const StyledImg = styled.img`
+  width: 100%;
+`
+
+export const CoinNameParent = styled.div`
+  width: 100%;
+  font-size: 12px;
+  margin-top: 10px;
+  color: ${({ theme }) => theme.text};
+  text-align: center;
+`;
+
 export const StyledInstructions = styled.div`
-  width: 145px;
+  width: 143px;
+  height: 155px;
   background-color: ${({ theme }) => theme.body};
   color: ${({ theme }) => theme.text};
   font-size: 10px;
   border-radius: 24px;
   padding: 15px 7px;
-  margin-left: 15px;
+  margin: 0 0 10px 15px;
 `;
 
 export const StyledInputContainer = styled.div`

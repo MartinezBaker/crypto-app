@@ -17,9 +17,9 @@ export const CurrencyNameInput = (props) => {
         value={value}
         list="coinList"
       />
-      <datalist id="coinList">
+      {value?.length < 4 ? <datalist id="coinList">
         {props.limitedList.map((coin) => <option key={coin.name} value={coin.name} />)}
-      </datalist> 
+      </datalist> : null}
     </>
   )
 };
@@ -27,9 +27,11 @@ export const CurrencyNameInput = (props) => {
 const ModalInput = (props) => {
   const [value, setValue] = useState("")
   const handleChange = (e) => {
-    setValue(e.target.value)
+    const symbol = props.symbol;
+    props.name === "Amount Owned..." && !e.target.value.includes(symbol) ? setValue(symbol + " " + e.target.value) : setValue(e.target.value)
     props.handleChange(value, props.name)
   }
+  
   return (
     <StyledInput
       onChange={handleChange}
