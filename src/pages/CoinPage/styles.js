@@ -113,7 +113,7 @@ export const PriceDataContainer = styled.div`
 export const MarketDataInfoContainer = styled.div`
   font-size: 12px;
   text-align: left;
-  width: 300px;
+  width: 270px;
  `;
 
 export const MarketDataInfo = styled.div`

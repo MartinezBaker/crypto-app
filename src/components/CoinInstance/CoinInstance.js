@@ -19,7 +19,7 @@ const CoinInstance = (props) => (
       </Link>
     </TableCell>
     <TableCell>
-      {props.currSymbol}
+      {props.main.symbol}
       {formatPrice(props.price)}
     </TableCell>
     <PercentColor data={props.oneHour}>
@@ -53,7 +53,7 @@ const CoinInstance = (props) => (
           )}
         </div>
       </ProgressParent>
-      <ProgressBar progress={props.totalVolPercentage} width={"120px"} />
+      <ProgressBar progress={props.totalVolPercentage} width={"123px"} height={"10px"}/>
     </TableCell>
     <TableCell>
       <ProgressParent>
@@ -76,7 +76,8 @@ const CoinInstance = (props) => (
       </ProgressParent>
       <ProgressBar
         progress={props.circulatingSupplyPercentage}
-        width={"120px"}
+        width={"123px"}
+        height={"10px"}
       />
     </TableCell>
     <TableCell>
@@ -87,7 +88,6 @@ const CoinInstance = (props) => (
     </TableCell>
   </DataRow>
 );
-
 const mapStateToProps = (state) => ({
   main: state.main
 })

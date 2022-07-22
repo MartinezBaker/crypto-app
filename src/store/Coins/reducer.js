@@ -1,5 +1,5 @@
 const initialState = {
-  coins: null,
+  coins: [],
   page: 1,
   loading: false,
   error: false,
@@ -161,3 +161,4 @@ export default function coinsReducer(state = initialState, action) {
 
 export const getPage = (state) => state.coins.page
 export const getMarketDays = (state) => state.coins.marketDays
+export const coinsArry = (state) => state.coins.coins
