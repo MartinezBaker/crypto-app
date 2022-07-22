@@ -1,30 +1,67 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
-import { showModal } from "store/Portfolio/actions";
+import { showModal, getHistory, createPortfolioObj, getCoins, deleteCoin } from "../../store/Portfolio/actions";
 import { Modal }  from 'components'
-import {StyledButton, ButtonContainer, ParentDiv,  } from './styles'
+import { SavedCoin } from "components"
+import {
+  StyledButton,
+  ButtonContainer,
+  ParentDiv,
+  StyledButtonText,
+} from "./styles";
 
-const Portfolio = (props) => {
+const Portfolio = ({portfolio, main, getCoins, coins, getHistory, createPortfolioObj, showModal}) => {
+  useEffect(() => {
+    getCoins()
+  }, [getCoins, main.currentCurrency])
+  const filteredCoin = coins?.coins?.filter(
+    (coin) => coin.name.toLowerCase() === portfolio.savedCoins?.coinName?.toLowerCase()
+  );
+  const id = filteredCoin?.[0]?.id;
+  const PrevSavedCoinsRef = useRef(portfolio.savedCoins)
+  useEffect(() => {
+    if(PrevSavedCoinsRef.current !== portfolio.savedCoins){
+      getHistory(id)
+      PrevSavedCoinsRef.current = portfolio.savedCoins
+    }
+  }, [portfolio.savedCoins, getHistory, id])
+  useEffect(() => {
+    if(portfolio.historyData.length && Object.values(portfolio.savedCoins).length){
+      createPortfolioObj(id)
+    }
+  }, [createPortfolioObj, id, portfolio.savedCoins, portfolio.historyData])
   return (
     <ParentDiv>
       <ButtonContainer>
-        <StyledButton onClick={() => props.showModal()}>
-          <h2>Add Asset</h2>
+        <StyledButton onClick={() => showModal()}>
+          <StyledButtonText>Add Asset</StyledButtonText>
         </StyledButton>
       </ButtonContainer>
-      <Modal/>
+      <Modal />
+      {portfolio.portfolio.map((coin) => (
+        <SavedCoin
+          key={coin.id}
+          id={coin.id}
+          amount={coin.amount}
+          date={coin.date}
+        />
+      ))}
     </ParentDiv>
   );
 }
-
- const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({
    portfolio: state.portfolio,
+   coins : state.coins,
+   main: state.main
  });
-
- const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {
   return{
-    showModal: () => dispatch(showModal())
+    showModal: () => dispatch(showModal()),
+    getHistory: (id) => dispatch(getHistory(id)),
+    createPortfolioObj: (id) => dispatch(createPortfolioObj(id)),
+    getCoins: () => dispatch(getCoins()),
+    deleteCoin: (coin) => dispatch(deleteCoin(coin))
   }
  }
-
- export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
+ 
+export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);

@@ -1,39 +1,4 @@
-import styled from 'styled-components';
-
-export const ParentDiv = styled.div`
-  padding: 0px 50px 0px 50px;
-`;
-
-export const ButtonContainer = styled.div`
-    width: 100%;
-    display: flex;
-    padding: 50px 0px;
- `
-
-export const StyledButton = styled.button`
-  margin: auto;
-  width: 350px;
-  height: 65px;
-  @media (max-width: 600px){
-    width: 250px;
-    height: 60px;
-  }
-  border: none;
-  background-color: ${({ theme }) => theme.chart};
-  color: ${({ theme }) => theme.text};
-  border-radius: 15px;
-  padding: 7px 0px;
-  &:hover {
-    border: 1px solid ${({theme}) => theme.showModalHoverBorder};
-    background-color: ${({theme}) => theme.showModalHover};
-    color: ${({theme}) => theme.text};
-    cursor: pointer;
-  };
-`;
-
-export const StyledButtonText =  styled.h2`
-  margin: auto;
-`
+import styled from "styled-components";
 
 export const SavedCoinContainer = styled.div`
   width: 100%;
@@ -58,7 +23,7 @@ export const SavedCoinDescription = styled.div`
   padding: 40px 15px 0 15px;
   text-align: center;
   height: 270px;
-`; 
+`;
 
 export const ImgOutterContainer = styled.div`
   width: 100%;
@@ -75,7 +40,7 @@ export const ImgInnerContainer = styled.div`
 
 export const StyledImage = styled.img`
   width: 50px;
-`
+`;
 export const CoinNameContainer = styled.div`
   width: 100%;
   color: ${({ theme }) => theme.text};
@@ -85,8 +50,8 @@ export const CoinNameContainer = styled.div`
 `;
 
 export const CoinName = styled.div`
-text-align: center;  
-`
+  text-align: center;
+`;
 
 export const StyledIcon = styled.button`
   color: red;
@@ -112,10 +77,10 @@ export const SavedCoinMarketPriceCont = styled.div`
 
 export const SavedCoinMarketPrice = styled.div`
   background-color: ${({ theme }) => theme.body};
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
   border-radius: 25px;
   display: flex;
-  @media (max-width: 1024px){
+  @media (max-width: 1024px) {
     padding: 38px;
   }
   padding: 48px;
@@ -124,18 +89,17 @@ export const SavedCoinMarketPrice = styled.div`
 
 export const MySavedCoinCont = styled.div`
   width: 98%;
-`
+`;
 
 export const MySavedCoin = styled.div`
   background-color: ${({ theme }) => theme.body};
   border-radius: 25px;
-  
 `;
 
 export const SavedCoinInfoText = styled.div`
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
   font-size: 12px;
-`
+`;
 
 export const SavedCoinInfoTitle = styled.div`
   margin: 0 15px 3px 0;
@@ -161,10 +125,13 @@ export const PercentColor = styled.span`
 export const StyledProgressBar = styled.div`
   margin-right: 25px;
   font-size: 12px;
-  display: flex;
-  ;
-`
+  display: flex; ;
+`;
 
 export const StyledVolToMrkCap = styled.div`
- margin: 0 5px 3px 0;
+  margin: 0 5px 3px 0;
+`;
+
+export const TextColor = styled.span`
+  color: red;
 `

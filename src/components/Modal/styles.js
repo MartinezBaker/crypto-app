@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const StyledModal = styled.div`
-  z-index: auto;
+  z-index: 1;
   display: ${({show}) => show ? "flex" : "none"};
   position: fixed;
   top: 0;
@@ -60,12 +60,6 @@ export const ModalBody = styled.div`
   display: flex;
   flex-wrap: wrap-reverse;
   justify-content: space-around;
-`
-
-export const CoinInfoParent = styled.div`
-  
-  
-  
 `
 
 export const ImgOutterContainer = styled.div`
