@@ -78,12 +78,14 @@ export default function portfolioReducer(state = initialState, action) {
         date: state.savedCoins.savedDate,
       };
       if(!findInPortfolio){
-        return{
-          ...state, portfolio: [...state.portfolio, portfolioObj]
-        }
+        return {
+          ...state,
+          portfolio: [...state.portfolio, portfolioObj],
+        };
       }else{
-        return{
-          ...state, portfolio: [...filterCoin, portfolioObj]
+        return {
+          ...state,
+          portfolio: [...filterCoin, portfolioObj]
         }
       }
       case DELETE_COIN:

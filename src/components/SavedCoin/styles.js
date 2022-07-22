@@ -51,6 +51,7 @@ export const CoinNameContainer = styled.div`
 
 export const CoinName = styled.div`
   text-align: center;
+  margin-right: 2px;
 `;
 
 export const StyledIcon = styled.button`
@@ -102,12 +103,12 @@ export const SavedCoinInfoText = styled.div`
 `;
 
 export const SavedCoinInfoTitle = styled.div`
-  margin: 0 15px 3px 0;
+  margin: 0 10px 3px 0;
   font-size: 12px;
 `;
 
 export const SavedCoinInfoValue = styled.div`
-  margin: 0 25px 3px 0;
+  margin: 0 13px 3px 0;
   font-size: 12px;
 `;
 

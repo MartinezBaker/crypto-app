@@ -120,7 +120,7 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
       <TableParent>
         <TableContainer>
           <TableTitleContainer>
-            <TableTitle1>TOP {coins?.length}</TableTitle1>
+            <TableTitle1>TOP {coinsArry.length}</TableTitle1>
             <TableTitle2>{coins.sortBy}</TableTitle2>
             <SortButton onClick={() => sortAtTop()}>
               <FontAwesomeIcon

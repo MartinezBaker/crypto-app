@@ -25,9 +25,14 @@ const Portfolio = ({portfolio, main, getCoins, coins, getHistory, createPortfoli
       PrevSavedCoinsRef.current = portfolio.savedCoins
     }
   }, [portfolio.savedCoins, getHistory, id])
+  const PrevHistoryDataRef = useRef(portfolio.historyData)
   useEffect(() => {
-    if(portfolio.historyData.length && Object.values(portfolio.savedCoins).length){
-      createPortfolioObj(id)
+    if (
+      PrevHistoryDataRef.current !== portfolio.historyData &&
+      Object.values(portfolio.savedCoins).length
+    ) {
+      createPortfolioObj(id);
+      PrevHistoryDataRef.current = portfolio.historyData;
     }
   }, [createPortfolioObj, id, portfolio.savedCoins, portfolio.historyData])
   return (
