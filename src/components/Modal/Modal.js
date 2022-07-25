@@ -131,7 +131,7 @@ const Modal = (props) => {
         <CloseButtonsContainer>
           <StyledButtons
             name="Close"
-            handleShowModal={() => props.showModal()}
+            onClick={() => props.showModal()}
             background="white"
             width="150px"
           >
