@@ -122,9 +122,12 @@ export const topSort = (sortBy, sortValue, sortItem) => {
   };
 };
 
-export const formatDate = (unix) => {
-  const date = new Date(unix);
-  return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+export const formatDate = (x) => {
+  const date = new Date(x);
+  const month = (`${date.getMonth() + 1}`).toString().padStart(2, "0")
+  const day = (`${date.getDate() + 1}`).toString().padStart(2, "0")
+  const formatedDate = `${month}-${day}-${date.getFullYear()}`
+  return formatedDate
 }
 
 export const titleCallBack = (raw, arry) => {

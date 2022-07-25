@@ -18,22 +18,14 @@ import { CoinInstance, Button } from "components";
 import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent } from './styles';
 import { StyledMessage } from 'components/Charts/styles';
 
-const Coins = (props) => {
+const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) => {
   useEffect(() => {
-    props.getCoins();
-    props.getChartData();
-    // eslint-disable-next-line
-  }, [])
+    getCoins();
+  },[main.currentCurrency, getCoins])
   useEffect(() => {
-    props.getChartData();
-    // eslint-disable-next-line
-  }, [props.coins.marketDays])
-  useEffect(() => {
-    props.getCoins();
-    props.getChartData();
-    // eslint-disable-next-line
-  },[props.main.currentCurrency])
-  const chartData = props.coins.chartData
+    getChartData();
+  }, [getChartData, coins.marketDays, main.currentCurrency]);
+  const chartData = coins.chartData
   const lineChartLabels =
     chartData?.prices && formatChartData(chartData.prices, 0);
   const lineChartData =
@@ -43,31 +35,31 @@ const Coins = (props) => {
     formatChartData(chartData.total_volumes, 0);
   const barChartData =
     chartData?.total_volumes && formatChartData(chartData.total_volumes, 1);
-  const coins = props.coins.coins
-  let coinList = [...(coins ? coins : [])];
-  coinList = coinList?.sort(topSort(props.coins.sortBy, "BY MARKET CAP", "market_cap"));
+  const coinsArry = coins.coins
+  let coinList = [...(coinsArry ? coinsArry : [])];
+  coinList = coinList?.sort(topSort(coins.sortBy, "BY MARKET CAP", "market_cap"));
   coinList = coinList?.sort(
-    topSort(props.coins.sortBy, "BY VOLUME", "total_volume")
+    topSort(coins.sortBy, "BY VOLUME", "total_volume")
   );
-  coinList = coinList?.sort(sortList(props.coins.sort.sortName, "name"));
+  coinList = coinList?.sort(sortList(coins.sort.sortName, "name"));
   coinList = coinList?.sort(
-    sortList(props.coins.sort.current_price, "current_price")
+    sortList(coins.sort.current_price, "current_price")
   );
   coinList = coinList?.sort(
     sortList(
-      props.coins.sort.price_change_percentage_1h_in_currency,
+      coins.sort.price_change_percentage_1h_in_currency,
       "price_change_percentage_1h_in_currency"
     )
   );
   coinList = coinList?.sort(
     sortList(
-      props.coins.sort.price_change_percentage_24h_in_currency,
+      coins.sort.price_change_percentage_24h_in_currency,
       "price_change_percentage_24h_in_currency"
     )
   );
   coinList = coinList?.sort(
     sortList(
-      props.coins.sort.price_change_percentage_7d_in_currency,
+      coins.sort.price_change_percentage_7d_in_currency,
       "price_change_percentage_7d_in_currency"
     )
   );
@@ -78,14 +70,14 @@ const Coins = (props) => {
       </TitleParent>
       <ChartParent>
         <LineChartContainer>
-          {props.coins.loading || props.coins.error ? (
+          {coins.loading || coins.error ? (
             <div></div>
           ) : (
             <TextContainer>
               <SubText>BTC Price</SubText>
               <PriceText>
                 {lineChartData &&
-                  props.main.symbol +
+                  main.symbol +
                     formatNum(lineChartData[lineChartData.length - 1])}
               </PriceText>
               <SubText>{getTodaysDate()}</SubText>
@@ -97,14 +89,14 @@ const Coins = (props) => {
           />
         </LineChartContainer>
         <BarChartContainer>
-          {props.coins.loading || props.coins.error ? (
+          {coins.loading || coins.error ? (
             <div></div>
           ) : (
             <TextContainer>
               <SubText>BTC Volume 24h</SubText>
               <PriceText>
                 {barChartData &&
-                  props.main.symbol +
+                  main.symbol +
                     formatNum(barChartData[barChartData.length - 1])}
               </PriceText>
               <SubText>{getTodaysDate()}</SubText>
@@ -121,16 +113,16 @@ const Coins = (props) => {
           <Button
             key={days.name}
             name={days.name}
-            active={props.coins.marketDays === days.numDays}
+            active={coins.marketDays === days.numDays}
           />
         ))}
       </MarketDaysParent>
       <TableParent>
         <TableContainer>
           <TableTitleContainer>
-            <TableTitle1>TOP {coins?.length}</TableTitle1>
-            <TableTitle2>{props.coins.sortBy}</TableTitle2>
-            <SortButton onClick={() => props.sortAtTop()}>
+            <TableTitle1>TOP {coinsArry.length}</TableTitle1>
+            <TableTitle2>{coins.sortBy}</TableTitle2>
+            <SortButton onClick={() => sortAtTop()}>
               <FontAwesomeIcon
                 icon={faCaretDown}
                 style={{ marginLeft: "5px" }}
@@ -139,12 +131,12 @@ const Coins = (props) => {
           </TableTitleContainer>
           <InfiniteScroll
             dataLength={coinList?.length}
-            next={() => props.getMoreCoins(props.coins.page + 1)}
-            hasMore={props.coins.hasMore}
+            next={() => getMoreCoins(coins.page + 1)}
+            hasMore={coins.hasMore}
             loader={
-              (props.coins.loading && (
+              (coins.loading && (
                 <StyledMessage>Loading...</StyledMessage>
-              )) || <StyledMessage>{props.coins.errorMessage}</StyledMessage>
+              )) || <StyledMessage>{coins.errorMessage}</StyledMessage>
             }
           >
             {coinList.length ? (
@@ -154,25 +146,25 @@ const Coins = (props) => {
                     <TableHeader>#</TableHeader>
                     <TableHeader>
                       Name
-                      <SortButton onClick={() => props.sortItems("sortName")}>
-                        {setSortIcon(props.coins.sort.sortName)}
+                      <SortButton onClick={() => sortItems("sortName")}>
+                        {setSortIcon(coins.sort.sortName)}
                       </SortButton>
                     </TableHeader>
                     <TableHeader>
                       Price
-                      <SortButton onClick={() => props.sortItems("current_price")}>
-                        {setSortIcon(props.coins.sort.current_price)}
+                      <SortButton onClick={() => sortItems("current_price")}>
+                        {setSortIcon(coins.sort.current_price)}
                       </SortButton>
                     </TableHeader>
                     <TableHeader>
                       1h%
                       <SortButton
                         onClick={() =>
-                          props.sortItems("price_change_percentage_1h_in_currency")
+                          sortItems("price_change_percentage_1h_in_currency")
                         }
                       >
                         {setSortIcon(
-                          props.coins.sort
+                          coins.sort
                             .price_change_percentage_1h_in_currency
                         )}
                       </SortButton>
@@ -181,24 +173,24 @@ const Coins = (props) => {
                       24h%
                       <SortButton
                         onClick={() =>
-                          props.sortItems("price_change_percentage_24h_in_currency")
+                          sortItems("price_change_percentage_24h_in_currency")
                         }
                       >
                         {setSortIcon(
-                          props.coins.sort
+                          coins.sort
                             .price_change_percentage_24h_in_currency
                         )}
                       </SortButton>
                     </TableHeader>
-                    <TableHeader darkMode={props.darkMode}>
+                    <TableHeader>
                       7d%
                       <SortButton
                         onClick={() =>
-                          props.sortItems("price_change_percentage_7d_in_currency")
+                          sortItems("price_change_percentage_7d_in_currency")
                         }
                       >
                         {setSortIcon(
-                          props.coins.sort
+                          coins.sort
                             .price_change_percentage_7d_in_currency
                         )}
                       </SortButton>
@@ -235,14 +227,12 @@ const Coins = (props) => {
                         (coin.circulating_supply / coin.total_supply) * 100
                       }
                       sparkLine={coin.sparkline_in_7d}
-                      currency={props.currency}
-                      darkMode={props.darkMode}
                     />
                   ))}
                 </tbody>
               </Table>
             ) : (
-              <StyledMessage>{props.coins.errorMessage}</StyledMessage>
+              <StyledMessage>{coins.errorMessage}</StyledMessage>
             )}
           </InfiniteScroll>
         </TableContainer>
@@ -250,12 +240,11 @@ const Coins = (props) => {
     </ParentDiv>
   );
 }
-  const mapStateToProps = (state) => ({
-    coins: state.coins,
-    main: state.main
-  })
-
-  const mapDispatchToProps = (dispatch) => {
+const mapStateToProps = (state) => ({
+  coins: state.coins,
+  main: state.main
+})
+const mapDispatchToProps = (dispatch) => {
     return {
       sortAtTop: () => dispatch(sortAtTop()),
       sortItems: (sortType) => dispatch(sortItems(sortType)),

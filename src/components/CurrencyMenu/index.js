@@ -25,15 +25,14 @@ const DropDownMenu = (props) => (
     </StyledIconContainer>
   </DropDownContainer>
 );
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    changeCurrency: (value) => dispatch(changeCurrency(value))
-  }
-}
-
 const Options = (props) => (
   <option value={props.value}>{props.value?.toUpperCase()}{""}</option>
 );
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeCurrency: (value) => dispatch(changeCurrency(value)),
+  };
+};
 
 export default connect(null, mapDispatchToProps)(DropDownMenu);
