@@ -1,5 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; 
+import { Carousel } from 'react-responsive-carousel';
 import { connect } from "react-redux";
 import {
   getCoins,
@@ -15,10 +17,28 @@ import { setSortIcon } from 'utils/FontAwesomeutil'
 import { sortList, getTodaysDate, formatChartData, topSort, formatNum } from 'utils/functionUtils'
 import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
-import { TableContainer, TableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent } from './styles';
+import { TableContainer, TableHeader, LastSevenDayTableHeader, ProgressBarTableHeader, PercentageTableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent } from './styles';
 import { StyledMessage } from 'components/Charts/styles';
 
 const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) => {
+  const [isScreen, setScreen] = useState(false)
+  useEffect(() => {
+    if(window.innerWidth > 1020){
+      setScreen(true)
+    } else {
+      setScreen(false);
+    }
+    const updateMedia = () => {
+      if (window.innerWidth > 1020) {
+        setScreen(true);
+      } else {
+        setScreen(false);
+      }
+    };
+    window.addEventListener("resize", updateMedia)
+    return () => window.removeEventListener("resize", updateMedia)
+    //eslint-disable-next-line
+  }, [])
   useEffect(() => {
     getCoins();
   },[main.currentCurrency, getCoins])
@@ -63,51 +83,83 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
       "price_change_percentage_7d_in_currency"
     )
   );
+  console.log(coins.marketDays)
   return (
     <ParentDiv>
       <TitleParent>
         <TitleChild>Overview</TitleChild>
       </TitleParent>
-      <ChartParent>
-        <LineChartContainer>
-          {coins.loading || coins.error ? (
-            <div></div>
-          ) : (
-            <TextContainer>
-              <SubText>BTC Price</SubText>
-              <PriceText>
-                {lineChartData &&
-                  main.symbol +
-                    formatNum(lineChartData[lineChartData.length - 1])}
-              </PriceText>
-              <SubText>{getTodaysDate()}</SubText>
-            </TextContainer>
-          )}
-          <LineChart
-            labels={lineChartLabels}
-            data={lineChartData}
-          />
-        </LineChartContainer>
-        <BarChartContainer>
-          {coins.loading || coins.error ? (
-            <div></div>
-          ) : (
-            <TextContainer>
-              <SubText>BTC Volume 24h</SubText>
-              <PriceText>
-                {barChartData &&
-                  main.symbol +
-                    formatNum(barChartData[barChartData.length - 1])}
-              </PriceText>
-              <SubText>{getTodaysDate()}</SubText>
-            </TextContainer>
-          )}
-          <BarChart
-            labels={barChartLabels}
-            data={barChartData}
-          />
-        </BarChartContainer>
-      </ChartParent>
+      {isScreen ? (
+        <ChartParent>
+          <LineChartContainer>
+            {coins.loading || coins.error ? (
+              <div></div>
+            ) : (
+              <TextContainer>
+                <SubText>BTC Price</SubText>
+                <PriceText>
+                  {lineChartData &&
+                    main.symbol +
+                      formatNum(lineChartData[lineChartData.length - 1])}
+                </PriceText>
+                <SubText>{getTodaysDate()}</SubText>
+              </TextContainer>
+            )}
+            <LineChart labels={lineChartLabels} data={lineChartData} />
+          </LineChartContainer>
+          <BarChartContainer>
+            {coins.loading || coins.error ? (
+              <div></div>
+            ) : (
+              <TextContainer>
+                <SubText>BTC Volume 24h</SubText>
+                <PriceText>
+                  {barChartData &&
+                    main.symbol +
+                      formatNum(barChartData[barChartData.length - 1])}
+                </PriceText>
+                <SubText>{getTodaysDate()}</SubText>
+              </TextContainer>
+            )}
+            <BarChart labels={barChartLabels} data={barChartData} />
+          </BarChartContainer>
+        </ChartParent>
+      ) : (
+        <Carousel>
+          <LineChartContainer active="active">
+            {coins.loading || coins.error ? (
+              <div></div>
+            ) : (
+              <TextContainer>
+                <SubText>BTC Price</SubText>
+                <PriceText>
+                  {lineChartData &&
+                    main.symbol +
+                      formatNum(lineChartData[lineChartData.length - 1])}
+                </PriceText>
+                <SubText>{getTodaysDate()}</SubText>
+              </TextContainer>
+            )}
+            <LineChart labels={lineChartLabels} data={lineChartData} />
+          </LineChartContainer>
+          <BarChartContainer active="active">
+            {coins.loading || coins.error ? (
+              <div></div>
+            ) : (
+              <TextContainer>
+                <SubText>BTC Volume 24h</SubText>
+                <PriceText>
+                  {barChartData &&
+                    main.symbol +
+                      formatNum(barChartData[barChartData.length - 1])}
+                </PriceText>
+                <SubText>{getTodaysDate()}</SubText>
+              </TextContainer>
+            )}
+            <BarChart labels={barChartLabels} data={barChartData} />
+          </BarChartContainer>
+        </Carousel>
+      )}
       <MarketDaysParent>
         {marketDaysArr.map((days) => (
           <Button
@@ -134,9 +186,9 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
             next={() => getMoreCoins(coins.page + 1)}
             hasMore={coins.hasMore}
             loader={
-              (coins.loading && (
-                <StyledMessage>Loading...</StyledMessage>
-              )) || <StyledMessage>{coins.errorMessage}</StyledMessage>
+              (coins.loading && <StyledMessage>Loading...</StyledMessage>) || (
+                <StyledMessage>{coins.errorMessage}</StyledMessage>
+              )
             }
           >
             {coinList.length ? (
@@ -156,7 +208,7 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
                         {setSortIcon(coins.sort.current_price)}
                       </SortButton>
                     </TableHeader>
-                    <TableHeader>
+                    <PercentageTableHeader>
                       1h%
                       <SortButton
                         onClick={() =>
@@ -164,12 +216,11 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
                         }
                       >
                         {setSortIcon(
-                          coins.sort
-                            .price_change_percentage_1h_in_currency
+                          coins.sort.price_change_percentage_1h_in_currency
                         )}
                       </SortButton>
-                    </TableHeader>
-                    <TableHeader>
+                    </PercentageTableHeader>
+                    <PercentageTableHeader>
                       24h%
                       <SortButton
                         onClick={() =>
@@ -177,12 +228,11 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
                         }
                       >
                         {setSortIcon(
-                          coins.sort
-                            .price_change_percentage_24h_in_currency
+                          coins.sort.price_change_percentage_24h_in_currency
                         )}
                       </SortButton>
-                    </TableHeader>
-                    <TableHeader>
+                    </PercentageTableHeader>
+                    <PercentageTableHeader>
                       7d%
                       <SortButton
                         onClick={() =>
@@ -190,14 +240,17 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
                         }
                       >
                         {setSortIcon(
-                          coins.sort
-                            .price_change_percentage_7d_in_currency
+                          coins.sort.price_change_percentage_7d_in_currency
                         )}
                       </SortButton>
-                    </TableHeader>
-                    <TableHeader>24h Vol/Market Cap</TableHeader>
-                    <TableHeader>Circulating/Total Sup</TableHeader>
-                    <TableHeader>Last 7d</TableHeader>
+                    </PercentageTableHeader>
+                    <ProgressBarTableHeader>
+                      24h Vol/Market Cap
+                    </ProgressBarTableHeader>
+                    <ProgressBarTableHeader>
+                      Circulating/Total Sup
+                    </ProgressBarTableHeader>
+                    <LastSevenDayTableHeader>Last 7d</LastSevenDayTableHeader>
                   </TableRow>
                 </thead>
                 <tbody>

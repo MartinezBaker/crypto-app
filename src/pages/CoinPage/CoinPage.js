@@ -19,19 +19,17 @@ import { PriceDataInfo, ProgressBar, Link, CopyTextButton, CurrencyInput, Market
 import { CoinPageLineChart } from "components/Charts";
 import {
   ParentDiv,
-  DescriptionParent,
   DescriptionChild,
   SummeryParent,
-  SummeryChild,
+  NameSummery,
+  PriceSummery,
+  MarketInfoSummery,
   ImgInnerContainer,
   ImgOutterContainer,
   CoinNameParent,
-  WebSiteParent,
   WebSiteContainer,
   WebSiteSpan,
-  PriceParent,
   PriceContainer,
-  PercentParent,
   PercentContainer,
   SVGParent,
   SVGContainer,
@@ -55,6 +53,9 @@ import {
   ChartParent,
   MarketDaysParent,
   StyledMessage,
+  MarketValueDiv,
+  MarketCap,
+  TitleValueFlex,
 } from "./styles";
 import { LinkAnchor } from "./styles";
 
@@ -106,6 +107,7 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
   const lineChartData =
     coinPage.chartData?.prices &&
     formatChartData(coinPage.chartData.prices, 1);
+    console.log(coinPage.marketDays)
   return (
     <>
       <ParentDiv>
@@ -118,7 +120,7 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
           <StyledMessage>There Was An Error!</StyledMessage>
         ) : (
           <SummeryParent>
-            <SummeryChild>
+            <NameSummery>
               <div>
                 <ImgOutterContainer>
                   <ImgInnerContainer>
@@ -128,11 +130,9 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
                 <CoinNameParent>
                   {name && <div>{`${name} (${symbol})`}</div>}
                 </CoinNameParent>
-                <WebSiteParent>
+                <div>
                   <WebSiteContainer>
-                    <LinkAnchor
-                      href={coinPage.coinInfo?.links?.homepage[0]}
-                    >
+                    <LinkAnchor href={coinPage.coinInfo?.links?.homepage[0]}>
                       <FontAwesomeIcon icon={faLink} />
                       <WebSiteSpan>{site}</WebSiteSpan>
                     </LinkAnchor>
@@ -141,24 +141,24 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
                       handleCopyClick={handleCopyClick}
                     />
                   </WebSiteContainer>
-                </WebSiteParent>
+                </div>
               </div>
-            </SummeryChild>
-            <SummeryChild>
+            </NameSummery>
+            <PriceSummery>
               <div>
-                <PriceParent>
+                <div>
                   <PriceContainer>
                     {main.symbol}
                     {currPrice?.toLocaleString()}
                   </PriceContainer>
-                </PriceParent>
-                <PercentParent>
+                </div>
+                <div>
                   <PercentContainer data={twentyFourHourPercent}>
                     {twentyFourHourPercent &&
                       setCaretIcon(twentyFourHourPercent)}{" "}
                     {formatTimePercent(twentyFourHourPercent)}
                   </PercentContainer>
-                </PercentParent>
+                </div>
                 <SVGParent>
                   <SVGContainer>
                     <BlackLayerLogo />
@@ -173,8 +173,9 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
                       ]
                     }
                     percent={
-                      coinPage.coinInfo?.market_data
-                        ?.ath_change_percentage[`${main.currentCurrency}`]
+                      coinPage.coinInfo?.market_data?.ath_change_percentage[
+                        `${main.currentCurrency}`
+                      ]
                     }
                     date={
                       coinPage.coinInfo?.market_data?.ath_date[
@@ -191,8 +192,9 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
                       ]
                     }
                     percent={
-                      coinPage.coinInfo?.market_data
-                        ?.atl_change_percentage[`${main.currentCurrency}`]
+                      coinPage.coinInfo?.market_data?.atl_change_percentage[
+                        `${main.currentCurrency}`
+                      ]
                     }
                     date={
                       coinPage.coinInfo?.market_data?.atl_date[
@@ -203,28 +205,34 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
                   />
                 </PriceDataContainer>
               </div>
-            </SummeryChild>
-            <SummeryChild>
+            </PriceSummery>
+            <MarketInfoSummery>
               <MarketDataInfoContainer>
                 <MarketDataInfo>
                   <MarketFlexDiv>
                     <BulletDiv>+</BulletDiv>
-                    <MarketInfoDiv>
-                      <strong>Market Cap:</strong> {main.symbol}
-                      {valueCheck(formatNum(marketCap))}
-                    </MarketInfoDiv>
-                    <PercentContainer data={exchangeRate}>
-                      {exchangeRate && setCaretIcon(exchangeRate)}{" "}
-                      {exchangeRate && formatTimePercent(exchangeRate)}
-                    </PercentContainer>
+                    <TitleValueFlex>
+                      <MarketInfoDiv>
+                        <strong>Market Cap:</strong>
+                      </MarketInfoDiv>
+                      <MarketValueDiv>
+                        <MarketCap>
+                          {main.symbol}
+                          {valueCheck(formatNum(marketCap))}
+                        </MarketCap>
+                        <PercentContainer data={exchangeRate}>
+                          {exchangeRate && setCaretIcon(exchangeRate)}{" "}
+                          {exchangeRate && formatTimePercent(exchangeRate)}
+                        </PercentContainer>
+                      </MarketValueDiv>
+                    </TitleValueFlex>
                   </MarketFlexDiv>
                 </MarketDataInfo>
                 <MarketDataInfo>
                   <MarketFlexDiv>
                     <BulletDiv>+</BulletDiv>
                     <MarketInfoDiv>
-                      <strong>Fully Diluted Valuation:</strong>{" "}
-                      {main.symbol}
+                      <strong>Fully Diluted Valuation:</strong> {main.symbol}
                       {valueCheck(formatNum(fullyDilutedValuation?.toString()))}
                     </MarketInfoDiv>
                   </MarketFlexDiv>
@@ -279,10 +287,11 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
                   <ProgressBar
                     progress={(circulatingSupply / maxSupply) * 100}
                     width={"180px"}
+                    height={"8px"}
                   />
                 </div>
               </MarketDataInfoContainer>
-            </SummeryChild>
+            </MarketInfoSummery>
           </SummeryParent>
         )}
         {description ? (
@@ -290,11 +299,11 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
             <TitleParent>
               <TitleChild>Description:</TitleChild>
             </TitleParent>
-            <DescriptionParent>
+            <div>
               <DescriptionChild
                 dangerouslySetInnerHTML={{ __html: description }}
               />
-            </DescriptionParent>
+            </div>
           </div>
         ) : (
           ""
@@ -338,9 +347,7 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
         </MarketDaysParent>
         <ConverterParent>
           <Converter>
-            <CurrencyLabel>
-              {main.currentCurrency.toUpperCase()}
-            </CurrencyLabel>
+            <CurrencyLabel>{main.currentCurrency.toUpperCase()}</CurrencyLabel>
             <CurrencyInput
               symbol={main.symbol}
               currency={main.currentCurrency}
@@ -357,10 +364,7 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
         </ConverterParent>
       </ParentDiv>
       <ChartParent>
-        <CoinPageLineChart
-          labels={lineChartLabels}
-          data={lineChartData}
-        />
+        <CoinPageLineChart labels={lineChartLabels} data={lineChartData} />
       </ChartParent>
     </>
   );

@@ -25,8 +25,6 @@ import {
   StyledImg,
  } from "./styles";
 
- 
-
 const Modal = (props) => {
   const [nameValue, setNameValue] = useState("")
   const [amountValue, setAmountValue] = useState("")

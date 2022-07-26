@@ -5,7 +5,7 @@ const initialState = {
   error: false,
   hasMore: true,
   errorMessage: "",
-  chartData: null,
+  chartData: [],
   marketDays: 29,
   sortBy: "BY MARKET CAP",
   sort: {
@@ -107,7 +107,7 @@ export default function coinsReducer(state = initialState, action) {
           const [key] = entry;
           return key === action.payload ? marketDaysObj[action.payload] : null
         }).filter((el) => el !== null)
-      const newMarketDay = marketDayArry.length ? marketDayArry.reduce((c) => c) : {...state.marketDays}
+      const newMarketDay = marketDayArry.length ? marketDayArry.reduce((c) => c) : state.marketDays
       return {
         ...state,
         marketDays: newMarketDay

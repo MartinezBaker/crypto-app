@@ -9,11 +9,20 @@ export const Percent = styled.div`
       return "rgb(0, 252, 42)";
     }
   }};
+  margin-bottom: 5px;
 `; 
 
 export const DataInfo = styled.div`
     font-size: 12px;
-    margin: 15px 5px 0px 45px;
+    margin: auto;
     text-align: left;
     color:${({theme})=> theme.text};
+`;
+
+export const NameDiv = styled.div`
+  margin-bottom: 10px;
+`
+
+export const PriceDiv = styled.div`
+  margin-bottom: 5px;
 `;

@@ -5,7 +5,7 @@ import {  ProgressBar } from "components";
 import { TableCharts } from 'components/Charts/index';
 import { formatTimePercent, formatNum, formatCoinName, formatPrice } from 'utils/functionUtils';
 import { setCaretIcon } from 'utils/FontAwesomeutil'
-import { CoinImage, PercentColor, DataRow, TableCell, ProgressParent } from './styles';
+import { CoinImage, PercentColor, DataRow, TableCell, TableSparkLineCell, TableProgressCell, ProgressParent } from './styles';
 
 const CoinInstance = (props) => (
   <DataRow>
@@ -13,7 +13,10 @@ const CoinInstance = (props) => (
       <CoinImage src={props.image} alt="Coin" />{" "}
       <Link
         to={`/coins/${props.id}`}
-        style={{ textDecoration: "none", color: props.main.darkMode ? "white" : "black" }}
+        style={{
+          textDecoration: "none",
+          color: props.main.darkMode ? "white" : "black",
+        }}
       >
         {formatCoinName(props.name)} ({props.symbol})
       </Link>
@@ -34,7 +37,7 @@ const CoinInstance = (props) => (
       {props.sevenDay && setCaretIcon(props.sevenDay)}{" "}
       {formatTimePercent(props.sevenDay)}
     </PercentColor>
-    <TableCell>
+    <TableProgressCell>
       <ProgressParent>
         <div>
           &#x2022;{" "}
@@ -53,9 +56,13 @@ const CoinInstance = (props) => (
           )}
         </div>
       </ProgressParent>
-      <ProgressBar progress={props.totalVolPercentage} width={"123px"} height={"10px"}/>
-    </TableCell>
-    <TableCell>
+      <ProgressBar
+        progress={props.totalVolPercentage}
+        width={"123px"}
+        height={"10px"}
+      />
+    </TableProgressCell>
+    <TableProgressCell>
       <ProgressParent>
         <div>
           &#x2022;{" "}
@@ -79,13 +86,13 @@ const CoinInstance = (props) => (
         width={"123px"}
         height={"10px"}
       />
-    </TableCell>
-    <TableCell>
+    </TableProgressCell>
+    <TableSparkLineCell>
       <TableCharts
         chartData={props.sparkLine.price}
         sevenDay={props.sevenDay}
       />
-    </TableCell>
+    </TableSparkLineCell>
   </DataRow>
 );
 const mapStateToProps = (state) => ({
