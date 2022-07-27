@@ -19,7 +19,7 @@ export const TitleChild = styled.div`
 
 export const SummeryParent = styled.div`
   display flex;
-  @media(max-width: 768px){
+  @media(max-width: 950px){
     flex-wrap: wrap;
   }
 `;
@@ -31,7 +31,7 @@ export const NameSummery = styled.div`
   text-align: center;
   flex-grow: 1;
   flex-shrink: 0;
-  flex-basis: 250px;
+  flex-basis: 200px;
   margin: 5px;
 `;
 
@@ -42,7 +42,7 @@ export const PriceSummery = styled.div`
   text-align: center;
   flex-grow: 1;
   flex-shrink: 0;
-  flex-basis: 250px;
+  flex-basis: 200px;
   margin: 5px;
 `;
 
@@ -52,7 +52,8 @@ export const MarketInfoSummery = styled.div`
   padding: 25px 35px 15px 35px;
   text-align: center;
   flex-grow: 1;
-  flex-basis: 300px;
+  flex-shrink: 1;
+  flex-basis: auto;
   margin: 5px;
 `;
 
@@ -125,11 +126,12 @@ export const PriceDataContainer = styled.div`
 export const MarketDataInfoContainer = styled.div`
   font-size: 12px;
   text-align: left;
-  @media (max-width: 768px) {
-    margin-left: 30%;
-  }
   @media (max-width: 430px) {
     margin-left: 10%
+  }
+  @media (max-width: 950px){
+    display: flex;
+    flex-wrap: wrap;
   }
 `;
 
@@ -139,7 +141,11 @@ export const MarketDataInfo = styled.div`
 
 export const MarketFlexDiv = styled.div`
   display: flex;
+  @media(max-width: 950px){
+    margin: 0 10px 10px 0;
+  }
 `;
+
 
 export const BulletDiv = styled.div`
   border: 1px solid #0275d8;
@@ -172,7 +178,7 @@ export const TitleValueFlex = styled.div`
   display: flex;
   @media(max-width: 325px){
     flex-wrap: wrap;
-  
+  }
 `;
 
 export const Spacer = styled.div`
