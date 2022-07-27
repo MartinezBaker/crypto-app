@@ -27,11 +27,28 @@ export const PercentColor = styled.td`
       return "rgb(0, 252, 42)";
     }
   }};
+  @media (max-width: 426px) {
+    display: none;
+  }
 `;
 
 export const TableCell = styled.td`
   padding: 30px 0px 30px 8px;
   ;
+`;
+
+export const TableProgressCell = styled.td`
+  padding: 30px 0px 30px 8px;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const TableSparkLineCell = styled.td`
+  padding: 30px 0px 30px 8px; 
+  @media (max-width: 1024px){
+    display: none;
+  }
 `;
 
 export const VerticalAlign = styled.div`

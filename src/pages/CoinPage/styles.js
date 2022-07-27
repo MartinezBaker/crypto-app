@@ -1,11 +1,14 @@
 import styled from "styled-components";
 
 export const ParentDiv = styled.div`
- padding: 0px 50px 0px 50px;
+  padding: 0px 50px 0px 50px;
+  @media (max-width: 430px) {
+    padding: 0 15px 0 15px;
+  }
 `;
 
 export const TitleParent = styled.div`
-  width: 100%
+  margin-bottom: 10px;
 `
 
 export const TitleChild = styled.div`
@@ -15,24 +18,46 @@ export const TitleChild = styled.div`
 `;
 
 export const SummeryParent = styled.div`
-    display flex;
-    width: 100%;
-`
+  display flex;
+  @media(max-width: 768px){
+    flex-wrap: wrap;
+  }
+`;
 
-export const SummeryChild = styled.div`
+export const NameSummery = styled.div`
   border-radius: 25px;
   background-color: ${({ theme }) => theme.body};
-  padding: 25px 36px 15px 36px;
+  padding: 25px 15px 35px 15px;
   text-align: center;
   flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: auto;
+  flex-shrink: 0;
+  flex-basis: 250px;
+  margin: 5px;
+`;
+
+export const PriceSummery = styled.div`
+  border-radius: 25px;
+  background-color: ${({ theme }) => theme.body};
+  padding: 25px 15px 35px 15px;
+  text-align: center;
+  flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 250px;
+  margin: 5px;
+`;
+
+export const MarketInfoSummery = styled.div`
+  border-radius: 25px;
+  background-color: ${({ theme }) => theme.body};
+  padding: 25px 35px 15px 35px;
+  text-align: center;
+  flex-grow: 1;
+  flex-basis: 300px;
   margin: 5px;
 `;
 
 export const ImgOutterContainer = styled.div`
-  width: 100%;
-  margin-bottom: 10px;
+   margin-bottom: 15px;
 `;
 
 export const ImgInnerContainer = styled.div`
@@ -43,22 +68,17 @@ export const ImgInnerContainer = styled.div`
 `;
 
 export const CoinNameParent = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   color: ${({ theme }) => theme.text};
 `;
-
-export const WebSiteParent = styled.div`
-  width: 100%;
-  font-size: 11px;
-`
 
 export const WebSiteContainer = styled.div`
   background-color: ${({ theme }) => theme.app};
   border-radius: 10px;
-  padding: 4px 20px 4px 20px;
-  width: 203px;
+  padding: 4px 0 4px 0;
+  width: 80%;
   margin: auto;
+  font-size: 11px;
 `;
 export const LinkAnchor = styled.a`
   text-decoration: none;
@@ -69,19 +89,12 @@ export const WebSiteSpan = styled.span`
   margin: 0px 6px 0px 6px;
 `;
 
-export const PriceParent = styled.div`
-  width: 100%;
-`
-
 export const PriceContainer = styled.div`
   font-size: 24px;
   font-weight: bold;
   color: ${({ theme }) => theme.text};
+  margin-bottom: 10px;
 `;
-
-export const PercentParent = styled.div`
-  width: 100%;
-`
 
 export const PercentContainer = styled.div`
   color: ${({ data }) => {
@@ -95,26 +108,30 @@ export const PercentContainer = styled.div`
 `
 
 export const SVGParent = styled.div`
- width: 100%;
- margin-top: 10px
+ margin-top: 15px
 `
 
 export const SVGContainer = styled.div`
   display: inline-block;
   vertical-align: middle;
   color: ${({ theme }) => theme.text};
+  margin-bottom: 15px;
 `;
 
 export const PriceDataContainer = styled.div`
-  width 100%;
   display: flex;
 `
 
 export const MarketDataInfoContainer = styled.div`
   font-size: 12px;
   text-align: left;
-  width: 270px;
- `;
+  @media (max-width: 768px) {
+    margin-left: 30%;
+  }
+  @media (max-width: 430px) {
+    margin-left: 10%
+  }
+`;
 
 export const MarketDataInfo = styled.div`
   margin-bottom: 5px;
@@ -122,21 +139,40 @@ export const MarketDataInfo = styled.div`
 
 export const MarketFlexDiv = styled.div`
   display: flex;
-`
+`;
 
 export const BulletDiv = styled.div`
   border: 1px solid #0275d8;
   background-color: #0275d8;
   color: white;
   border-radius: 5px;
-  padding: 0px 5px 0px 5px;
+  padding: 3px 5px 3px 5px;
   margin-right: 5px;
-  max-height: 18px;
+  max-height: 12px;
 `;
 
 export const MarketInfoDiv = styled.div`
+  
+  margin-right: 5px;
+  color: ${({ theme }) => theme.text};
+`;
+
+export const MarketCap = styled.div`
   margin-right: 4px;
   color: ${({ theme }) => theme.text};
+`;
+
+export const MarketValueDiv = styled.div`
+  color: ${({ theme }) => theme.text};
+  margin-right: 5px;
+  display: flex;
+`;
+
+export const TitleValueFlex = styled.div`
+  display: flex;
+  @media(max-width: 325px){
+    flex-wrap: wrap;
+  
 `;
 
 export const Spacer = styled.div`
@@ -151,10 +187,6 @@ export const TotalVol = styled.span`
 export const MaxSupply = styled.span`
   color: #0275d8;
   font-weight: bold;
-`;
-
-export const DescriptionParent = styled.div`
-  width: 100%;
 `;
 
 export const DescriptionChild = styled.div`
@@ -175,7 +207,6 @@ export const DescriptionChild = styled.div`
 `;
 
 export const LinkParent = styled.div`
-  width: 100%;
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
@@ -195,17 +226,21 @@ export const LinkStyle = styled.div`
 `;
 
 export const MarketDaysParent = styled.div`
-  width: 100%;
   display: flex;
   justify-content: center;
   margin: 15px;
+  @media (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 export const ConverterParent = styled.div`
-  width: 100%;
   display: flex;
   justify-content: center;
-`
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`;
 export const Converter = styled.div`
   display: flex;
   margin: 5px;
@@ -214,7 +249,7 @@ export const CurrencyLabel = styled.div`
   background-color: ${({ theme }) => theme.chart};
   color: white;
   border-radius: 8px 0px 0px 8px;
-  padding: 7px 20px 7px 20px;
+  padding: 10px 20px 10px 20px;
   font-size: 12px;
   width: 28px;
 `;
@@ -226,8 +261,10 @@ export const Icon = styled.div`
 `;
 
 export const ChartParent = styled.div`
-  width: 100%;
-`
+  @media (max-width: 1024px) {
+    display: none;
+  }
+`;
 
 export const StyledMessage = styled.h2`
   color: ${({ theme }) => theme.text};

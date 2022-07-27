@@ -2,6 +2,9 @@ import styled from 'styled-components';
 
 export const ParentDiv = styled.div`
   padding: 0px 50px 0px 50px;
+  @media (max-width: 430px) {
+    padding: 0 15px 0 15px;
+  }
 `;
 
 export const ButtonContainer = styled.div`

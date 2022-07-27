@@ -1,4 +1,4 @@
-const initialState = {coinInfo: {}, loading: false, error: false, errorMessage: "", marketDays: 29, chartData: null, currencyInput: "", coinInput: ""}
+const initialState = {coinInfo: {}, loading: false, error: false, errorMessage: "", marketDays: 29, chartData: {}, currencyInput: "", coinInput: ""}
 export const GET_COIN_INFO_PENDING = "GET_COIN_INFO_PENDING";
 export const GET_COIN_INFO_SUCCESS = "GET_COIN_INFO_SUCCESS";
 export const GET_COIN_INFO_FAILED = "GET_COIN_INFO_FAILED";
@@ -68,7 +68,7 @@ export default function coinPageReducer(state = initialState, action) {
                 const [key] = entry;
                 return key === action.payload ? marketDaysObj[action.payload] : null
                 }).filter((el) => el !== null)
-            const newMarketDay = marketDayArry.length ? marketDayArry.reduce((c) => c) : null
+            const newMarketDay = marketDayArry.length ? marketDayArry.reduce((c) => c) : state.marketDays
             return {
                 ...state,
                 marketDays: newMarketDay

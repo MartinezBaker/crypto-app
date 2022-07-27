@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 export const ParentDiv = styled.div`
   padding: 0px 50px 0px 50px;
+  @media (max-width: 430px){
+    padding: 0 15px 0 15px;
+  }
 `;
 export const TitleParent = styled.div`
   width: 100%
@@ -24,7 +27,13 @@ export const LineChartContainer = styled.div`
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
   position: relative;
-  width: 43%;
+  width: ${({active}) => {
+    if(active){
+      return "100%"
+    }else{
+      return "43%"
+    }
+  }};
   background-color: ${({ theme }) => theme.body};
 `;
 
@@ -32,7 +41,13 @@ export const BarChartContainer = styled.div`
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
   position: relative;
-  width: 43%;
+   width: ${({ active }) => {
+     if (active) {
+       return "100%";
+     } else {
+       return "43%";
+     }
+   }};
   background-color: ${({ theme }) => theme.body};
 `;
 
@@ -57,6 +72,10 @@ export const MarketDaysParent = styled.div`
   padding-inline: 6px;
   margin-top: 25px;
   margin-inline: auto;
+  @media (max-width: 426px){
+    width: 95%;
+    margin-top: 10px;
+  }
   width: 500px;
   display: flex;
   justify-content: space-around;
@@ -93,6 +112,36 @@ export const TableHeader = styled.th`
   border-bottom: ${({ theme }) => theme.text};
   border-left: none;
   padding: 15px 0px 15px 2px;
+`;
+
+export const PercentageTableHeader = styled.td`
+  text-align: start;
+  border-bottom: ${({ theme }) => theme.text};
+  border-left: none;
+  padding: 15px 0px 15px 2px;
+  @media (max-width: 426px) {
+    display: none;
+  }
+`;
+
+export const ProgressBarTableHeader = styled.th`
+  text-align: start;
+  border-bottom: ${({ theme }) => theme.text};
+  border-left: none;
+  padding: 15px 0px 15px 2px;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const LastSevenDayTableHeader = styled.th`
+  text-align: start;
+  border-bottom: ${({ theme }) => theme.text};
+  border-left: none;
+  padding: 15px 0px 15px 2px;
+  @media (max-width: 1024px){
+    display: none;
+  }
 `;
 
 export const Table = styled.table`
