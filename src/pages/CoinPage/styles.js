@@ -18,10 +18,10 @@ export const TitleChild = styled.div`
 `;
 
 export const SummeryParent = styled.div`
-    display flex;
-    @media(max-width: 768px){
-      flex-wrap: wrap;
-    }
+  display flex;
+  @media(max-width: 768px){
+    flex-wrap: wrap;
+  }
 `;
 
 export const NameSummery = styled.div`

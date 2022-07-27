@@ -107,7 +107,6 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
   const lineChartData =
     coinPage.chartData?.prices &&
     formatChartData(coinPage.chartData.prices, 1);
-    console.log(coinPage.marketDays)
   return (
     <>
       <ParentDiv>
