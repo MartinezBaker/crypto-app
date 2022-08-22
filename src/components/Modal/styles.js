@@ -23,6 +23,7 @@ export const ModalContent = styled.div`
   border-radius: 23px;
   background-color: ${({ theme }) => theme.app};
   padding: 5px;
+  margin-top: 100px;
 `;
 
 export const ModalHeaderParent = styled.div`
@@ -97,6 +98,10 @@ export const StyledInstructions = styled.div`
   padding: 15px 7px;
   margin: 0 0 10px 15px;
 `;
+
+export const InputFlex = styled.div`
+  display: flex;
+`
 
 export const StyledInputContainer = styled.div`
   width: 65%;

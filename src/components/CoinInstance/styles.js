@@ -27,7 +27,7 @@ export const PercentColor = styled.td`
       return "rgb(0, 252, 42)";
     }
   }};
-  @media (max-width: 426px) {
+  @media (max-width: 600px) {
     display: none;
   }
 `;

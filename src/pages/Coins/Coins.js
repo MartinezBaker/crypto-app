@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { Carousel } from 'react-responsive-carousel';
+import MoonLoader from "react-spinners/MoonLoader";
 import { connect } from "react-redux";
+import { useLocation } from 'react-router-dom';
 import {
   getCoins,
   getChartData,
@@ -10,6 +12,7 @@ import {
   sortAtTop,
   sortItems,
 } from "../../store/Coins/actions";
+import { changePath } from 'store/Main/actions';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
@@ -17,11 +20,17 @@ import { setSortIcon } from 'utils/FontAwesomeutil'
 import { sortList, getTodaysDate, formatChartData, topSort, formatNum } from 'utils/functionUtils'
 import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
-import { TableContainer, TableHeader, LastSevenDayTableHeader, ProgressBarTableHeader, PercentageTableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent } from './styles';
+import { TableContainer, TableHeader, LastSevenDayTableHeader, ProgressBarTableHeader, PercentageTableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent, StyledLoader } from './styles';
 import { StyledMessage } from 'components/Charts/styles';
 
-const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) => {
+const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, sortAtTop, changePath}) => {
   const [isScreen, setScreen] = useState(false)
+  const location = useLocation()
+  useEffect(() => {
+    if(location.pathname === "/coins"){
+      changePath(location.pathname);
+    }
+  }, [location, changePath]);
   useEffect(() => {
     if(window.innerWidth > 1020){
       setScreen(true)
@@ -83,17 +92,18 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
       "price_change_percentage_7d_in_currency"
     )
   );
-  console.log(coins.marketDays)
   return (
     <ParentDiv>
       <TitleParent>
-        <TitleChild>Overview</TitleChild>
+        <TitleChild>Overview:</TitleChild>
       </TitleParent>
       {isScreen ? (
         <ChartParent>
           <LineChartContainer>
-            {coins.loading || coins.error ? (
-              <div></div>
+            {coins.loading ? (
+              <StyledLoader>
+                <MoonLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
+              </StyledLoader>
             ) : (
               <TextContainer>
                 <SubText>BTC Price</SubText>
@@ -108,8 +118,10 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
             <LineChart labels={lineChartLabels} data={lineChartData} />
           </LineChartContainer>
           <BarChartContainer>
-            {coins.loading || coins.error ? (
-              <div></div>
+            {coins.loading ? (
+              <StyledLoader>
+                <MoonLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
+              </StyledLoader>
             ) : (
               <TextContainer>
                 <SubText>BTC Volume 24h</SubText>
@@ -125,10 +137,12 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
           </BarChartContainer>
         </ChartParent>
       ) : (
-        <Carousel>
+        <Carousel showThumbs={false}>
           <LineChartContainer active="active">
-            {coins.loading || coins.error ? (
-              <div></div>
+            {coins.loading ? (
+              <StyledLoader>
+                <MoonLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
+              </StyledLoader>
             ) : (
               <TextContainer>
                 <SubText>BTC Price</SubText>
@@ -143,8 +157,8 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
             <LineChart labels={lineChartLabels} data={lineChartData} />
           </LineChartContainer>
           <BarChartContainer active="active">
-            {coins.loading || coins.error ? (
-              <div></div>
+            {coins.loading ? (
+              <MoonLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
             ) : (
               <TextContainer>
                 <SubText>BTC Volume 24h</SubText>
@@ -186,9 +200,7 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
             next={() => getMoreCoins(coins.page + 1)}
             hasMore={coins.hasMore}
             loader={
-              (coins.loading && <StyledMessage>Loading...</StyledMessage>) || (
-                <StyledMessage>{coins.errorMessage}</StyledMessage>
-              )
+              <div>Loading...</div>
             }
           >
             {coinList.length ? (
@@ -266,9 +278,15 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems}) =
                       }
                       image={coin.image}
                       symbol={coin.symbol.toUpperCase()}
-                      oneHour={coin.price_change_percentage_1h_in_currency?.toString()}
-                      twentyFourHour={coin.price_change_percentage_24h_in_currency?.toString()}
-                      sevenDay={coin.price_change_percentage_7d_in_currency?.toString()}
+                      oneHour={coin.price_change_percentage_1h_in_currency?.toFixed(
+                        2
+                      )}
+                      twentyFourHour={coin.price_change_percentage_24h_in_currency?.toFixed(
+                        2
+                      )}
+                      sevenDay={coin.price_change_percentage_7d_in_currency?.toFixed(
+                        2
+                      )}
                       totalVolume={coin.total_volume}
                       marketCap={coin.market_cap.toString()}
                       totalVolPercentage={
@@ -303,7 +321,8 @@ const mapDispatchToProps = (dispatch) => {
       sortItems: (sortType) => dispatch(sortItems(sortType)),
       getChartData: () => dispatch(getChartData()),
       getCoins: () => dispatch(getCoins()),
-      getMoreCoins: (page) => dispatch(getMoreCoins(page))
+      getMoreCoins: (page) => dispatch(getMoreCoins(page)),
+      changePath: (path) => dispatch(changePath(path))
     }
   }
 

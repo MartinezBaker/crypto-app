@@ -28,33 +28,31 @@ import { SavedCoinContainer,
   TextColor
  } from './styles'
 
-
 const SavedCoin = (props) => {
-    const filteredCoin = props.portfolio.coins.filter((coin) => coin.id === props.id)
-    const filterHistoryData = props.portfolio.historyData.filter((coin) => coin.id === props.id)
-    const coin = filteredCoin[0]
-    const currency = props.main.currentCurrency
-    const priceDiff =
-      (((coin?.current_price -
-        filterHistoryData[0]?.market_data?.current_price[`${currency}`]) /
-        filterHistoryData[0]?.market_data?.current_price[`${currency}`]) *
-      100).toFixed(2)
-    const priceChangeTwentyFour = coin.price_change_percentage_24h_in_currency.toFixed(2)
-    const price = coin.current_price
+    const filteredCoin = props.portfolio.currentInfoArry?.filter((coin) => coin.id === props.id)
+    const coin = filteredCoin?.[0]
+    const priceDiff = (
+      ((coin?.market_data.current_price?.[`${props.main.currentCurrency}`] -
+        props.priceAtPurchase?.[`${props.main.currentCurrency}`]) /
+        props.priceAtPurchase?.[`${props.main.currentCurrency}`]) *
+      100
+    ).toFixed(2);
+    const priceChangeTwentyFour =
+      coin?.market_data.price_change_24h_in_currency[`${props.main.currentCurrency}`].toFixed(2);
     return (
       <SavedCoinContainer>
         <SavedCoinDescContainer>
           <SavedCoinDescription>
             <ImgOutterContainer>
               <ImgInnerContainer>
-                <StyledImage src={coin.image} alt="Coin Logo" />
+                <StyledImage src={props.image} alt="Coin Logo" />
               </ImgInnerContainer>
             </ImgOutterContainer>
             <CoinNameContainer>
-              <CoinName>{coin.name}</CoinName>
-              <div>({coin.symbol.toUpperCase()})</div>
+              <CoinName>{props.name}</CoinName>
+              <div>({props.symbol?.toUpperCase()})</div>
             </CoinNameContainer>
-            <StyledIcon onClick={() => props.deleteCoin(coin.name)}>
+            <StyledIcon onClick={() => props.deleteCoin(props.id)}>
               <Delete />
             </StyledIcon>
           </SavedCoinDescription>
@@ -70,20 +68,18 @@ const SavedCoin = (props) => {
               </SavedCoinInfoTitle>
               <SavedCoinInfoValue>
                 {props.main.symbol}
-                {price.toLocaleString()}
+                {coin?.market_data.current_price[
+                  `${props.main.currentCurrency}`
+                ].toLocaleString()}
               </SavedCoinInfoValue>
               <SavedCoinInfoTitle>
                 <strong>Price 24h chg:</strong>
               </SavedCoinInfoTitle>
               <SavedCoinInfoValue>
-                <PercentColor
-                  data={coin.price_change_percentage_24h_in_currency.toString()}
-                >
-                  {coin.price_change_percentage_24h_in_currency &&
-                    setCaretIcon(
-                      coin.price_change_percentage_24h_in_currency.toString()
-                    )}{" "}
-                  {formatTimePercent(priceChangeTwentyFour.toString())}
+                <PercentColor data={priceChangeTwentyFour?.toString()}>
+                  {priceChangeTwentyFour &&
+                    setCaretIcon(priceChangeTwentyFour?.toString())}{" "}
+                  {formatTimePercent(priceChangeTwentyFour?.toString())}
                 </PercentColor>
               </SavedCoinInfoValue>
               <SavedCoinInfoTitle>
@@ -91,10 +87,26 @@ const SavedCoin = (props) => {
               </SavedCoinInfoTitle>
               <StyledProgressBar>
                 <StyledVolToMrkCap>
-                  {(coin.total_volume / coin.total_volume) * 100}%
+                  {(
+                    coin?.market_data.total_volume[
+                      `${props.main.currentCurrency}`
+                    ] /
+                    coin?.market_data.market_cap[
+                      `${props.main.currentCurrency}`
+                    ]
+                  ).toFixed(1) * 100}
+                  %
                 </StyledVolToMrkCap>
                 <ProgressBar
-                  progress={(coin.total_volume / coin.total_volume) * 100}
+                  progress={
+                    (coin?.market_data.total_volume[
+                      `${props.main.currentCurrency}`
+                    ] /
+                      coin?.market_data.market_cap[
+                        `${props.main.currentCurrency}`
+                      ]) *
+                    100
+                  }
                   width={"60px"}
                 />
               </StyledProgressBar>
@@ -103,12 +115,18 @@ const SavedCoin = (props) => {
               </SavedCoinInfoTitle>
               <StyledProgressBar>
                 <StyledVolToMrkCap>
-                  {(coin.circulating_supply / coin.total_supply).toFixed(2) *
-                    100}
+                  {(
+                    coin?.market_data.circulating_supply /
+                    coin?.market_data.total_supply
+                  ).toFixed(2) * 100}
                   %
                 </StyledVolToMrkCap>
                 <ProgressBar
-                  progress={(coin.circulating_supply / coin.total_supply) * 100}
+                  progress={
+                    (coin?.market_data.circulating_supply /
+                      coin?.market_data.total_supply) *
+                    100
+                  }
                   width={"60px"}
                 />
               </StyledProgressBar>
@@ -127,7 +145,21 @@ const SavedCoin = (props) => {
                 </SavedCoinInfoTitle>
                 <SavedCoinInfoValue>
                   {props.main.symbol}
-                  {(props.amount * coin.current_price).toLocaleString()}
+                  {(
+                    props.amount *
+                    coin?.market_data.current_price[
+                      `${props.main.currentCurrency}`
+                    ]
+                  ).toLocaleString()}
+                </SavedCoinInfoValue>
+                <SavedCoinInfoTitle>
+                  <strong>Price At Purchase:</strong>
+                </SavedCoinInfoTitle>
+                <SavedCoinInfoValue>
+                  {props.main.symbol}
+                  {props.priceAtPurchase?.[
+                    `${props.main.currentCurrency}`
+                  ].toLocaleString()}
                 </SavedCoinInfoValue>
                 <SavedCoinInfoTitle>
                   <strong>Price Change Since Purchase:</strong>

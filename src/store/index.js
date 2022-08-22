@@ -7,19 +7,25 @@ import coinPageReducer from "./CoinPage/reducer";
 import mainReducer from "./Main/reducer";
 import portfolioReducer from "./Portfolio/reducer";
 
+const mainPersistConfig = {
+  key: "main",
+  version: 1,
+  storage,
+  blacklist: ["savedCoinId", "path"]
+}
 
 const rootReducer = combineReducers({
   coins: coinsReducer,
   coinPage: coinPageReducer,
   portfolio: portfolioReducer,
-  main: mainReducer,
+  main: persistReducer(mainPersistConfig, mainReducer)
 });
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  blacklist: ["modal", "main"]
+  whitelist: [ "coins", "portfolio", "coinPage"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

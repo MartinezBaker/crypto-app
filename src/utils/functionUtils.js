@@ -16,24 +16,24 @@ export const formatTimePercent = (t) => {
   if (!t) {
     return "-";
   }else if (t.includes("-")) {
-    return t.slice(1, 5) + "%";
+    return t.substring(1) + "%";
   } else {
-    return t.slice(0, 4) + "%";
+    return t + "%";
   }
 };
 
 export const formatPercent = (t) => {
   if (!t) {
     return "-";
-  } else if (t.includes("-")) {
-    return t.slice(1, 6) + "%";
+  } else if (t?.includes("-")) {
+    return t?.slice(1, 6) + "%";
   } else {
-    return t.slice(0, 8) + "%";
+    return t?.slice(0, 8) + "%";
   }
 };
 
 export const formatNum = (n) => {
-  if (n < 1e3) return n.toFixed(0);
+  if (n < 1e3) return n?.toFixed(0);
   if (n === null) return <span>&infin;</span>;
   if (n >= 1e3 && n < 1e6) return parseFloat((n / 1e3).toFixed(2)) + "K";
   if (n >= 1e6 && n < 1e9) return parseFloat((n / 1e6).toFixed(2)) + "M";
@@ -125,8 +125,9 @@ export const topSort = (sortBy, sortValue, sortItem) => {
 export const formatDate = (x) => {
   const date = new Date(x);
   const month = (`${date.getMonth() + 1}`).toString().padStart(2, "0")
+  const altMonth = (`${date.getMonth() + 2}`).toString().padStart(2, "0");
   const day = (`${date.getDate() + 1}`).toString().padStart(2, "0")
-  const formatedDate = `${month}-${day}-${date.getFullYear()}`
+  const formatedDate = `${day}` > 31 ? `${altMonth}-01-${date.getFullYear()}` :`${month}-${day}-${date.getFullYear()}`
   return formatedDate
 }
 

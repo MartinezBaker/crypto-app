@@ -11,7 +11,7 @@ export const TitleParent = styled.div`
 `;
 
 export const TitleChild = styled.div`
-  margin: 80px 0px 0px 0px;
+  margin: 80px 0px 10px 0px;
   font-size: 23px;
   color:${({theme}) => theme.text}
  `;
@@ -72,7 +72,7 @@ export const MarketDaysParent = styled.div`
   padding-inline: 6px;
   margin-top: 25px;
   margin-inline: auto;
-  @media (max-width: 426px){
+  @media (max-width: 600px){
     width: 95%;
     margin-top: 10px;
   }
@@ -119,7 +119,7 @@ export const PercentageTableHeader = styled.td`
   border-bottom: ${({ theme }) => theme.text};
   border-left: none;
   padding: 15px 0px 15px 2px;
-  @media (max-width: 426px) {
+  @media (max-width: 600px) {
     display: none;
   }
 `;
@@ -172,3 +172,7 @@ export const SortButton = styled.button`
   }
   color: ${({ theme }) => theme.text};
 `;
+
+export const StyledLoader = styled.div`
+  margin: 10% 0 0 40%;
+`

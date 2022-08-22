@@ -1,6 +1,6 @@
 
 
-const initialState = {showModal: false, loading: false, error: false, errorMessage: null, savedCoins: {}, portfolio:[], historyData:[], coins:[]};
+const initialState = {showModal: false, loading: false, error: false, errorMessage: null, savedCoins: {}, portfolio:[], historyData: {}, idArry: [], currentInfoArry: [], searchArry: []};
 
 export const SHOW_MODAL = "SHOW_MODAL"
 export const SAVE_COIN_OBJECT = "SAVE_COIN_OBJECT";
@@ -8,10 +8,13 @@ export const GET_HISTORY_PENDING = "GET_HISTORY_PENDING";
 export const GET_HISTORY_SUCCESS = "GET_HISTORY_SUCCESS"
 export const GET_HISTORY_FAILED = "GET_HISTORY_FAILED"
 export const CREATE_PORTFOLIO_OBJ = "CREATE_PORTFOLIO_OBJ"
-export const GET_COINS_PENDING = "GET_COINS_PENDING"
-export const GET_COINS_SUCCESS = "GET_COINS_SUCCESS"
-export const GET_COINS_FAILED = "GET_COINS_FAILED";
+export const GET_CURRENT_INFO_PENDING = "GET_CURRENT_INFO_PENDING";
+export const GET_CURRENT_INFO_SUCCESS = "GET_CURRENT_INFO_SUCCESS";
+export const GET_CURRENT_INFO_FAILED = "GET_CURRENT_INFO_FAILED";
 export const DELETE_COIN = "DELETE_COIN"
+export const GET_SEARCH_VALUE_PENDING = "GET_SEARCH_VALUE_PENDING"
+export const GET_SEARCH_VALUE_SUCCESS = "GET_SEARCH_VALUE_SUCCESS"
+export const GET_SEARCH_VALUE_FAILED = "GET_SEARCH_VALUE_FAILED"
 
 export default function portfolioReducer(state = initialState, action) {
   switch(action.type) {
@@ -19,10 +22,23 @@ export default function portfolioReducer(state = initialState, action) {
       return{
         ...state, showModal: !state.showModal 
       }
+    case GET_SEARCH_VALUE_PENDING:
+      return {
+        ...state, loading: true
+      }
+    case GET_SEARCH_VALUE_SUCCESS:
+      return {
+        ...state, loading: false, searchArry: action.payload
+      }
+    case GET_SEARCH_VALUE_FAILED:
+      return {
+        ...state, loading: false, error: true, errorMessage: action.payload
+      }
     case SAVE_COIN_OBJECT:
+      const filterAllCoins = state.searchArry.filter((coin) => coin.name.toLowerCase() === action.payload.nameValue.toLowerCase() )
       const date = new Date(action.payload.date) 
       const newMonth = (`${date.getMonth() + 1}`).toString().padStart(2, "0")
-      const newDay = (`${date.getDate() + 1}`).toString().padStart(2, "0")
+      const newDay = (`${date.getDate()}`).toString().padStart(2, "0")
       const newDate = `${newDay}-${newMonth}-${date.getFullYear()}`;
       const coinObj = {
         coinName: action.payload.nameValue, 
@@ -30,68 +46,75 @@ export default function portfolioReducer(state = initialState, action) {
         date: newDate,
         savedDate: action.payload.date
       }
-      return{
-        ...state, savedCoins: coinObj
-      }
+      return {
+        ...state,
+        savedCoins: coinObj,
+        idArry: [...state.idArry, filterAllCoins[0]?.id],
+      };
     case GET_HISTORY_PENDING:
       return{
-        ...state, loading: true
+        ...state, loading: true, error: false, errorMessage: ""
       }
     case GET_HISTORY_SUCCESS:
-      const findHistory = state.historyData.find((history) => history.id === action.payload.id ? true : false)
-      const filterHistory = state.historyData.filter((history) =>  history.id !== action.payload.id)
-      if(!findHistory){
-        return {
-          ...state,
-          loading: false,
-          historyData: [...state.historyData, action.payload]
-        };
-      }else{
-        return{
-          ...state, loading: false, historyData: [...filterHistory, action.payload]
-        }
-      }
+      return {
+        ...state,
+        loading: false,
+        historyData: action.payload, error: false, errorMessage: ""
+      };
     case GET_HISTORY_FAILED:
       return{
         ...state, loading: false, error: true, errorMessage: action.payload
       }
-    case GET_COINS_PENDING:
-      return{
-        ...state, loading: true
-      }
-    case GET_COINS_SUCCESS:
-      return{
-        ...state, loading: false, coins: action.payload
-      }
-    case GET_COINS_FAILED:
+    case GET_CURRENT_INFO_PENDING:
+      return {
+        ...state,
+        loading: true,
+        error: false,
+        errorMessage: "",
+      };
+    case GET_CURRENT_INFO_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        currentInfoArry: action.payload,
+        error: false,
+        errorMessage: "",
+      };
+    case GET_CURRENT_INFO_FAILED:
       return{
         ...state, loading: false, error: true, errorMessage: action.payload
       }
     case CREATE_PORTFOLIO_OBJ:
-      const coinArryFilter = state.coins.filter((coin) => coin.id === action.payload)
-      const findInPortfolio = state.portfolio.find((coin) => coin.name?.toLowerCase() === state.savedCoins.coinName?.toLowerCase() ? true : false)
-      const filterCoin = state.portfolio.filter((coin) => coin.name?.toLowerCase() !== state.savedCoins.coinName?.toLowerCase())
+      const findInPortfolio = state.portfolio.find((coin) => coin.id === action.payload.id ? true : false)
+      const filterCoin = state.portfolio.filter((coin) => coin.id !== action.payload.id)
+      const filterId = state.idArry.filter((id) => id !== action.payload.id)
       const portfolioObj = {
-        id: action.payload,
-        name: coinArryFilter[0]?.name,
-        amount: state.savedCoins.amount,
-        date: state.savedCoins.savedDate,
+        id: action.payload.id,
+        name: state.historyData?.name,
+        symbol: state.historyData?.symbol,
+        image: state.historyData?.image?.small,
+        amount: state.savedCoins?.amount,
+        date: state.savedCoins?.savedDate,
+        priceAtPurchase: state.historyData?.market_data?.current_price
       };
-      if(!findInPortfolio){
+      if(!action.payload.id){
+        return state
+      }
+      else if(!findInPortfolio){
         return {
           ...state,
-          portfolio: [...state.portfolio, portfolioObj],
+          portfolio: [...state.portfolio, portfolioObj]
         };
       }else{
         return {
-          ...state,
-          portfolio: [...filterCoin, portfolioObj]
+          ...state, portfolio: [...filterCoin, portfolioObj], idArry: [...filterId, action.payload.id]
         }
       }
       case DELETE_COIN:
-       const newPortfolio = state.portfolio.filter((coin) => coin.name !== action.payload)
+       const newPortfolio = state.portfolio.filter((coin) => coin.id !== action.payload)
+       const newIdArry =  state.idArry.filter((id) => id !== action.payload)
        return{
-        ...state, portfolio: [...newPortfolio], savedCoins: {}
+        ...state, portfolio: newPortfolio, idArry: newIdArry, savedCoins: {}
        }
     default:
       return state

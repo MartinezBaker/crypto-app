@@ -1,7 +1,8 @@
-import React from 'react';
+import React from "react";
 import useState from 'react-usestateref'
 import { connect } from 'react-redux'
-import { showModal, saveCoinObj } from 'store/Portfolio/actions';
+import ScaleLoader from "react-spinners/ScaleLoader";
+import { showModal, saveCoinObj, searchCoin } from 'store/Portfolio/actions';
 import { ReactComponent as Close } from "imgs/x-mark.svg";
 import { CurrencyNameInput, AmountInput, DateInput } from 'components/ModalInput';
 import {
@@ -23,6 +24,7 @@ import {
   ImgInnerContainer,
   CoinNameParent,
   StyledImg,
+  InputFlex,
  } from "./styles";
 
 const Modal = (props) => {
@@ -34,7 +36,8 @@ const Modal = (props) => {
  
   const handleChange = (value, valueName) => {
     if(valueName === "Coin Name..."){
-      return setNameValue(value)
+      props.searchCoin(value)
+      return setNameValue(value);
     }else if (valueName === "Amount Owned..."){
       return setAmountValue(value)
     }else{
@@ -49,14 +52,14 @@ const Modal = (props) => {
     setAmountValue("")
     setDateValue(new Date().toISOString().slice(0, 10));
   }
-  const nameList = props.coins.coins?.filter(
-    (coin) =>
-      nameValue &&
-      coin.name.toLowerCase().includes(nameValue.toLowerCase())
-  );
-  const limitedNameList = nameList?.slice(0,9)
-  const findCoin = props.coins.coins?.find((coin) => coin.name === nameValue)
-  const filteredCoin = props.coins.coins?.filter((coin) => nameValue ? coin.name === nameValue : null )
+  const handleClick = () => {
+    props.showModal()
+    setNameValue("");
+    setAmountValue("");
+    setDateValue(new Date().toISOString().slice(0, 10));
+  }
+  const findCoin = props.portfolio.allCoins?.find((coin) => coin.name === nameValue)
+  const filteredCoin = props.portfolio.allCoins?.filter((coin) => nameValue ? coin.name === nameValue : null )
   const name = filteredCoin?.[0]?.name
   const thumbNail = filteredCoin?.[0]?.image
   const symbol = filteredCoin?.[0]?.symbol?.toUpperCase()
@@ -69,7 +72,7 @@ const Modal = (props) => {
         <ModalHeaderContainer>
           <ModalHeader>
             Select Coins
-            <StyledIcon onClick={() => props.showModal()}>
+            <StyledIcon onClick={handleClick}>
               <Close />
             </StyledIcon>
           </ModalHeader>
@@ -101,12 +104,19 @@ const Modal = (props) => {
           </StyledInstructions>
           <StyledInputContainer>
             <StyledForm id="modalForm" onSubmit={handleSubmit}>
-              <CurrencyNameInput
-                name="Coin Name..."
-                type="text"
-                handleChange={handleChange}
-                limitedList={limitedNameList}
-              />
+              <InputFlex>
+                <ScaleLoader
+                  loading={props.portfolio.loading}
+                  color={"rgb(0, 252, 42)"}
+                  height={40}
+                />
+                <CurrencyNameInput
+                  name="Coin Name..."
+                  type="text"
+                  handleChange={handleChange}
+                  searchList={props.portfolio.searchArry}
+                />
+              </InputFlex>
               <AmountInput
                 name="Amount Owned..."
                 type="text"
@@ -129,7 +139,7 @@ const Modal = (props) => {
         <CloseButtonsContainer>
           <StyledButtons
             name="Close"
-            onClick={() => props.showModal()}
+            onClick={handleClick}
             background="white"
             width="150px"
           >
@@ -146,7 +156,6 @@ const Modal = (props) => {
         </CloseButtonsContainer>
       </ModalContent>
     </StyledModal>
-    
   );
 }
 
@@ -160,6 +169,7 @@ const mapDispatchToProps = (dispatch) => {
     showModal: () => dispatch(showModal()),
     saveCoinObj: (nameValue, amount, date) =>
       dispatch(saveCoinObj(nameValue, amount, date)),
+    searchCoin: (value) => dispatch(searchCoin(value))
   };
 }
 
