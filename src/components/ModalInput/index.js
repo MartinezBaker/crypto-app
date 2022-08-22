@@ -18,8 +18,8 @@ export const CurrencyNameInput = (props) => {
         list="coinList"
         required
       />
-      {value?.length < 4 ? <datalist id="coinList">
-        {props.limitedList?.map((coin) => <option key={coin.name} value={coin.name} />)}
+      {value?.length >= 1 && value?.length < 4 ? <datalist id="coinList">
+        {props.searchList?.map((coin) => <option key={coin.name} value={coin.name} />)}
       </datalist> : null}
     </>
   )

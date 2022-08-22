@@ -35,12 +35,16 @@ export default function coinsReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
+        error: false,
+        errorMessage: "",
       };
     case GET_COINS_SUCCESS:
       return {
         ...state,
         loading: false,
         coins: action.payload,
+        error: false,
+        errorMessage: "",
       };
     case GET_COINS_FAILED:
       return {
@@ -53,13 +57,17 @@ export default function coinsReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
+        error: false,
+        errorMessage: ""
       };
     case GET_MORE_COINS_SUCCESS:
       if (!action.payload.length) {
         return {
           ...state,
           loading: false,
-          hasMore: false
+          hasMore: false,
+          error: false,
+          errorMessage: "",
         };
       } else {
         return {
@@ -80,13 +88,17 @@ export default function coinsReducer(state = initialState, action) {
       return {
         ...state,
         loading: true,
+        error: false,
+        errorMessage: "",
       };
     case GET_CHART_DATA_SUCCESS:
       return {
         ...state,
         loading: false,
         chartData: action.payload,
-      }
+        error: false,
+        errorMessage: "",
+      };
     case GET_CHART_DATA_FAILED:
       return {
         ...state,
@@ -148,11 +160,11 @@ export default function coinsReducer(state = initialState, action) {
           sortBy: "BY VOLUME",
         };
       } else {
-            return {
+          return {
             ...state,
             sort: sortNew,
             sortBy: "BY MARKET CAP",
-            };
+          };
       }
     default:
       return state;

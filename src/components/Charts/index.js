@@ -274,9 +274,7 @@ export const CoinPageLineChart = connect(
     coinPage: state.coinPage
   })
 )((props) => {
-  if (props.coinPage.loading) {
-    return <StyledMessage>Loading...</StyledMessage>;
-  } else if (props.coinPage.error) {
+  if (props.coinPage.error) {
     return <StyledMessage>{props.coinPage.errorMessage}</StyledMessage>;
   } else {
     return (

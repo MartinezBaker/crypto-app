@@ -3,6 +3,7 @@ import { connect } from "react-redux/es/exports";
 import { getCoinInfo, getChartData } from '../../store/CoinPage/actions'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { withRouter } from "react-router-dom";
+import MoonLoader from "react-spinners/MoonLoader";
 import { faLink, faExchange } from "@fortawesome/free-solid-svg-icons";
 import {
   formatTimePercent,
@@ -31,7 +32,6 @@ import {
   WebSiteSpan,
   PriceContainer,
   PercentContainer,
-  SVGParent,
   SVGContainer,
   PriceDataContainer,
   MarketDataInfoContainer,
@@ -56,6 +56,8 @@ import {
   MarketValueDiv,
   MarketCap,
   TitleValueFlex,
+  StyledLoading,
+  LoaderContainer
 } from "./styles";
 import { LinkAnchor } from "./styles";
 
@@ -63,8 +65,7 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
   useEffect(() => {
     getCoinInfo(match.params.coinId);
     getChartData(match.params.coinId);
-    // eslint-disable-next-line
-  }, [])
+  }, [getCoinInfo, getChartData, main.savedCoinId, match.params.coinId])
   useEffect(() => {
     getChartData(match.params.coinId);
   }, [coinPage.marketDays, getChartData, match.params.coinId]);
@@ -78,7 +79,7 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
   const symbol = coinPage.coinInfo?.symbol?.toUpperCase();
   const site = formatLink(coinPage.coinInfo?.links?.homepage[0]);
   const twentyFourHourPercent =
-    coinPage.coinInfo?.market_data?.price_change_percentage_24h.toString();
+    coinPage.coinInfo?.market_data?.price_change_percentage_24h.toFixed(2);
   const currPrice = coinPage.coinInfo?.market_data?.current_price[key];
   const marketCap = coinPage.coinInfo?.market_data?.market_cap[key];
   const fullyDilutedValuation =
@@ -114,7 +115,16 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
           <TitleChild>Your Summery:</TitleChild>
         </TitleParent>
         {coinPage.loading ? (
-          <StyledMessage>Loading...</StyledMessage>
+          <StyledLoading>
+            <LoaderContainer>
+              <MoonLoader
+                loading={coinPage.loading}
+                color={"rgb(0, 252, 42)"}
+                size={20}
+              />
+            </LoaderContainer>
+            <StyledMessage>Loading...</StyledMessage>
+          </StyledLoading>
         ) : coinPage.error ? (
           <StyledMessage>There Was An Error!</StyledMessage>
         ) : (
@@ -152,17 +162,15 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
                   </PriceContainer>
                 </div>
                 <div>
-                  <PercentContainer data={twentyFourHourPercent}>
+                  <PercentContainer data={twentyFourHourPercent?.toString()}>
                     {twentyFourHourPercent &&
-                      setCaretIcon(twentyFourHourPercent)}{" "}
-                    {formatTimePercent(twentyFourHourPercent)}
+                      setCaretIcon(twentyFourHourPercent?.toString())}{" "}
+                    {formatTimePercent(twentyFourHourPercent?.toString())}
                   </PercentContainer>
                 </div>
-                <SVGParent>
-                  <SVGContainer>
-                    <BlackLayerLogo />
-                  </SVGContainer>
-                </SVGParent>
+                <SVGContainer>
+                  <BlackLayerLogo />
+                </SVGContainer>
                 <PriceDataContainer>
                   <PriceDataInfo
                     name="ATH"

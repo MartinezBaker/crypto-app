@@ -108,11 +108,8 @@ export const PercentContainer = styled.div`
   }};
 `
 
-export const SVGParent = styled.div`
- margin-top: 15px
-`
-
 export const SVGContainer = styled.div`
+  margin-top: 15px;
   display: inline-block;
   vertical-align: middle;
   color: ${({ theme }) => theme.text};
@@ -275,3 +272,11 @@ export const ChartParent = styled.div`
 export const StyledMessage = styled.h2`
   color: ${({ theme }) => theme.text};
 `;
+
+export const StyledLoading = styled.div`
+  display: flex;
+`
+
+export const LoaderContainer = styled.div`
+  margin: 20px 5px 0 0;
+`

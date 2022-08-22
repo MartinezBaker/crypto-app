@@ -12,14 +12,18 @@ export default function coinPageReducer(state = initialState, action) {
     switch (action.type) {
         case GET_COIN_INFO_PENDING:
             return {
-            ...state,
-            loading: true,
+              ...state,
+              loading: true,
+              error: false,
+              errorMessage: ""
             };
         case GET_COIN_INFO_SUCCESS:
             return {
-            ...state,
-            coinInfo: action.payload,
-            loading: false,
+              ...state,
+              coinInfo: action.payload,
+              loading: false,
+              error: false,
+              errorMessage: ""
             };
         case GET_COIN_INFO_FAILED:
             return {
@@ -30,14 +34,18 @@ export default function coinPageReducer(state = initialState, action) {
             };
         case GET_CHART_DATA_PENDING:
             return {
-            ...state,
-            loading: true,
+              ...state,
+              loading: true,
+              error: false,
+              errorMessage: ""
             };
         case GET_CHART_DATA_SUCCESS:
             return {
-            ...state,
-            chartData: action.payload,
-            loading: false,
+              ...state,
+              chartData: action.payload,
+              loading: false,
+              error: false,
+              errorMessage: ""
             };
         case GET_CHART_DATA_FAILED:
             return {

@@ -3,8 +3,9 @@ import styled from "styled-components";
 export const DropDownContainer = styled.div`
   background-color: ${({theme}) => theme.button};
   border-radius: 10px;
-  padding: 10px;
+  padding: 12px 10px;
   display: flex;
+  margin-right: 20px;
 `
 
 
@@ -24,7 +25,7 @@ export const StyledSelect = styled.select`
 `;
 
 export const StyledSymbolSpan = styled.span`
-  background-color: black;
+  background-color: rgb(25, 27, 31);
   color: rgb(0, 252, 42);
   border-radius: 50%;
   padding: 3px 8px 3px 8px;
@@ -34,4 +35,5 @@ export const StyledSymbolSpan = styled.span`
 export const StyledIconContainer = styled.span`
   font-size: 15px;
   color: rgb(0, 252, 42);
+  margin: 3px 0 0 0.5px;
 `;

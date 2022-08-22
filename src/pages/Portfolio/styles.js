@@ -171,3 +171,16 @@ export const StyledProgressBar = styled.div`
 export const StyledVolToMrkCap = styled.div`
  margin: 0 5px 3px 0;
 `
+
+export const ScreenLoading = styled.div`
+  z-index: 1;
+  display: ${({ show }) => (show ? "flex" : "none")};
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+`;

@@ -25,17 +25,17 @@ const CoinInstance = (props) => (
       {props.main.symbol}
       {formatPrice(props.price)}
     </TableCell>
-    <PercentColor data={props.oneHour}>
-      {props.oneHour && setCaretIcon(props.oneHour)}{" "}
-      {formatTimePercent(props.oneHour)}
+    <PercentColor data={props.oneHour?.toString()}>
+      {props.oneHour && setCaretIcon(props.oneHour?.toString())}{" "}
+      {formatTimePercent(props.oneHour?.toString())}
     </PercentColor>
-    <PercentColor data={props.twentyFourHour}>
-      {props.twentyFourHour && setCaretIcon(props.twentyFourHour)}{" "}
-      {formatTimePercent(props.twentyFourHour)}
+    <PercentColor data={props.twentyFourHour?.toString()}>
+      {props.twentyFourHour && setCaretIcon(props.twentyFourHour.toString())}{" "}
+      {formatTimePercent(props.twentyFourHour?.toString())}
     </PercentColor>
-    <PercentColor data={props.sevenDay}>
-      {props.sevenDay && setCaretIcon(props.sevenDay)}{" "}
-      {formatTimePercent(props.sevenDay)}
+    <PercentColor data={props.sevenDay?.toString()}>
+      {props.sevenDay && setCaretIcon(props.sevenDay?.toString())}{" "}
+      {formatTimePercent(props.sevenDay?.toString())}
     </PercentColor>
     <TableProgressCell>
       <ProgressParent>

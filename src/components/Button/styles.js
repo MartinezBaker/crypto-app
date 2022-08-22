@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const MarketDaysButton = styled.button`
-  font-family: Poppins, sans serif;
+  font-weight: bold;
   padding-inline: 14px;
   padding-block: 6px;
   font-size: 14px;

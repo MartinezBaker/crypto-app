@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
-import { showModal, getHistory, createPortfolioObj, getCoins, deleteCoin } from "../../store/Portfolio/actions";
+import { useLocation } from "react-router-dom";
+import { showModal, getHistory, createPortfolioObj, deleteCoin, getCurrentInfo } from "../../store/Portfolio/actions";
+import { changePath } from "../../store/Main/actions"
 import { Modal }  from 'components'
 import { SavedCoin } from "components"
 import {
@@ -10,31 +12,31 @@ import {
   StyledButtonText,
 } from "./styles";
 
-const Portfolio = ({portfolio, main, getCoins, coins, getHistory, createPortfolioObj, showModal}) => {
-  useEffect(() => {
-    getCoins()
-  }, [getCoins, main.currentCurrency])
-  const filteredCoin = coins?.coins?.filter(
-    (coin) => coin.name.toLowerCase() === portfolio.savedCoins?.coinName?.toLowerCase()
-  );
-  const id = filteredCoin?.[0]?.id;
+const Portfolio = ({portfolio, main, getCurrentInfo, getHistory, createPortfolioObj, showModal, changePath}) => {
+  const PrevIdRef = useRef(portfolio.idArry)
   const PrevSavedCoinsRef = useRef(portfolio.savedCoins)
-  useEffect(() => {
-    if(PrevSavedCoinsRef.current !== portfolio.savedCoins){
-      getHistory(id)
-      PrevSavedCoinsRef.current = portfolio.savedCoins
-    }
-  }, [portfolio.savedCoins, getHistory, id])
   const PrevHistoryDataRef = useRef(portfolio.historyData)
+  const id = portfolio.idArry[portfolio.idArry.length - 1];
+  const location = useLocation();
   useEffect(() => {
-    if (
-      PrevHistoryDataRef.current !== portfolio.historyData &&
-      Object.values(portfolio.savedCoins).length
-    ) {
-      createPortfolioObj(id);
-      PrevHistoryDataRef.current = portfolio.historyData;
+    if(location.pathname === "/portfolio"){
+      changePath(location.pathname)
     }
-  }, [createPortfolioObj, id, portfolio.savedCoins, portfolio.historyData])
+  }, [location, changePath])
+  useEffect(() => {
+     if(PrevIdRef.current !== portfolio.idArry){
+      getHistory(id);
+      getCurrentInfo(portfolio.idArry);
+      PrevIdRef.current = portfolio.idArry
+    }
+  }, [getCurrentInfo, getHistory, portfolio.idArry, id]);
+  useEffect(() => {
+    if(PrevSavedCoinsRef.current !== portfolio.savedCoins && PrevHistoryDataRef.current !== portfolio.historyData) {
+      createPortfolioObj(id, main.currentCurrency);
+      PrevSavedCoinsRef.current =  portfolio.savedCoins
+      PrevHistoryDataRef.current = portfolio.historyData
+    }
+  }, [createPortfolioObj, portfolio.savedCoins, portfolio.historyData, main.currentCurrency, id])
   return (
     <ParentDiv>
       <ButtonContainer>
@@ -47,8 +49,12 @@ const Portfolio = ({portfolio, main, getCoins, coins, getHistory, createPortfoli
         <SavedCoin
           key={coin.id}
           id={coin.id}
+          name={coin.name}
+          symbol={coin.symbol}
+          image={coin.image}
           amount={coin.amount}
           date={coin.date}
+          priceAtPurchase={coin.priceAtPurchase}
         />
       ))}
     </ParentDiv>
@@ -60,13 +66,15 @@ const mapStateToProps = (state) => ({
    main: state.main
  });
 const mapDispatchToProps = (dispatch) => {
-  return{
+  return {
     showModal: () => dispatch(showModal()),
     getHistory: (id) => dispatch(getHistory(id)),
-    createPortfolioObj: (id) => dispatch(createPortfolioObj(id)),
-    getCoins: () => dispatch(getCoins()),
-    deleteCoin: (coin) => dispatch(deleteCoin(coin))
-  }
+    createPortfolioObj: (id, currency) =>
+      dispatch(createPortfolioObj(id, currency)),
+    getCurrentInfo: (arry) => dispatch(getCurrentInfo(arry)),
+    deleteCoin: (coin) => dispatch(deleteCoin(coin)),
+    changePath: (path) => dispatch(changePath(path))
+  };
  }
  
-export default connect(mapStateToProps, mapDispatchToProps)(Portfolio);
+export default connect(mapStateToProps, mapDispatchToProps)(Portfolio)

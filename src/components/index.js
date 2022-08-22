@@ -8,3 +8,4 @@ export { default as CurrencyInput } from './CurrencyInput';
 export { default as MarketDaysInput } from './MarketDaysInput'
 export { default as Modal } from './Modal'
 export { default as SavedCoin} from "./SavedCoin"
+export { default as NavSearch } from './NavSearch'
