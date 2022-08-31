@@ -5,7 +5,8 @@ const initialState = {
   searchArry: [],
   savedCoinId: "",
   path: "/coins",
-  globalInfo: {}
+  globalInfo: {},
+  isOpen: false
 };
 export const CHANGE_CURRENCY = "CHANGE_CURRENCY";
 export const SET_DARK_MODE = "SET_DARK_MODE";
@@ -18,6 +19,7 @@ export const CHANGE_PATH = "CHANGE_PATH"
 export const GET_GLOBAL_INFO_PENDING = "GET_GLOBAL_INFO_PENDING"
 export const GET_GLOBAL_INFO_SUCCESS = "GET_GLOBAL_INFO_SUCCESS"
 export const GET_GLOBAL_INFO_FAILED = "GET_GLOBAL_INFO_FAILED"
+export const OPEN_NAV = "OPEN_NAV"
 
 export default function mainReducer(state = initialState, action) {
   switch (action.type) {
@@ -110,6 +112,10 @@ export default function mainReducer(state = initialState, action) {
     case GET_GLOBAL_INFO_FAILED:
       return{
         ...state, loading: false, error: true, errorMessage: action.payload
+      }
+    case OPEN_NAV:
+      return{
+        ...state, isOpen: !state.isOpen
       }
     default:
       return state;

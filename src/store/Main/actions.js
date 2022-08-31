@@ -1,4 +1,4 @@
-import { CHANGE_CURRENCY, SELECT_DROPDOWN, SET_DARK_MODE, GET_SEARCH_PENDING, GET_SEARCH_SUCCESS, GET_SEARCH_FAILED, SAVE_COIN_ID, CHANGE_PATH, GET_GLOBAL_INFO_FAILED, GET_GLOBAL_INFO_PENDING, GET_GLOBAL_INFO_SUCCESS } from "./reducer"
+import { CHANGE_CURRENCY, SELECT_DROPDOWN, SET_DARK_MODE, GET_SEARCH_PENDING, GET_SEARCH_SUCCESS, GET_SEARCH_FAILED, SAVE_COIN_ID, CHANGE_PATH, GET_GLOBAL_INFO_FAILED, GET_GLOBAL_INFO_PENDING, GET_GLOBAL_INFO_SUCCESS, OPEN_NAV } from "./reducer"
 import axios from 'axios'
 
 export const getGlobalInfo = () => async (dispatch, getState) => {
@@ -71,5 +71,11 @@ export const changePath = (path) => {
   return {
     type: CHANGE_PATH,
     payload: path
+  }
+}
+
+export const openNav = () => {
+  return {
+    type: OPEN_NAV
   }
 }

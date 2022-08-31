@@ -1,14 +1,38 @@
 import React, { useEffect } from 'react';
+import useState from "react-usestateref";
 import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
 import { connect } from "react-redux";
-import { darkModeClick, getGlobalInfo } from './store/Main/actions'
+import { darkModeClick, getGlobalInfo, openNav } from './store/Main/actions'
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { ReactComponent as DarkMode } from "imgs/contrast-dark.svg";
+import { ReactComponent as Nav } from "imgs/nav.svg";
 import { Coins, CoinPage, Portfolio } from 'pages';
 import { NavSearch, ProgressBar } from 'components';
 import { formatPercent, formatNum } from 'utils/functionUtils';
 import DropDownMenu from './components/CurrencyMenu/index'
-import { AppBody, StyledNav, StyledNavChild, SVGContainer, StyledButton, StyledLinkContainer, GlobalInfoContainer, GlobalInfo, StyledImg }  from 'styles';
+import {
+  AppBody,
+  StyledNav,
+  StyledNavChild,
+  SVGContainer,
+  StyledButton,
+  StyledLinkContainer,
+  GlobalInfoContainer,
+  GlobalInfoOne,
+  GlobalInfoTwo,
+  GlobalInfoThree,
+  GlobalInfoFour,
+  GlobalInfoFive,
+  StyledImgBC,
+  StyledSideBar,
+  StyledNavButton,
+  StyledCollapsedThemeButton,
+  StyledCollapsedNav,
+  NavSVGContainer,
+  StyledImgEth,
+  CollapsedStyledLink,
+  StyledHR
+} from "styles";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -44,59 +68,179 @@ const lightTheme = {
 };
 
 const App = (props) => {
+  const [isScreen, setScreen, isScreenRef] = useState(false)
+  useEffect(() => {
+    if (window.innerWidth > 767) {
+      setScreen(true);
+    } else {
+      setScreen(false);
+    }
+    const updateMedia = () => {
+      if (window.innerWidth > 767) {
+        setScreen(true);
+      } else {
+        setScreen(false);
+      }
+    };
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+    //eslint-disable-next-line
+  }, []);
   useEffect(() => {
     props.getGlobalInfo()
     //eslint-disable-next-line
   }, [])
+  console.log(isScreen)
   return (
     <ThemeProvider theme={props.main.darkMode ? darkTheme : lightTheme}>
       <GlobalStyle />
       <Router>
-        <StyledNav>
-          <StyledNavChild>
-            <StyledLinkContainer active={props.main.path === "/coins" ? true : null}>
-              <Link
-                style={{
-                  textDecoration: "none",
-                  color: props.main.darkMode ? "white" : "black",
-                }}
-                to="/coins"
+        {isScreenRef.current ? (
+          <StyledNav>
+            <StyledNavChild>
+              <StyledLinkContainer
+                active={props.main.path === "/coins" ? true : null}
               >
-                Coins
-              </Link>{" "}
-              {""}
-            </StyledLinkContainer>
-            <StyledLinkContainer active={props.main.path === "/portfolio" ? true : null}>
-              <Link
-                style={{
-                  textDecoration: "none",
-                  color: props.main.darkMode ? "white" : "black",
-                }}
-                to="/portfolio"
+                <Link
+                  style={{
+                    textDecoration: "none",
+                    color: props.main.darkMode ? "white" : "black",
+                  }}
+                  to="/coins"
+                >
+                  Coins
+                </Link>{" "}
+                {""}
+              </StyledLinkContainer>
+              <StyledLinkContainer
+                active={props.main.path === "/portfolio" ? true : null}
               >
-                Portfolio
-              </Link>
-            </StyledLinkContainer>
-          </StyledNavChild>
-          <StyledNavChild>
-            <NavSearch />
-            <DropDownMenu symbol={props.main.symbol} />
-            <StyledButton onClick={() => props.darkModeClick()}>
-              <SVGContainer>
-                <DarkMode />
-              </SVGContainer>
-            </StyledButton>
-          </StyledNavChild>
-        </StyledNav>
+                <Link
+                  style={{
+                    textDecoration: "none",
+                    color: props.main.darkMode ? "white" : "black",
+                  }}
+                  to="/portfolio"
+                >
+                  Portfolio
+                </Link>
+              </StyledLinkContainer>
+            </StyledNavChild>
+            <StyledNavChild>
+              <NavSearch />
+              <DropDownMenu symbol={props.main.symbol} />
+              <StyledButton onClick={() => props.darkModeClick()}>
+                <SVGContainer>
+                  <DarkMode />
+                </SVGContainer>
+              </StyledButton>
+            </StyledNavChild>
+          </StyledNav>
+        ) : (
+          <StyledCollapsedNav>
+            <StyledNavChild>
+              <NavSearch />
+              <DropDownMenu symbol={props.main.symbol} />
+            </StyledNavChild>
+            {props.main.isOpen && (
+              <StyledSideBar>
+                <CollapsedStyledLink>
+                  <Link
+                    style={{
+                      textDecoration: "none",
+                      color: props.main.darkMode ? "white" : "black",
+                      fontSize: "14px"
+                    }}
+                    to="/coins"
+                  >
+                    Coins
+                  </Link>
+                </CollapsedStyledLink>
+                <CollapsedStyledLink>
+                  <Link
+                    style={{
+                      textDecoration: "none",
+                      color: props.main.darkMode ? "white" : "black",
+                      fontSize: "14px"
+                    }}
+                    to="/portfolio"
+                  >
+                    Portfolio
+                  </Link>
+                </CollapsedStyledLink>
+                <StyledHR />
+                <StyledCollapsedThemeButton
+                  onClick={() => props.darkModeClick()}
+                >
+                  Theme
+                </StyledCollapsedThemeButton>
+              </StyledSideBar>
+            )}
+            <div>
+              <StyledNavButton onClick={() => props.openNav()}>
+                <NavSVGContainer>
+                  <Nav />
+                </NavSVGContainer>
+              </StyledNavButton>
+            </div>
+          </StyledCollapsedNav>
+        )}
         <AppBody>
           <GlobalInfoContainer>
-            <GlobalInfo>Conis {props.main.globalInfo.data?.active_cryptocurrencies}</GlobalInfo>
-            <GlobalInfo>&#x2022;{" "}{props.main.symbol}{formatNum(props.main.globalInfo.data?.total_market_cap[`${props.main.currentCurrency}`].toString())}</GlobalInfo>
-            <GlobalInfo>&#x2022;{" "}{props.main.symbol}{formatNum(props.main.globalInfo.data?.total_volume[`${props.main.currentCurrency}`].toString())}{" "}<ProgressBar progress={(props.main.globalInfo.data?.total_volume[`${props.main.currentCurrency}`] / props.main.globalInfo.data?.total_market_cap[`${props.main.currentCurrency}`]) * 100} width={"50px"} height={"13px"} /></GlobalInfo>
-            <StyledImg alt="Coin" src={props.coins.coins[0]?.image} />
-            <GlobalInfo>{(formatPercent(props.main.globalInfo.data?.market_cap_percentage.btc.toFixed(0)).toString())}{" "}<ProgressBar progress={props.main.globalInfo.data?.market_cap_percentage.btc} width={"50px"} height={"13px"} /></GlobalInfo>
-            <StyledImg alt="Coin" src={props.coins.coins[1]?.image} />
-            <GlobalInfo>{(formatPercent(props.main.globalInfo.data?.market_cap_percentage.eth.toFixed(0)).toString())}{" "}<ProgressBar progress={props.main.globalInfo.data?.market_cap_percentage.eth} width={"50px"} height={"13px"} /></GlobalInfo>
+            <GlobalInfoOne>
+              Conis {props.main.globalInfo.data?.active_cryptocurrencies}
+            </GlobalInfoOne>
+            <GlobalInfoTwo>
+              &#x2022; {props.main.symbol}
+              {formatNum(
+                props.main.globalInfo.data?.total_market_cap[
+                  `${props.main.currentCurrency}`
+                ].toString()
+              )}
+            </GlobalInfoTwo>
+            <GlobalInfoThree>
+              &#x2022; {props.main.symbol}
+              {formatNum(
+                props.main.globalInfo.data?.total_volume[
+                  `${props.main.currentCurrency}`
+                ].toString()
+              )}{" "}
+              <ProgressBar
+                progress={
+                  (props.main.globalInfo.data?.total_volume[
+                    `${props.main.currentCurrency}`
+                  ] /
+                    props.main.globalInfo.data?.total_market_cap[
+                      `${props.main.currentCurrency}`
+                    ]) *
+                  100
+                }
+                width={"50px"}
+                height={"13px"}
+              />
+            </GlobalInfoThree>
+            <StyledImgBC alt="Coin" src={props.coins.coins[0]?.image} />
+            <GlobalInfoFour>
+              {formatPercent(
+                props.main.globalInfo.data?.market_cap_percentage.btc.toFixed(0)
+              ).toString()}{" "}
+              <ProgressBar
+                progress={props.main.globalInfo.data?.market_cap_percentage.btc}
+                width={"50px"}
+                height={"13px"}
+              />
+            </GlobalInfoFour>
+            <StyledImgEth alt="Coin" src={props.coins.coins[1]?.image} />
+            <GlobalInfoFive>
+              {formatPercent(
+                props.main.globalInfo.data?.market_cap_percentage.eth.toFixed(0)
+              ).toString()}{" "}
+              <ProgressBar
+                progress={props.main.globalInfo.data?.market_cap_percentage.eth}
+                width={"50px"}
+                height={"13px"}
+              />
+            </GlobalInfoFive>
           </GlobalInfoContainer>
           <Switch>
             <Route exact path="/coins" component={Coins} />
@@ -104,7 +248,9 @@ const App = (props) => {
             <Route exact path="/coins/:coinId" component={CoinPage} />
             <Redirect to="/coins" />
           </Switch>
-          {props.main.savedCoinId && <Redirect to={`/coins/${props.main.savedCoinId}`} />}
+          {props.main.savedCoinId && (
+            <Redirect to={`/coins/${props.main.savedCoinId}`} />
+          )}
         </AppBody>
       </Router>
     </ThemeProvider>
@@ -117,7 +263,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return{
     darkModeClick: () => dispatch(darkModeClick()),
-    getGlobalInfo: () => dispatch(getGlobalInfo())
+    getGlobalInfo: () => dispatch(getGlobalInfo()),
+    openNav: () => dispatch(openNav())
   }
 }
 
