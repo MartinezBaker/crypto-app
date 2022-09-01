@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const AppBody = styled.div`
   border: none;
@@ -156,10 +157,17 @@ export const NavSVGContainer = styled.div`
   transform: rotate(180deg);
 `;
 
-export const CollapsedStyledLink = styled.div`
-  margin-bottom: 7px;
-`
-
 export const StyledHR = styled.hr`
   width: 90%;
 `
+export const StyledCollapsedNavLink = styled(Link)`
+  text-decoration: none;
+  color: ${({ theme }) => theme.text};
+  font-size: 14px;
+  margin-bottom: 7px;
+`;
+
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: ${({ theme }) => theme.text};
+`;

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import useState from "react-usestateref";
-import { BrowserRouter as Router, Switch, Route, Redirect, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 import { connect } from "react-redux";
 import { darkModeClick, getGlobalInfo, openNav } from './store/Main/actions'
 import { createGlobalStyle, ThemeProvider } from "styled-components";
@@ -8,7 +7,7 @@ import { ReactComponent as DarkMode } from "imgs/contrast-dark.svg";
 import { ReactComponent as Nav } from "imgs/nav.svg";
 import { Coins, CoinPage, Portfolio } from 'pages';
 import { NavSearch, ProgressBar } from 'components';
-import { formatPercent, formatNum } from 'utils/functionUtils';
+import { formatPercent, formatNum, useScreenSize } from 'utils/functionUtils';
 import DropDownMenu from './components/CurrencyMenu/index'
 import {
   AppBody,
@@ -30,8 +29,9 @@ import {
   StyledCollapsedNav,
   NavSVGContainer,
   StyledImgEth,
-  CollapsedStyledLink,
-  StyledHR
+  StyledHR,
+  StyledCollapsedNavLink,
+  StyledLink
 } from "styles";
 
 const GlobalStyle = createGlobalStyle`
@@ -68,62 +68,36 @@ const lightTheme = {
 };
 
 const App = (props) => {
-  const [isScreen, setScreen, isScreenRef] = useState(false)
-  useEffect(() => {
-    if (window.innerWidth > 767) {
-      setScreen(true);
-    } else {
-      setScreen(false);
-    }
-    const updateMedia = () => {
-      if (window.innerWidth > 767) {
-        setScreen(true);
-      } else {
-        setScreen(false);
-      }
-    };
-    window.addEventListener("resize", updateMedia);
-    return () => window.removeEventListener("resize", updateMedia);
-    //eslint-disable-next-line
-  }, []);
+  const isScreen = useScreenSize("767")
   useEffect(() => {
     props.getGlobalInfo()
     //eslint-disable-next-line
   }, [])
-  console.log(isScreen)
   return (
     <ThemeProvider theme={props.main.darkMode ? darkTheme : lightTheme}>
       <GlobalStyle />
       <Router>
-        {isScreenRef.current ? (
+        {isScreen ? (
           <StyledNav>
             <StyledNavChild>
               <StyledLinkContainer
                 active={props.main.path === "/coins" ? true : null}
               >
-                <Link
-                  style={{
-                    textDecoration: "none",
-                    color: props.main.darkMode ? "white" : "black",
-                  }}
+                <StyledLink
                   to="/coins"
                 >
                   Coins
-                </Link>{" "}
+                </StyledLink>{" "}
                 {""}
               </StyledLinkContainer>
               <StyledLinkContainer
                 active={props.main.path === "/portfolio" ? true : null}
               >
-                <Link
-                  style={{
-                    textDecoration: "none",
-                    color: props.main.darkMode ? "white" : "black",
-                  }}
+                <StyledLink
                   to="/portfolio"
                 >
                   Portfolio
-                </Link>
+                </StyledLink>
               </StyledLinkContainer>
             </StyledNavChild>
             <StyledNavChild>
@@ -144,30 +118,12 @@ const App = (props) => {
             </StyledNavChild>
             {props.main.isOpen && (
               <StyledSideBar>
-                <CollapsedStyledLink>
-                  <Link
-                    style={{
-                      textDecoration: "none",
-                      color: props.main.darkMode ? "white" : "black",
-                      fontSize: "14px"
-                    }}
-                    to="/coins"
-                  >
-                    Coins
-                  </Link>
-                </CollapsedStyledLink>
-                <CollapsedStyledLink>
-                  <Link
-                    style={{
-                      textDecoration: "none",
-                      color: props.main.darkMode ? "white" : "black",
-                      fontSize: "14px"
-                    }}
-                    to="/portfolio"
-                  >
-                    Portfolio
-                  </Link>
-                </CollapsedStyledLink>
+                <StyledCollapsedNavLink to="/coins">
+                  Coins
+                </StyledCollapsedNavLink>
+                <StyledCollapsedNavLink to="/portfolio">
+                  Portfolio
+                </StyledCollapsedNavLink>
                 <StyledHR />
                 <StyledCollapsedThemeButton
                   onClick={() => props.darkModeClick()}

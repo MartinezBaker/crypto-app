@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { Carousel } from 'react-responsive-carousel';
@@ -17,37 +17,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sortList, getTodaysDate, formatChartData, topSort, formatNum } from 'utils/functionUtils'
+import { sortList, getTodaysDate, formatChartData, topSort, formatNum, useScreenSize } from 'utils/functionUtils'
 import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
 import { TableContainer, TableHeader, LastSevenDayTableHeader, ProgressBarTableHeader, PercentageTableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent, StyledLoader } from './styles';
 import { StyledMessage } from 'components/Charts/styles';
 
 const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, sortAtTop, changePath}) => {
-  const [isScreen, setScreen] = useState(false)
+  const isScreen = useScreenSize("900")
   const location = useLocation()
   useEffect(() => {
     if(location.pathname === "/coins"){
       changePath(location.pathname);
     }
   }, [location, changePath]);
-  useEffect(() => {
-    if(window.innerWidth > 900){
-      setScreen(true)
-    } else {
-      setScreen(false);
-    }
-    const updateMedia = () => {
-      if (window.innerWidth > 900) {
-        setScreen(true);
-      } else {
-        setScreen(false);
-      }
-    };
-    window.addEventListener("resize", updateMedia)
-    return () => window.removeEventListener("resize", updateMedia)
-    //eslint-disable-next-line
-  }, [])
   useEffect(() => {
     getCoins();
   },[main.currentCurrency, getCoins])
