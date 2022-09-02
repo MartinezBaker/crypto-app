@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import InfiniteScroll from "react-infinite-scroll-component";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; 
 import { Carousel } from 'react-responsive-carousel';
-import MoonLoader from "react-spinners/MoonLoader";
+import FadeLoader from "react-spinners/FadeLoader";
 import { connect } from "react-redux";
 import { useLocation } from 'react-router-dom';
 import {
@@ -17,37 +17,20 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sortList, getTodaysDate, formatChartData, topSort, formatNum } from 'utils/functionUtils'
+import { sortList, getTodaysDate, formatChartData, topSort, formatNum, useScreenSize } from 'utils/functionUtils'
 import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
 import { TableContainer, TableHeader, LastSevenDayTableHeader, ProgressBarTableHeader, PercentageTableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent, StyledLoader } from './styles';
 import { StyledMessage } from 'components/Charts/styles';
 
 const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, sortAtTop, changePath}) => {
-  const [isScreen, setScreen] = useState(false)
+  const isScreen = useScreenSize("900")
   const location = useLocation()
   useEffect(() => {
     if(location.pathname === "/coins"){
       changePath(location.pathname);
     }
   }, [location, changePath]);
-  useEffect(() => {
-    if(window.innerWidth > 1020){
-      setScreen(true)
-    } else {
-      setScreen(false);
-    }
-    const updateMedia = () => {
-      if (window.innerWidth > 1020) {
-        setScreen(true);
-      } else {
-        setScreen(false);
-      }
-    };
-    window.addEventListener("resize", updateMedia)
-    return () => window.removeEventListener("resize", updateMedia)
-    //eslint-disable-next-line
-  }, [])
   useEffect(() => {
     getCoins();
   },[main.currentCurrency, getCoins])
@@ -102,17 +85,17 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
           <LineChartContainer>
             {coins.loading ? (
               <StyledLoader>
-                <MoonLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
+                <FadeLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
               </StyledLoader>
             ) : (
               <TextContainer>
                 <SubText>BTC Price</SubText>
                 <PriceText>
-                  {lineChartData &&
+                  {!coins.error ? lineChartData &&
                     main.symbol +
-                      formatNum(lineChartData[lineChartData.length - 1])}
+                      formatNum(lineChartData[lineChartData.length - 1]) : ""}
                 </PriceText>
-                <SubText>{getTodaysDate()}</SubText>
+                <SubText>{!coins.error ? getTodaysDate() : ""}</SubText>
               </TextContainer>
             )}
             <LineChart labels={lineChartLabels} data={lineChartData} />
@@ -120,17 +103,17 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
           <BarChartContainer>
             {coins.loading ? (
               <StyledLoader>
-                <MoonLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
+                <FadeLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
               </StyledLoader>
             ) : (
               <TextContainer>
                 <SubText>BTC Volume 24h</SubText>
                 <PriceText>
-                  {barChartData &&
+                  {!coins.error ? barChartData &&
                     main.symbol +
-                      formatNum(barChartData[barChartData.length - 1])}
+                      formatNum(barChartData[barChartData.length - 1]) : ""}
                 </PriceText>
-                <SubText>{getTodaysDate()}</SubText>
+                <SubText>{!coins.error ? getTodaysDate() : ""}</SubText>
               </TextContainer>
             )}
             <BarChart labels={barChartLabels} data={barChartData} />
@@ -141,7 +124,11 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
           <LineChartContainer active="active">
             {coins.loading ? (
               <StyledLoader>
-                <MoonLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
+                <FadeLoader
+                  loading={coins.loading}
+                  color={"rgb(0, 252, 42)"}
+                  size={"20px"}
+                />
               </StyledLoader>
             ) : (
               <TextContainer>
@@ -158,7 +145,7 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
           </LineChartContainer>
           <BarChartContainer active="active">
             {coins.loading ? (
-              <MoonLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
+              <FadeLoader loading={coins.loading} color={"rgb(0, 252, 42)"} />
             ) : (
               <TextContainer>
                 <SubText>BTC Volume 24h</SubText>
@@ -199,9 +186,7 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
             dataLength={coinList?.length}
             next={() => getMoreCoins(coins.page + 1)}
             hasMore={coins.hasMore}
-            loader={
-              <div>Loading...</div>
-            }
+            loader={<div>Loading...</div>}
           >
             {coinList.length ? (
               <Table>

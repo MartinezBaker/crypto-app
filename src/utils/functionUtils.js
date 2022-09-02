@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react'
+
 export const twentyFourHourFilter = (arry) => {
   return arry.filter((element) => arry.indexOf(element) % 8 === 0 )
 }
@@ -147,4 +149,26 @@ export const formatLink = (link) => {
   }else{
     return link?.slice(8)
   }
+}
+
+export const useScreenSize = (size) => {
+  const [isScreen, setScreen] = useState(false);
+  useEffect(() => {
+    if (window.innerWidth > size) {
+      setScreen(true);
+    } else {
+      setScreen(false);
+    }
+    const updateMedia = () => {
+      if (window.innerWidth > size) {
+        setScreen(true);
+      } else {
+        setScreen(false);
+      }
+    };
+    window.addEventListener("resize", updateMedia);
+    return () => window.removeEventListener("resize", updateMedia);
+    //eslint-disable-next-line
+  }, []);
+  return isScreen
 }

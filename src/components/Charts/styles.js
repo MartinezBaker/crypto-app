@@ -7,7 +7,7 @@ export const ChartTable = styled.div`
 
 export const StyledMessage = styled.h2`
   color: ${({ theme }) => theme.text};
-  margin-left: 40%;
+  text-align: center;
 `;
 
 export const LoaderContainer = styled.div`

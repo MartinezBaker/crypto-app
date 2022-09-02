@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { ReactComponent as Search } from "imgs/search.svg";
 import { navSearchBar, saveCoinId } from "store/Main/actions";
-import { StyledInput, StyledForm, StyledIcon } from './styles'
+import { StyledInput, StyledForm, StyledIconContainer, StyledIcon } from './styles'
 
 const NavSearch = (props) => {
   const [input, setInput] = useState("");
@@ -18,9 +18,11 @@ const NavSearch = (props) => {
   }
   return (
     <StyledForm onSubmit={handleSubmit}>
-      <StyledIcon>
-        <Search />
-      </StyledIcon>
+      <StyledIconContainer>
+        <StyledIcon>
+          <Search />
+        </StyledIcon>
+      </StyledIconContainer>
       <StyledInput
         type="text"
         value={input}

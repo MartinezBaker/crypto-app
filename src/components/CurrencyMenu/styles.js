@@ -6,21 +6,27 @@ export const DropDownContainer = styled.div`
   padding: 12px 10px;
   display: flex;
   margin-right: 20px;
+  @media (max-width: 767px){
+    height: 16px;
+  }
 `
 
 
 export const StyledSelect = styled.select`
   margin: 0px 1px 0px 5px;
   border: none;
-  background-color:${({ theme }) => theme.button };
-  color:${({theme}) => theme.text};
+  background-color: ${({ theme }) => theme.button};
+  color: ${({ theme }) => theme.text};
   font-size: 19px;
   appearance: none;
   &:focus {
     outline: none;
   }
   &:hover {
-    cursor:pointer
+    cursor: pointer;
+  }
+  @media (max-width: 767px) {
+    font-size: 15px ;
   }
 `;
 
@@ -30,10 +36,16 @@ export const StyledSymbolSpan = styled.span`
   border-radius: 50%;
   padding: 3px 8px 3px 8px;
   font-size: 17px;
+  @media (max-width: 1000px) {
+    display: none;
+  }
 `;
 
 export const StyledIconContainer = styled.span`
   font-size: 15px;
   color: rgb(0, 252, 42);
   margin: 3px 0 0 0.5px;
+  @media (max-width: 767px) {
+    font-size: 12px;
+  }
 `;

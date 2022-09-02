@@ -35,6 +35,8 @@ export const LineChartContainer = styled.div`
     }
   }};
   background-color: ${({ theme }) => theme.body};
+  margin-right: 10px;
+  
 `;
 
 export const BarChartContainer = styled.div`
@@ -49,6 +51,7 @@ export const BarChartContainer = styled.div`
      }
    }};
   background-color: ${({ theme }) => theme.body};
+  margin-left: 10px;
 `;
 
 export const TextContainer = styled.div`
@@ -75,6 +78,9 @@ export const MarketDaysParent = styled.div`
   @media (max-width: 600px){
     width: 95%;
     margin-top: 10px;
+  }
+  @media (max-width: 311px){
+    display: none;
   }
   width: 500px;
   display: flex;
