@@ -95,9 +95,9 @@ const Modal = (props) => {
                 <StyledListItem>
                   Type coin name, then select from dropdown
                 </StyledListItem>
-                <StyledListItem> Type amount owned (default: 0)</StyledListItem>
+                <StyledListItem> Type amount owned</StyledListItem>
                 <StyledListItem>
-                  Type date purchased (default: today)
+                  Type date purchased (default: current date)
                 </StyledListItem>
               </StyledList>
             )}
