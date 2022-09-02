@@ -120,7 +120,7 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
           </BarChartContainer>
         </ChartParent>
       ) : (
-        <Carousel showThumbs={false}>
+        <Carousel showThumbs={false} showStatus={false}>
           <LineChartContainer active="active">
             {coins.loading ? (
               <StyledLoader>

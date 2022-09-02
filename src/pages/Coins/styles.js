@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Carousel } from "react-responsive-carousel";
 
 export const ParentDiv = styled.div`
   padding: 0px 50px 0px 50px;
@@ -181,4 +182,8 @@ export const SortButton = styled.button`
 
 export const StyledLoader = styled.div`
   margin: 10% 0 0 40%;
+`
+
+export const StyledCarousel = styled(Carousel)`
+  opacity: 0.5;
 `
