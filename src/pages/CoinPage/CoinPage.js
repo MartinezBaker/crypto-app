@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux/es/exports";
 import { getCoinInfo, getChartData } from '../../store/CoinPage/actions'
-import { openNav } from "store/Main/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { withRouter } from "react-router-dom";
-import MoonLoader from "react-spinners/MoonLoader";
+import FadeLoader from "react-spinners/FadeLoader";
 import { faLink, faExchange } from "@fortawesome/free-solid-svg-icons";
 import {
   formatTimePercent,
@@ -62,11 +61,7 @@ import {
 } from "./styles";
 import { LinkAnchor } from "./styles";
 
-const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main, openNav}) => {
-  useEffect(() => {
-    openNav();
-    //eslint-disable-next-line
-  }, []);
+const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
   useEffect(() => {
     getCoinInfo(match.params.coinId);
     getChartData(match.params.coinId);
@@ -122,10 +117,10 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main, openNav}) =
         {coinPage.loading ? (
           <StyledLoading>
             <LoaderContainer>
-              <MoonLoader
+              <FadeLoader
                 loading={coinPage.loading}
                 color={"rgb(0, 252, 42)"}
-                size={20}
+                size={10}
               />
             </LoaderContainer>
             <StyledMessage>Loading...</StyledMessage>
@@ -388,8 +383,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return{
     getCoinInfo: (coin) => dispatch(getCoinInfo(coin)),
-    getChartData: (coin) => dispatch(getChartData(coin)),
-    openNav: () => dispatch(openNav())
+    getChartData: (coin) => dispatch(getChartData(coin))
   }
 }
 
