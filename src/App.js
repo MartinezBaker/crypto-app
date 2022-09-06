@@ -73,6 +73,10 @@ const App = (props) => {
     props.getGlobalInfo()
     //eslint-disable-next-line
   }, [])
+  const handleClick = () => {
+    props.openNav()
+    props.darkModeClick()
+  }
   return (
     <ThemeProvider theme={props.main.darkMode ? darkTheme : lightTheme}>
       <GlobalStyle />
@@ -126,7 +130,7 @@ const App = (props) => {
                 </StyledCollapsedNavLink>
                 <StyledHR />
                 <StyledCollapsedThemeButton
-                  onClick={() => props.darkModeClick()}
+                  onClick={handleClick}
                 >
                   Theme
                 </StyledCollapsedThemeButton>

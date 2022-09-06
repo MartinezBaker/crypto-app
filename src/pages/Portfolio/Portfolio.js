@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { showModal, getHistory, createPortfolioObj, deleteCoin, getCurrentInfo } from "../../store/Portfolio/actions";
-import { changePath } from "../../store/Main/actions"
+import { changePath, openNav } from "../../store/Main/actions"
 import { Modal }  from 'components'
 import { SavedCoin } from "components"
 import {
@@ -12,12 +12,16 @@ import {
   StyledButtonText,
 } from "./styles";
 
-const Portfolio = ({portfolio, main, getCurrentInfo, getHistory, createPortfolioObj, showModal, changePath}) => {
+const Portfolio = ({portfolio, main, getCurrentInfo, getHistory, createPortfolioObj, showModal, changePath, openNav}) => {
   const PrevIdRef = useRef(portfolio.idArry)
   const PrevSavedCoinsRef = useRef(portfolio.savedCoins)
   const PrevHistoryDataRef = useRef(portfolio.historyData)
   const id = portfolio.idArry[portfolio.idArry.length - 1];
   const location = useLocation();
+  useEffect(() => {
+    openNav();
+    //eslint-disable-next-line
+  }, []);
   useEffect(() => {
     if(location.pathname === "/portfolio"){
       changePath(location.pathname)
@@ -73,7 +77,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(createPortfolioObj(id, currency)),
     getCurrentInfo: (arry) => dispatch(getCurrentInfo(arry)),
     deleteCoin: (coin) => dispatch(deleteCoin(coin)),
-    changePath: (path) => dispatch(changePath(path))
+    changePath: (path) => dispatch(changePath(path)),
+    openNav: () => dispatch(openNav())
   };
  }
  

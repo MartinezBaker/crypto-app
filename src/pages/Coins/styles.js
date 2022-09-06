@@ -37,22 +37,27 @@ export const LineChartContainer = styled.div`
   }};
   background-color: ${({ theme }) => theme.body};
   margin-right: 10px;
-  
+  @media (max-width: 900px){
+    margin-right: 0;
+  }
 `;
 
 export const BarChartContainer = styled.div`
   border-radius: 25px;
   padding: 19px 30px 19px 30px;
   position: relative;
-   width: ${({ active }) => {
-     if (active) {
-       return "100%";
-     } else {
-       return "43%";
-     }
-   }};
+  width: ${({ active }) => {
+    if (active) {
+      return "100%";
+    } else {
+      return "43%";
+    }
+  }};
   background-color: ${({ theme }) => theme.body};
   margin-left: 10px;
+  @media (max-width: 900px) {
+    margin-left: 0px;
+  }
 `;
 
 export const TextContainer = styled.div`

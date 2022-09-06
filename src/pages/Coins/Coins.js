@@ -12,7 +12,7 @@ import {
   sortAtTop,
   sortItems,
 } from "../../store/Coins/actions";
-import { changePath } from 'store/Main/actions';
+import { changePath, openNav } from 'store/Main/actions';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
@@ -23,9 +23,13 @@ import { CoinInstance, Button } from "components";
 import { TableContainer, TableHeader, LastSevenDayTableHeader, ProgressBarTableHeader, PercentageTableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent, StyledLoader } from './styles';
 import { StyledMessage } from 'components/Charts/styles';
 
-const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, sortAtTop, changePath}) => {
+const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, sortAtTop, changePath, openNav}) => {
   const isScreen = useScreenSize("900")
   const location = useLocation()
+  useEffect(() => {
+    openNav()
+    //eslint-disable-next-line
+  },[])
   useEffect(() => {
     if(location.pathname === "/coins"){
       changePath(location.pathname);
@@ -307,7 +311,8 @@ const mapDispatchToProps = (dispatch) => {
       getChartData: () => dispatch(getChartData()),
       getCoins: () => dispatch(getCoins()),
       getMoreCoins: (page) => dispatch(getMoreCoins(page)),
-      changePath: (path) => dispatch(changePath(path))
+      changePath: (path) => dispatch(changePath(path)),
+      openNav: () => dispatch(openNav())
     }
   }
 

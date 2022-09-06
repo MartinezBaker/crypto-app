@@ -14,8 +14,15 @@ const mainPersistConfig = {
   blacklist: ["savedCoinId", "path", "isOpen"]
 }
 
+const coinsPersistConfig = {
+  key: "coins",
+  version: 1,
+  storage,
+  blacklist: ["coins"],
+};
+
 const rootReducer = combineReducers({
-  coins: coinsReducer,
+  coins: persistReducer(coinsPersistConfig, coinsReducer),
   coinPage: coinPageReducer,
   portfolio: portfolioReducer,
   main: persistReducer(mainPersistConfig, mainReducer)
@@ -25,7 +32,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: [ "coins", "portfolio", "coinPage"],
+  whitelist: [ "portfolio", "coinPage"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const StyledModal = styled.div`
   z-index: 1;
-  display: ${({show}) => show ? "flex" : "none"};
+  display: ${({ show }) => (show ? "flex" : "none")};
   position: fixed;
   top: 0;
   left: 0;
@@ -11,14 +11,16 @@ export const StyledModal = styled.div`
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 `; 
 
 export const ModalContent = styled.div`
   @media (min-width: 600px) {
     width: 670px;
   };
-  @media (max-width: 500px) {
+  @media (max-width: 502px) {
     width: 90%;
+    margin-top: 200px;
   };
   border-radius: 23px;
   background-color: ${({ theme }) => theme.app};
@@ -120,6 +122,9 @@ export const StyledListItem = styled.li`
 
 export const StyledForm = styled.form`
   width: 100%;
+  @media (max-width: 518px){
+    margin-left: 1px;
+  };
 `;
 
 export const StyledParagraph = styled.p`

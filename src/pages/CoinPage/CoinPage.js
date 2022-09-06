@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux/es/exports";
 import { getCoinInfo, getChartData } from '../../store/CoinPage/actions'
+import { openNav } from "store/Main/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { withRouter } from "react-router-dom";
 import MoonLoader from "react-spinners/MoonLoader";
@@ -61,7 +62,11 @@ import {
 } from "./styles";
 import { LinkAnchor } from "./styles";
 
-const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
+const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main, openNav}) => {
+  useEffect(() => {
+    openNav();
+    //eslint-disable-next-line
+  }, []);
   useEffect(() => {
     getCoinInfo(match.params.coinId);
     getChartData(match.params.coinId);
@@ -383,7 +388,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => {
   return{
     getCoinInfo: (coin) => dispatch(getCoinInfo(coin)),
-    getChartData: (coin) => dispatch(getChartData(coin))
+    getChartData: (coin) => dispatch(getChartData(coin)),
+    openNav: () => dispatch(openNav())
   }
 }
 
