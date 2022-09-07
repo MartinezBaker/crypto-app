@@ -9,7 +9,7 @@ export const getCoinInfo = (coin) => async (dispatch, getState) => {
             type: GET_COIN_INFO_PENDING,
         })
         const { data } = await axios(
-          `https://api.coingecko.com/api/v3/coins/${coin}?localization=false&tickers=true&market_data=true&community_data=true&developer_data=false&sparkline=false`
+          `${process.env.REACT_APP_ENDPOINT}/coins/${coin}?localization=false&tickers=true&market_data=true&community_data=true&developer_data=false&sparkline=false`
         );
         dispatch({
             type: GET_COIN_INFO_SUCCESS,
@@ -32,7 +32,7 @@ export const getChartData = (coin) => async (dispatch, getState) => {
         const currency = getCurrency(getState())
         const marketDays = getMarketDays(getState())
         const { data } = await axios(
-        `https://api.coingecko.com/api/v3/coins/${coin}/market_chart?vs_currency=${currency}&days=${marketDays}&interval=daily`
+          `${process.env.REACT_APP_ENDPOINT}/coins/${coin}/market_chart?vs_currency=${currency}&days=${marketDays}&interval=daily`
         );
         dispatch({
         type: GET_CHART_DATA_SUCCESS,

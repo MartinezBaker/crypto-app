@@ -6,7 +6,7 @@ export const getGlobalInfo = () => async (dispatch, getState) => {
     dispatch({
       type: GET_GLOBAL_INFO_PENDING
     })
-    const { data } = await axios(`https://api.coingecko.com/api/v3/global`)
+    const { data } = await axios(`${process.env.REACT_APP_ENDPOINT}/global`);
     dispatch({
       type: GET_GLOBAL_INFO_SUCCESS,
       payload: data
@@ -25,7 +25,7 @@ export const navSearchBar = (value) => async (dispatch, getState) => {
       type: GET_SEARCH_PENDING,
     });
     const { data } = await axios(
-      `https://api.coingecko.com/api/v3/search?query=${value}`
+      `${process.env.REACT_APP_ENDPOINT}/search?query=${value}`
     );
     const coins = data.coins;
     dispatch({

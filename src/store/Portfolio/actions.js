@@ -22,7 +22,7 @@ export const searchCoin = (value) => async (dispatch, getState) => {
       type: GET_SEARCH_VALUE_PENDING,
     });
     const { data } = await axios(
-      `https://api.coingecko.com/api/v3/search?query=${value}`
+      `${process.env.REACT_APP_ENDPOINT}/search?query=${value}`
     );
     const coins = data.coins
     dispatch({
@@ -44,7 +44,7 @@ export const getHistory = (id) => async (dispatch, getState) => {
     });
     const date = getSavedCoinDate(getState());
     const { data } = await axios(
-      `https://api.coingecko.com/api/v3/coins/${id}/history?date=${date}`
+      `${process.env.REACT_APP_ENDPOINT}/coins/${id}/history?date=${date}`
     );
     dispatch({
       type: GET_HISTORY_SUCCESS,
@@ -65,7 +65,7 @@ export const getCurrentInfo = (arry) => async (dispatch, getState) => {
     });
     const currentInfo = await Promise.all(arry.map(async (id) => {
       const { data } = await axios(
-      `https://api.coingecko.com/api/v3/coins/${id}?localization=false&tickers=true&market_data=true&community_data=true&developer_data=false&sparkline=false`
+        `${process.env.REACT_APP_ENDPOINT}/coins/${id}?localization=false&tickers=true&market_data=true&community_data=true&developer_data=false&sparkline=false`
       );
       return data
     }))

@@ -23,7 +23,7 @@ export const getCoins = () => async (dispatch, getState) => {
     });
     const currency = getCurrency(getState());
     const { data } = await axios(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+      `${process.env.REACT_APP_ENDPOINT}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=50&page=1&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
     );
     dispatch({
       type: GET_COINS_SUCCESS,
@@ -44,7 +44,7 @@ export const getMoreCoins = (page) => async (dispatch, getState) => {
     });
     const currency = getCurrency(getState());
     const { data } = await axios(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=50&page=${page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
+      `${process.env.REACT_APP_ENDPOINT}/coins/markets?vs_currency=${currency}&order=market_cap_desc&per_page=50&page=${page}&sparkline=true&price_change_percentage=1h%2C24h%2C7d`
     );
     dispatch({
       type: GET_MORE_COINS_SUCCESS,
@@ -66,7 +66,7 @@ export const getChartData = () => async (dispatch, getState) => {
     const currency = getCurrency(getState());
     const marketDays = getMarketDays(getState())
     const { data } = await axios(
-      `https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=${currency}&days=${marketDays}&interval=daily`
+      `${process.env.REACT_APP_ENDPOINT}/coins/bitcoin/market_chart?vs_currency=${currency}&days=${marketDays}&interval=daily`
     );
     dispatch({
       type: GET_CHART_DATA_SUCCESS,
