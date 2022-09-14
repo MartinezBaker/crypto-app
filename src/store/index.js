@@ -11,14 +11,14 @@ const mainPersistConfig = {
   key: "main",
   version: 1,
   storage,
-  blacklist: ["savedCoinId", "path", "isOpen"]
+  blacklist: ["savedCoinId", "path", "isOpen", "globalInfo"]
 }
 
 const coinsPersistConfig = {
   key: "coins",
   version: 1,
   storage,
-  blacklist: ["coins"],
+  blacklist: ["coins", "chartData"],
 };
 
 const rootReducer = combineReducers({

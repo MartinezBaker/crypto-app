@@ -53,19 +53,22 @@ export const StyledLinkContainer = styled.div`
 `;
 
 export const GlobalInfoContainer = styled.div`
-  display: flex;
   border: none;
   background: ${({ theme }) => theme.body};
   color: ${({ theme }) => theme.text};
   font-size: 13px;
   width: fit-content;
   margin: auto;
-  justify-content: center;
   padding: 10px 0 10px 20px;
   border-radius: 0 0 25px 25px;
   @media (max-width: 276px) {
     display: none;
   }
+`;
+
+export const GlobalInfo = styled.div`
+  display: flex;
+  justify-content: center;
 `;
 
 export const GlobalInfoOne = styled.div`

@@ -6,7 +6,10 @@ const initialState = {
   savedCoinId: "",
   path: "/coins",
   globalInfo: {},
-  isOpen: true
+  isOpen: true, 
+  loading: false, 
+  errorMessage: "",
+  error: false
 };
 export const CHANGE_CURRENCY = "CHANGE_CURRENCY";
 export const SET_DARK_MODE = "SET_DARK_MODE";
