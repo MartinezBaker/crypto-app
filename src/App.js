@@ -3,21 +3,13 @@ import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-do
 import { connect } from "react-redux";
 import { darkModeClick, getGlobalInfo, openNav } from './store/Main/actions'
 import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { ReactComponent as DarkMode } from "imgs/contrast-dark.svg";
-import { ReactComponent as Nav } from "imgs/nav.svg";
 import { ReactComponent as Bitcoin } from "imgs/bitcoin.svg";
 import { ReactComponent as Ethereum } from "imgs/ethereum.svg";
 import { Coins, CoinPage, Portfolio } from 'pages';
-import { NavSearch, ProgressBar } from 'components';
+import { NavComponent, NavCollapseComponent, ProgressBar } from 'components';
 import { formatPercent, formatNum, useScreenSize } from 'utils/functionUtils';
-import DropDownMenu from './components/CurrencyMenu/index'
 import {
   AppBody,
-  StyledNav,
-  StyledNavChild,
-  SVGContainer,
-  StyledButton,
-  StyledLinkContainer,
   GlobalInfoContainer,
   GlobalInfoOne,
   GlobalInfoTwo,
@@ -25,15 +17,7 @@ import {
   GlobalInfoFour,
   GlobalInfoFive,
   StyledImgBC,
-  StyledSideBar,
-  StyledNavButton,
-  StyledCollapsedThemeButton,
-  StyledCollapsedNav,
-  NavSVGContainer,
-  StyledImgEth,
-  StyledHR,
-  StyledCollapsedNavLink,
-  StyledLink
+  StyledImgEth
 } from "styles";
 
 const GlobalStyle = createGlobalStyle`
@@ -75,77 +59,15 @@ const App = (props) => {
     props.getGlobalInfo()
     //eslint-disable-next-line
   }, [])
-  const handleClick = () => {
-    props.openNav()
-    props.darkModeClick()
-  }
+  
   return (
     <ThemeProvider theme={props.main.darkMode ? darkTheme : lightTheme}>
       <GlobalStyle />
       <Router>
         {isScreen ? (
-          <StyledNav>
-            <StyledNavChild>
-              <StyledLinkContainer
-                active={props.main.path === "/coins" ? true : null}
-              >
-                <StyledLink
-                  to="/coins"
-                >
-                  Coins
-                </StyledLink>{" "}
-                {""}
-              </StyledLinkContainer>
-              <StyledLinkContainer
-                active={props.main.path === "/portfolio" ? true : null}
-              >
-                <StyledLink
-                  to="/portfolio"
-                >
-                  Portfolio
-                </StyledLink>
-              </StyledLinkContainer>
-            </StyledNavChild>
-            <StyledNavChild>
-              <NavSearch />
-              <DropDownMenu symbol={props.main.symbol} />
-              <StyledButton onClick={() => props.darkModeClick()}>
-                <SVGContainer>
-                  <DarkMode />
-                </SVGContainer>
-              </StyledButton>
-            </StyledNavChild>
-          </StyledNav>
+          <NavComponent />
         ) : (
-          <StyledCollapsedNav>
-            <StyledNavChild>
-              <NavSearch />
-              <DropDownMenu symbol={props.main.symbol} />
-            </StyledNavChild>
-            {props.main.isOpen && (
-              <StyledSideBar>
-                <StyledCollapsedNavLink to="/coins">
-                  Coins
-                </StyledCollapsedNavLink>
-                <StyledCollapsedNavLink to="/portfolio">
-                  Portfolio
-                </StyledCollapsedNavLink>
-                <StyledHR />
-                <StyledCollapsedThemeButton
-                  onClick={handleClick}
-                >
-                  Theme
-                </StyledCollapsedThemeButton>
-              </StyledSideBar>
-            )}
-            <div>
-              <StyledNavButton onClick={() => props.openNav()}>
-                <NavSVGContainer>
-                  <Nav />
-                </NavSVGContainer>
-              </StyledNavButton>
-            </div>
-          </StyledCollapsedNav>
+          <NavCollapseComponent />
         )}
         <AppBody>
           <GlobalInfoContainer>

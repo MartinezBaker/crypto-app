@@ -54,3 +54,10 @@ export const StyledIcon = styled.div`
     width: 18px;
   }
 `
+
+export const SVGContainer = styled.div`
+  width: 27px;
+  margin: auto;
+  filter: ${({ theme }) => theme.svg};
+  transform: rotate(180deg);
+`;
