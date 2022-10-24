@@ -16,7 +16,7 @@ import {
 import { coinPageMarketDaysArr } from "utils/arrayUtils";
 import { setCaretIcon } from "utils/FontAwesomeutil";
 import { ReactComponent as BlackLayerLogo } from "imgs/stack.svg";
-import { PriceDataInfo, ProgressBar, Link, CopyTextButton, CurrencyInput, MarketDaysInput } from "components";
+import { PriceDataInfo, ProgressBar, Link, CopyTextButton, CurrencyInput, MarketDaysInput, MarketDataInfo } from "components";
 import { CoinPageLineChart } from "components/Charts";
 import {
   ParentDiv,
@@ -35,9 +35,6 @@ import {
   SVGContainer,
   PriceDataContainer,
   MarketDataInfoContainer,
-  MarketFlexDiv,
-  MarketInfoDiv,
-  BulletDiv,
   TitleParent,
   TitleChild,
   Spacer,
@@ -52,11 +49,9 @@ import {
   ChartParent,
   MarketDaysParent,
   StyledMessage,
-  MarketValueDiv,
-  MarketCap,
-  TitleValueFlex,
   StyledLoading,
-  LoaderContainer
+  LoaderContainer,
+  FlexDivContainer
 } from "./styles";
 import { LinkAnchor } from "./styles";
 
@@ -81,11 +76,9 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
     coinPage.coinInfo?.market_data?.price_change_percentage_24h.toFixed(2);
   const currPrice = coinPage.coinInfo?.market_data?.current_price[key];
   const marketCap = coinPage.coinInfo?.market_data?.market_cap[key];
-  const fullyDilutedValuation =
-    coinPage.coinInfo?.market_data?.fully_diluted_valuation[key];
-  const volTwentyFourHours =
-    coinPage.coinInfo?.market_data?.total_volume[key];
-  const volToMarketCap = volTwentyFourHours / marketCap;
+  const fullyDilutedValuation = coinPage.coinInfo?.market_data?.fully_diluted_valuation[key];
+  const volTwentyFourHours = coinPage.coinInfo?.market_data?.total_volume[key];
+  const volToMarketCap = formatCoinName((volTwentyFourHours / marketCap).toString());
   const circulatingSupply =
     coinPage.coinInfo?.market_data?.circulating_supply;
   const maxSupply = coinPage.coinInfo?.market_data?.max_supply;
@@ -214,67 +207,41 @@ const CoinPage = ({getCoinInfo, getChartData, coinPage, match, main}) => {
             </PriceSummery>
             <MarketInfoSummery>
               <MarketDataInfoContainer>
-                <MarketFlexDiv>
-                  <BulletDiv>+</BulletDiv>
-                  <TitleValueFlex>
-                    <MarketInfoDiv>
-                      <strong>Market Cap:</strong>
-                    </MarketInfoDiv>
-                    <MarketValueDiv>
-                      <MarketCap>
-                        {main.symbol}
-                        {valueCheck(formatNum(marketCap))}
-                      </MarketCap>
-                      <PercentContainer data={exchangeRate}>
-                        {exchangeRate && setCaretIcon(exchangeRate)}{" "}
-                        {exchangeRate && formatTimePercent(exchangeRate)}
-                      </PercentContainer>
-                    </MarketValueDiv>
-                  </TitleValueFlex>
-                </MarketFlexDiv>
-                <MarketFlexDiv>
-                  <BulletDiv>+</BulletDiv>
-                  <MarketInfoDiv>
-                    <strong>Fully Diluted Valuation:</strong> {main.symbol}
-                    {valueCheck(formatNum(fullyDilutedValuation?.toString()))}
-                  </MarketInfoDiv>
-                </MarketFlexDiv>
-                <MarketFlexDiv>
-                  <BulletDiv>+</BulletDiv>
-                  <MarketInfoDiv>
-                    <strong>Vol 24h:</strong> {main.symbol}
-                    {valueCheck(formatNum(volTwentyFourHours))}
-                  </MarketInfoDiv>
-                </MarketFlexDiv>
-                <MarketFlexDiv>
-                  <BulletDiv>+</BulletDiv>
-                  <MarketInfoDiv>
-                    <strong>Volume/Market:</strong>{" "}
-                    {formatCoinName(volToMarketCap.toString())}
-                  </MarketInfoDiv>
-                </MarketFlexDiv>
+                <FlexDivContainer>
+                  <MarketDataInfo
+                    title="Market Cap"
+                    valueSymbol={main.symbol}
+                    value={valueCheck(formatNum(marketCap))}
+                  />
+                  <PercentContainer data={exchangeRate}>
+                    {exchangeRate && setCaretIcon(exchangeRate)}{" "}
+                    {exchangeRate && formatTimePercent(exchangeRate)}
+                  </PercentContainer>
+                </FlexDivContainer>
+                <MarketDataInfo
+                  title="Fully Diluted Valuation"
+                  valueSymbol={main.symbol}
+                  value={valueCheck(formatNum(fullyDilutedValuation))}
+                />
+                <MarketDataInfo
+                  title="Vol 24h"
+                  valueSymbol={main.symbol}
+                  value={valueCheck(formatNum(volTwentyFourHours))}
+                />
+                <MarketDataInfo title="Volume/Market" value={volToMarketCap} />
                 <Spacer />
-                <MarketFlexDiv>
-                  <BulletDiv>+</BulletDiv>
-                  <MarketInfoDiv>
-                    <TotalVol>Total Volume:</TotalVol>{" "}
-                    {valueCheck(totalVol, symbol)}
-                  </MarketInfoDiv>
-                </MarketFlexDiv>
-                <MarketFlexDiv>
-                  <BulletDiv>+</BulletDiv>
-                  <MarketInfoDiv>
-                    <strong>Circulating Supply:</strong>{" "}
-                    {valueCheck(circulatingSupply?.toFixed(0), symbol)}
-                  </MarketInfoDiv>
-                </MarketFlexDiv>
-                <MarketFlexDiv>
-                  <BulletDiv>+</BulletDiv>
-                  <MarketInfoDiv>
-                    <MaxSupply>Max Supply:</MaxSupply>{" "}
-                    {valueCheck(maxSupply?.toFixed(0), symbol)}{" "}
-                  </MarketInfoDiv>
-                </MarketFlexDiv>
+                <MarketDataInfo
+                  title={<TotalVol>Total Volume</TotalVol>}
+                  value={valueCheck(totalVol, symbol)}
+                />
+                <MarketDataInfo
+                  title="Circulating Supply"
+                  value={valueCheck(circulatingSupply?.toFixed(0), symbol)}
+                />
+                <MarketDataInfo
+                  title={<MaxSupply>Max Supply</MaxSupply>}
+                  value={valueCheck(maxSupply?.toFixed(0), symbol)}
+                />
                 <div>
                   <ProgressBar
                     progress={(circulatingSupply / maxSupply) * 100}

@@ -11,3 +11,4 @@ export { default as SavedCoin} from "./SavedCoin"
 export { default as NavSearch } from './NavSearch'
 export { default as NavComponent } from './NavComponent';
 export { default as NavCollapseComponent } from './NavCollapseComponent';
+export { default as MarketDataInfo } from './MarketDataInfo'
