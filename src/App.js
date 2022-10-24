@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect} from 'react-router-dom';
 import { connect } from "react-redux";
-import { darkModeClick, getGlobalInfo, openNav } from './store/Main/actions'
+import { getGlobalInfo } from './store/Main/actions'
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { ReactComponent as Bitcoin } from "imgs/bitcoin.svg";
 import { ReactComponent as Ethereum } from "imgs/ethereum.svg";
@@ -150,9 +150,7 @@ const mapStateToProps = (state) => ({
 });
 const mapDispatchToProps = (dispatch) => {
   return{
-    darkModeClick: () => dispatch(darkModeClick()),
     getGlobalInfo: () => dispatch(getGlobalInfo()),
-    openNav: () => dispatch(openNav())
   }
 }
 

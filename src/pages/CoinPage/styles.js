@@ -132,15 +132,12 @@ export const MarketDataInfoContainer = styled.div`
   }
 `;
 
-export const MarketDataInfo = styled.div`
-  margin-bottom: 5px;
-`;
-
 export const MarketFlexDiv = styled.div`
   display: flex;
-  @media(max-width: 950px){
+  @media (max-width: 950px) {
     margin: 0 10px 10px 0;
   }
+  margin-bottom: 5px;
 `;
 
 
