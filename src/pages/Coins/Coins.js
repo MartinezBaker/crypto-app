@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faCaretDown} from "@fortawesome/free-solid-svg-icons";
 import { LineChart, BarChart } from 'components/Charts'
 import { setSortIcon } from 'utils/FontAwesomeutil'
-import { sortList, getTodaysDate, formatChartData, topSort, formatNum, useScreenSize } from 'utils/functionUtils'
+import { secondSortHandler, getTodaysDate, formatChartData, sortHandler, formatNum, useScreenSize } from 'utils/functionUtils'
 import { marketDaysArr } from 'utils/arrayUtils';
 import { CoinInstance, Button } from "components";
 import { TableContainer, TableHeader, LastSevenDayTableHeader, ProgressBarTableHeader, PercentageTableHeader, Table, TableRow, SortButton,  LineChartContainer, BarChartContainer, ChartParent, PriceText, SubText, TextContainer, ParentDiv, MarketDaysParent, TitleParent, TitleChild, TableTitleContainer, TableTitle1, TableTitle2, TableParent, StyledLoader } from './styles';
@@ -53,32 +53,8 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
     chartData?.total_volumes && formatChartData(chartData.total_volumes, 1);
   const coinsArry = coins.coins
   let coinList = [...(coinsArry ? coinsArry : [])];
-  coinList = coinList?.sort(topSort(coins.sortBy, "BY MARKET CAP", "market_cap"));
-  coinList = coinList?.sort(
-    topSort(coins.sortBy, "BY VOLUME", "total_volume")
-  );
-  coinList = coinList?.sort(sortList(coins.sort.sortName, "name"));
-  coinList = coinList?.sort(
-    sortList(coins.sort.current_price, "current_price")
-  );
-  coinList = coinList?.sort(
-    sortList(
-      coins.sort.price_change_percentage_1h_in_currency,
-      "price_change_percentage_1h_in_currency"
-    )
-  );
-  coinList = coinList?.sort(
-    sortList(
-      coins.sort.price_change_percentage_24h_in_currency,
-      "price_change_percentage_24h_in_currency"
-    )
-  );
-  coinList = coinList?.sort(
-    sortList(
-      coins.sort.price_change_percentage_7d_in_currency,
-      "price_change_percentage_7d_in_currency"
-    )
-  );
+  coinList = secondSortHandler(coins.sortBy, coinList)
+  coinList = sortHandler(coins.sort, coinList)
   return (
     <ParentDiv>
       <TitleParent>
@@ -95,9 +71,11 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
               <TextContainer>
                 <SubText>BTC Price</SubText>
                 <PriceText>
-                  {!coins.error ? lineChartData &&
-                    main.symbol +
-                      formatNum(lineChartData[lineChartData.length - 1]) : ""}
+                  {!coins.error
+                    ? lineChartData &&
+                      main.symbol +
+                        formatNum(lineChartData[lineChartData.length - 1])
+                    : ""}
                 </PriceText>
                 <SubText>{!coins.error ? getTodaysDate() : ""}</SubText>
               </TextContainer>
@@ -113,9 +91,11 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
               <TextContainer>
                 <SubText>BTC Volume 24h</SubText>
                 <PriceText>
-                  {!coins.error ? barChartData &&
-                    main.symbol +
-                      formatNum(barChartData[barChartData.length - 1]) : ""}
+                  {!coins.error
+                    ? barChartData &&
+                      main.symbol +
+                        formatNum(barChartData[barChartData.length - 1])
+                    : ""}
                 </PriceText>
                 <SubText>{!coins.error ? getTodaysDate() : ""}</SubText>
               </TextContainer>

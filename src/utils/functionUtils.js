@@ -67,20 +67,6 @@ export function formatPrice(price) {
   }
 } 
 
-export const sortList = (sortValue, key) => {
-  return (a, b) => {
-    const A = typeof a[key] === "string" ? a[key].toUpperCase() : a[key];
-    const B = typeof b[key] === "string" ? b[key].toUpperCase() : b[key];
-    if (sortValue === true) {
-     return A < B ? -1 : 1;
-    }else if (sortValue === false) {
-     return B < A ? -1 : 1;
-    }else {
-      return 0;
-    }
-  };
-};
-
 export const formatChartData = (arr, index) => {
   if(index === 0) {
     return arr.reduce((acc, element) => ([...acc, element[0]]), []).map((time) => {
@@ -116,12 +102,47 @@ export const adjustBarThickness = (days) => {
   })
 }
 
-export const topSort = (sortBy, sortValue, sortItem) => {
+const sortList = (sortValue, key) => {
+  return (a, b) => {
+    const A = typeof a[key] === "string" ? a[key].toUpperCase() : a[key];
+    const B = typeof b[key] === "string" ? b[key].toUpperCase() : b[key];
+    if (sortValue === true) {
+      return A < B ? -1 : 1;
+    } else if (sortValue === false) {
+      return B < A ? -1 : 1;
+    } else {
+      return 0;
+    }
+  };
+};
+
+const topSort = (sortBy, sortValue, sortItem) => {
   return (a, b) => {
     if (sortBy === sortValue) {
      return b[sortItem] - a[sortItem];
     }
   };
+};
+
+export const sortHandler = (obj, arry) => {
+  let n = "";
+  let s = "";
+  Object.keys(obj).forEach((key) => {
+    if (obj[key] !== null) {
+      n = key === "sortName" ? "name" : key;
+      s = obj[key];
+    }
+  });
+  return arry.sort(sortList(s, n));
+};
+
+export const secondSortHandler = (sortBy, arry) => {
+  if (sortBy === "BY MARKET CAP") {
+    return arry.sort(topSort(sortBy, "BY MARKET CAP", "market_cap"));
+  }
+  if (sortBy === "BY VOLUME") {
+    return arry.sort(topSort(sortBy, "BY VOLUME", "total_volume"));
+  }
 };
 
 export const formatDate = (x) => {
