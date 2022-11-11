@@ -171,6 +171,7 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
             next={() => getMoreCoins(coins.page + 1)}
             hasMore={coins.hasMore}
             loader={<div>Loading...</div>}
+            scrollThreshold= "90px"
           >
             {coinList.length ? (
               <Table>
@@ -242,8 +243,8 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
                       name={coin.name}
                       price={
                         coin.current_price < 1e3
-                          ? coin.current_price.toString()
-                          : coin.current_price.toLocaleString()
+                          ? coin.current_price?.toString()
+                          : coin.current_price?.toLocaleString()
                       }
                       image={coin.image}
                       symbol={coin.symbol.toUpperCase()}
@@ -257,7 +258,7 @@ const Coins = ({main, getChartData, getCoins, coins, getMoreCoins, sortItems, so
                         2
                       )}
                       totalVolume={coin.total_volume}
-                      marketCap={coin.market_cap.toString()}
+                      marketCap={coin.market_cap}
                       totalVolPercentage={
                         (coin.total_volume / coin.market_cap) * 100
                       }

@@ -74,7 +74,7 @@ export default function coinsReducer(state = initialState, action) {
           ...state,
           loading: false,
           coins: [...state.coins, ...action.payload],
-          page: state.page + 1,
+          page: state.page + 1
         };
       }
     case GET_MORE_COINS_FAILED:
@@ -170,7 +170,5 @@ export default function coinsReducer(state = initialState, action) {
       return state;
   }
 }
-
-export const getPage = (state) => state.coins.page
 export const getMarketDays = (state) => state.coins.marketDays
 export const coinsArry = (state) => state.coins.coins

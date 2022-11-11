@@ -34,7 +34,6 @@ export const PercentColor = styled.td`
 
 export const TableCell = styled.td`
   padding: 30px 0px 30px 8px;
-  ;
 `;
 
 export const TableProgressCell = styled.td`
